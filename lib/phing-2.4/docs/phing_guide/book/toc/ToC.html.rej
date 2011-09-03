@@ -1,0 +1,18 @@
+--- docs/phing_guide/book/toc/ToC.html	(revision 723)
++++ docs/phing_guide/book/toc/ToC.html	(working copy)
+@@ -123,8 +123,8 @@
+ <li><a href="../chapters/appendixes/AppendixC-OptionalTasks.html#PhkPackageTask">PhkPackageTask</a></li>
+ <li><a href="../chapters/appendixes/AppendixC-OptionalTasks.html#PhpCodeSnifferTask">PhpCodeSnifferTask</a></li>
+ <li><a href="../chapters/appendixes/AppendixC-OptionalTasks.html#PhpCpdTask">PhpCpdTask</a></li>
++<li><a href="../chapters/appendixes/AppendixC-OptionalTasks.html#PHPMDTask">PHPMDTask</a></li>
+ <li><a href="../chapters/appendixes/AppendixC-OptionalTasks.html#PhpDependTask">PhpDependTask</a></li>
+-<li><a href="../chapters/appendixes/AppendixC-OptionalTasks.html#PHPMDTask">PHPMDTask</a></li>
+ <li><a href="../chapters/appendixes/AppendixC-OptionalTasks.html#PhpDocumentorTask">PhpDocumentorTask</a></li>
+ <li><a href="../chapters/appendixes/AppendixC-OptionalTasks.html#PhpDocumentorExternalTask">PhpDocumentorExternalTask</a></li>
+ <li><a href="../chapters/appendixes/AppendixC-OptionalTasks.html#PhpLintTask">PhpLintTask</a></li>
+@@ -214,4 +214,4 @@
+ 
+ </body>
+ </html>
+-<!-- $Id -->
++<!-- $Id -->

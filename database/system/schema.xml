@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="default" defaultIdMethod="native" namespace="P2PT/System">
+
+	<table name="connection" package="system">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="host" type="varchar" required="true" size="100" />
+		<column name="user" type="varchar" size="100" />
+		<column name="password" type="varchar" size="100" />
+	</table>
+	
+	<table name="own_node" package="system">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="schema_id" type="integer" required="true" />
+		<foreign-key foreignTable="schema">
+			<reference local="schema_id" foreign="id" />
+		</foreign-key>
+		<column name="short_name" type="varchar" size="30" required="true" />
+		<unique>
+			<unique-column name="short_name" />
+		</unique>
+		<column name="connection_id" type="integer" required="true" />
+		<foreign-key foreignTable="connection">
+			<reference local="connection_id" foreign="id" />
+		</foreign-key>
+		<!--
+			I have deleted some status items for the time being, will replace
+			from the old project once I've worked out what is required
+		-->
+		<column name="is_enabled" type="boolean" required="true" default="false" />
+	</table>
+
+	<table name="schema" package="system">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="xml" type="longvarchar" required="true" />
+		<column name="name" type="varchar" size="100" required="true" />
+		<!--
+			All the items below with required="false" should probably be required,
+			but this is disabled for now to get us going quickly
+		-->
+		<column name="description" type="varchar" size="255" required="false" />
+		<column name="author" type="varchar" size="100" required="false" />
+		<column name="contact" type="varchar" size="200" />
+		<column name="url" type="varchar" size="100" />
+		<column name="date_release" type="date" required="false" />
+		<column name="schema_version" type="real" required="false" />
+		<column name="software_version" type="real" required="false" />
+		<column name="history" type="longvarchar" />
+		<column name="installed_at" type="timestamp" required="true" />
+	</table>
+
+	<table name="schema_table" package="system">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="schema_id" type="integer" required="true" />
+		<column name="name" type="varchar" size="50" required="true" />
+		<column name="row_ord_current" type="integer" />
+		<foreign-key foreignTable="schema">
+			<reference local="schema_id" foreign="id" />
+		</foreign-key>
+	</table>
+
+</database>

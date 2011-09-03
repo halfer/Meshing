@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Phing Batchtest" tests="49" assertions="60" failures="0" errors="0" time="2.710632">
+    <testsuite name="EqualsConditionTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/condition/EqualsConditionTest.php" fullPackage="phing.tasks.system.condition" package="phing.tasks.system.condition" tests="2" assertions="5" failures="0" errors="0" time="0.002885">
+      <testcase name="testTrim" class="EqualsConditionTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/condition/EqualsConditionTest.php" line="36" assertions="3" time="0.001482"/>
+      <testcase name="testCaseSensitive" class="EqualsConditionTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/condition/EqualsConditionTest.php" line="49" assertions="2" time="0.001403"/>
+    </testsuite>
+    <testsuite name="ContainsConditionTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/condition/ContainsConditionTest.php" fullPackage="phing.tasks.system.condition" package="phing.tasks.system.condition" tests="1" assertions="2" failures="0" errors="0" time="0.001670">
+      <testcase name="testCaseSensitive" class="ContainsConditionTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/condition/ContainsConditionTest.php" line="36" assertions="2" time="0.001670"/>
+    </testsuite>
+    <testsuite name="PropertyTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/PropertyTaskTest.php" fullPackage="phing.tasks.system" package="phing.tasks.system" tests="6" assertions="5" failures="0" errors="0" time="0.169018">
+      <testcase name="test1" class="PropertyTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/PropertyTaskTest.php" line="37" assertions="2" time="0.026543"/>
+      <testcase name="test2" class="PropertyTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/PropertyTaskTest.php" line="42" assertions="0" time="0.029920"/>
+      <testcase name="test3" class="PropertyTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/PropertyTaskTest.php" line="46" assertions="1" time="0.028781"/>
+      <testcase name="test4" class="PropertyTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/PropertyTaskTest.php" line="57" assertions="0" time="0.028592"/>
+      <testcase name="testPrefixSuccess" class="PropertyTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/PropertyTaskTest.php" line="61" assertions="1" time="0.027568"/>
+      <testcase name="testPrefixFailure" class="PropertyTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/PropertyTaskTest.php" line="67" assertions="1" time="0.027614"/>
+    </testsuite>
+    <testsuite name="ImportTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/ImportTaskTest.php" fullPackage="phing.tasks.system" package="phing.tasks.system" tests="5" assertions="0" failures="0" errors="0" time="0.213852">
+      <testcase name="testOverloadedTarget" class="ImportTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/ImportTaskTest.php" line="35" assertions="0" time="0.043766"/>
+      <testcase name="testImportedTarget" class="ImportTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/ImportTaskTest.php" line="40" assertions="0" time="0.042149"/>
+      <testcase name="testImported2Target" class="ImportTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/ImportTaskTest.php" line="46" assertions="0" time="0.042363"/>
+      <testcase name="testCascadeTarget" class="ImportTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/ImportTaskTest.php" line="51" assertions="0" time="0.042760"/>
+      <testcase name="testFlipFlopTarget" class="ImportTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/ImportTaskTest.php" line="58" assertions="0" time="0.042814"/>
+    </testsuite>
+    <testsuite name="TypedefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TypedefTaskTest.php" fullPackage="phing.tasks.system" package="phing.tasks.system" tests="6" assertions="6" failures="0" errors="0" time="0.192176">
+      <testcase name="testEmpty" class="TypedefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TypedefTaskTest.php" line="36" assertions="0" time="0.034145"/>
+      <testcase name="testNoName" class="TypedefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TypedefTaskTest.php" line="40" assertions="0" time="0.031561"/>
+      <testcase name="testNoClassname" class="TypedefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TypedefTaskTest.php" line="44" assertions="0" time="0.031305"/>
+      <testcase name="testClassNotFound" class="TypedefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TypedefTaskTest.php" line="48" assertions="0" time="0.032951"/>
+      <testcase name="testGlobal" class="TypedefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TypedefTaskTest.php" line="57" assertions="3" time="0.030397"/>
+      <testcase name="testLocal" class="TypedefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TypedefTaskTest.php" line="65" assertions="3" time="0.031817"/>
+    </testsuite>
+    <testsuite name="TaskdefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TaskdefTaskTest.php" fullPackage="phing.tasks.system" package="phing.tasks.system" tests="6" assertions="6" failures="0" errors="0" time="0.221301">
+      <testcase name="testEmpty" class="TaskdefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TaskdefTaskTest.php" line="34" assertions="0" time="0.039740"/>
+      <testcase name="testNoName" class="TaskdefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TaskdefTaskTest.php" line="38" assertions="0" time="0.035851"/>
+      <testcase name="testNoClassname" class="TaskdefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TaskdefTaskTest.php" line="42" assertions="0" time="0.035797"/>
+      <testcase name="testClassNotFound" class="TaskdefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TaskdefTaskTest.php" line="46" assertions="0" time="0.037258"/>
+      <testcase name="testGlobal" class="TaskdefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TaskdefTaskTest.php" line="54" assertions="3" time="0.035266"/>
+      <testcase name="testLocal" class="TaskdefTaskTest" file="/home/druid/dev/phing/trunk/test/classes/phing/tasks/TaskdefTaskTest.php" line="62" assertions="3" time="0.037389"/>
+    </testsuite>
+    <testsuite name="PhpUnit34Test" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/PhpUnit34Test.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="1" failures="0" errors="0" time="0.211742">
+      <testcase name="testPhingCallTask" class="PhpUnit34Test" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/PhpUnit34Test.php" line="37" assertions="1" time="0.211742"/>
+    </testsuite>
+    <testsuite name="PearStyleNamingTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/PearStyleNamingTest.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="0" failures="0" errors="0" time="0.022158">
+      <testcase name="testPhingCallTask" class="PearStyleNamingTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/PearStyleNamingTest.php" line="37" assertions="0" time="0.022158"/>
+    </testsuite>
+    <testsuite name="RecursivePropertyTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/RecursivePropertyTest.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="1" failures="0" errors="0" time="0.025612">
+      <testcase name="testCopyTask" class="RecursivePropertyTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/RecursivePropertyTest.php" line="37" assertions="1" time="0.025612"/>
+    </testsuite>
+    <testsuite name="MoveReplaceRegexpTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/MoveReplaceRegexpTest.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="1" failures="0" errors="0" time="0.040107">
+      <testcase name="testPhingCallTask" class="MoveReplaceRegexpTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/MoveReplaceRegexpTest.php" line="37" assertions="1" time="0.040107"/>
+    </testsuite>
+    <testsuite name="ExcludeZipTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/ExcludeZipTest.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="0" failures="0" errors="0" time="0.128055">
+      <testcase name="testZipTask" class="ExcludeZipTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/ExcludeZipTest.php" line="37" assertions="0" time="0.128055"/>
+    </testsuite>
+    <testsuite name="CustomTaskFileSetTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/CustomTaskFileSetTest.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="0" failures="0" errors="0" time="0.089460">
+      <testcase name="testCustomTask" class="CustomTaskFileSetTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/CustomTaskFileSetTest.php" line="37" assertions="0" time="0.089460"/>
+    </testsuite>
+    <testsuite name="HtmlEntitiesTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/HtmlEntitiesTest.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="0" failures="0" errors="0" time="0.031509">
+      <testcase name="testCopyTask" class="HtmlEntitiesTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/HtmlEntitiesTest.php" line="37" assertions="0" time="0.031509"/>
+    </testsuite>
+    <testsuite name="ForeachFileSetTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/ForeachFileSetTest.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="0" failures="0" errors="0" time="0.070114">
+      <testcase name="testCustomTask" class="ForeachFileSetTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/ForeachFileSetTest.php" line="37" assertions="0" time="0.070114"/>
+    </testsuite>
+    <testsuite name="CopyTaskFileListTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/CopyTaskFileListTest.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="0" failures="0" errors="0" time="0.042906">
+      <testcase name="testCopyTask" class="CopyTaskFileListTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/CopyTaskFileListTest.php" line="37" assertions="0" time="0.042906"/>
+    </testsuite>
+    <testsuite name="ReplaceTokenBooleanTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/ReplaceTokenBooleanTest.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="0" failures="0" errors="0" time="0.029108">
+      <testcase name="testCustomTask" class="ReplaceTokenBooleanTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/ReplaceTokenBooleanTest.php" line="37" assertions="0" time="0.029108"/>
+    </testsuite>
+    <testsuite name="PhingCallAdhocTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/PhingCallAdhocTest.php" fullPackage="phing.regression" package="phing.regression" tests="1" assertions="0" failures="0" errors="0" time="0.051865">
+      <testcase name="testPhingCallTask" class="PhingCallAdhocTest" file="/home/druid/dev/phing/trunk/test/classes/phing/regression/PhingCallAdhocTest.php" line="37" assertions="0" time="0.051865"/>
+    </testsuite>
+    <testsuite name="LineContainsTest" file="/home/druid/dev/phing/trunk/test/classes/phing/filters/LineContainsTest.php" fullPackage="phing.filters" package="phing.filters" tests="1" assertions="1" failures="0" errors="0" time="0.052957">
+      <testcase name="testLineContains" class="LineContainsTest" file="/home/druid/dev/phing/trunk/test/classes/phing/filters/LineContainsTest.php" line="43" assertions="1" time="0.052957"/>
+    </testsuite>
+    <testsuite name="IntrospectionHelperTest" file="/home/druid/dev/phing/trunk/test/classes/phing/IntrospectionHelperTest.php" fullPackage="phing" package="phing" tests="3" assertions="3" failures="0" errors="0" time="0.009064">
+      <testcase name="testAddText" class="IntrospectionHelperTest" file="/home/druid/dev/phing/trunk/test/classes/phing/IntrospectionHelperTest.php" line="47" assertions="0" time="0.003470"/>
+      <testcase name="testSupportsCharacters" class="IntrospectionHelperTest" file="/home/druid/dev/phing/trunk/test/classes/phing/IntrospectionHelperTest.php" line="59" assertions="2" time="0.001909"/>
+      <testcase name="testElementCreators" class="IntrospectionHelperTest" file="/home/druid/dev/phing/trunk/test/classes/phing/IntrospectionHelperTest.php" line="66" assertions="1" time="0.003685"/>
+    </testsuite>
+    <testsuite name="MapperTest" file="/home/druid/dev/phing/trunk/test/classes/phing/types/MapperTest.php" fullPackage="phing.types" package="phing.types" tests="3" assertions="9" failures="0" errors="0" time="0.531537">
+      <testcase name="testEmptyElementIfIsReference" class="MapperTest" file="/home/druid/dev/phing/trunk/test/classes/phing/types/MapperTest.php" line="45" assertions="4" time="0.004287"/>
+      <testcase name="testCircularReferenceCheck" class="MapperTest" file="/home/druid/dev/phing/trunk/test/classes/phing/types/MapperTest.php" line="82" assertions="5" time="0.006198"/>
+      <testcase name="testCopyTaskWithTwoFilesets" class="MapperTest" file="/home/druid/dev/phing/trunk/test/classes/phing/types/MapperTest.php" line="132" assertions="0" time="0.521052"/>
+    </testsuite>
+    <testsuite name="TaskdefForCopyTest" file="/home/druid/dev/phing/trunk/test/classes/phing/types/MapperTest.php" fullPackage="phing.mappers" package="phing.mappers" tests="1" assertions="0" failures="0" errors="0" time="0.547343">
+      <testcase name="test1" class="TaskdefForCopyTest" file="/home/druid/dev/phing/trunk/test/classes/phing/types/MapperTest.php" line="160" assertions="0" time="0.547343"/>
+    </testsuite>
+    <testsuite name="FileSetTest" file="/home/druid/dev/phing/trunk/test/classes/phing/types/FileSetTest.php" fullPackage="phing.types" package="phing.types" tests="1" assertions="13" failures="0" errors="0" time="0.013150">
+      <testcase name="testEmptyElementIfIsReference" class="FileSetTest" file="/home/druid/dev/phing/trunk/test/classes/phing/types/FileSetTest.php" line="49" assertions="13" time="0.013150"/>
+    </testsuite>
+    <testsuite name="CommandlineTest" file="/home/druid/dev/phing/trunk/test/classes/phing/types/CommandlineTest.php" fullPackage="phing.types" package="phing.types" tests="1" assertions="4" failures="0" errors="0" time="0.004468">
+      <testcase name="testTranslateCommandline" class="CommandlineTest" file="/home/druid/dev/phing/trunk/test/classes/phing/types/CommandlineTest.php" line="45" assertions="4" time="0.004468"/>
+    </testsuite>
+    <testsuite name="FileOutputStreamTest" file="/home/druid/dev/phing/trunk/test/classes/phing/system/FileOutputStreamTest.php" fullPackage="phing.system" package="phing.system" tests="2" assertions="3" failures="0" errors="0" time="0.008573">
+      <testcase name="testWrite" class="FileOutputStreamTest" file="/home/druid/dev/phing/trunk/test/classes/phing/system/FileOutputStreamTest.php" line="55" assertions="3" time="0.003137"/>
+      <testcase name="testFlush" class="FileOutputStreamTest" file="/home/druid/dev/phing/trunk/test/classes/phing/system/FileOutputStreamTest.php" line="79" assertions="0" time="0.005436"/>
+    </testsuite>
+  </testsuite>
+</testsuites>
