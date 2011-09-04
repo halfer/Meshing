@@ -26,7 +26,7 @@ if ($command)
 }
 else
 {
-	
+	$className = 'P2P_Console_Help';
 }
 
 // Run the implementation

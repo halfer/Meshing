@@ -7,6 +7,7 @@
  */
 class P2P_Console_System_Build implements P2P_Console_Interface
 {
+	private $argv;
 	private $opts;
 	private $projectRoot;
 
@@ -14,7 +15,12 @@ class P2P_Console_System_Build implements P2P_Console_Interface
 	{
 		$this->argv = $argv;
 	}
-	
+
+	public function getDescription()
+	{
+		return 'Builds the models and/or the database for the whole nodeset';
+	}
+
 	public function getOpts()
 	{
 		return array(
