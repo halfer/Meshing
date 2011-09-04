@@ -8,11 +8,12 @@ P2P_Utils::initialise();
 
 $sqlDir = $projectPath . '/database/sql/system';
 $mapFile = $projectPath . '/database/system/sqldb.map';
+$extraPropsFile = $projectPath . '/database/system/build.properties';
 
 $task = new P2P_Propel_SqlRunner();
 
 $task->setSqlDir($sqlDir);
 $task->setMapFile($mapFile);
-$task->setCredentials('pgsql:host=localhost dbname=p2p2 user=jon password=', 'jon', '');
+$task->addPropertiesFile($extraPropsFile);
 
 $task->run();

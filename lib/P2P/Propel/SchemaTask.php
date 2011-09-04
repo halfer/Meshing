@@ -8,6 +8,16 @@
 abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
 {
 	protected $schemaFiles;
+	
+	public function __construct()
+	{
+		parent::__construct();
+
+		// Sets up default Propel build properties
+		$projectPath = P2P_Utils::getProjectRoot();
+		$propertiesFile = $projectPath . '/vendor/propel-1.6/generator/default.properties';
+		$this->addPropertiesFile($propertiesFile);
+	}
 
 	public function setSchemaDir($schemaDir)
 	{
@@ -58,7 +68,7 @@ abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
 			throw new Exception('No schema(s) specified');
 		}
 
-		if (!$this->customProps['propel.database'])
+		if (!$this->propertyExists('propel.database'))
 		{
 			throw new Exception('No database type specified');
 		}

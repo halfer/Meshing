@@ -16,6 +16,9 @@ abstract class P2P_Propel_Task
 		require_once 'phing/types/FileSet.php';
 		require_once 'phing/system/io/PhingFile.php';
 		require_once 'phing/system/util/Properties.php';
+
+		// Needs calling quite early (e.g. PhingFile won't work without it)
+		Phing::startup();
 	}
 
 	/**
@@ -23,14 +26,39 @@ abstract class P2P_Propel_Task
 	 */
 	public function addPropertiesFile($propertiesFile)
 	{
-		$this->propertiesFiles[] = $propertiesFile;
+		if (!file_exists($propertiesFile))
+		{
+			throw new Exception('Properties file does not exist');
+		}
+		
+		$properties = new Properties();
+		$properties->load(new PhingFile($propertiesFile));
+
+		$this->fileProps = array_merge(
+			$this->fileProps,
+			$properties->getProperties()
+		);
+	}
+
+	protected function propertyExists($property)
+	{
+		$filePropExists = array_key_exists($property, $this->fileProps);
+		$custPropExists = array_key_exists($property, $this->customProps);
+		
+		return $filePropExists || $custPropExists;
+	}
+
+	protected function getProperty($property)
+	{
+		$props = array_merge($this->fileProps, $this->customProps);
+		
+		return array_key_exists($property, $props) ? $props[$property] : null;
 	}
 
 	public function run()
 	{
 		$this->preRunCheck();
 
-		Phing::startup();
 		$project = new Project();
 
 		$this->initPhingProperties($project);
@@ -46,18 +74,6 @@ abstract class P2P_Propel_Task
 
 	protected function initPhingProperties(Project $project)
 	{
-		// Read all the merged properties values (later pairs may overwrite earlier ones)
-		foreach ($this->propertiesFiles as $propertiesFile)
-		{
-			$properties = new Properties();
-			$properties->load(new PhingFile($propertiesFile));
-			
-			$this->fileProps = array_merge(
-				$this->fileProps,
-				$properties->getProperties()
-			);
-		}
-
 		// Apply all file properties, then all non-file properties
 		$properties = new Properties();
 		foreach($this->fileProps as $key => $value)

@@ -41,6 +41,12 @@ class P2P_Propel_SqlRunner extends P2P_Propel_Task
 		// The map file specifies what sql files should use which connection
 		$task->setSqlDbMap(new PhingFile($this->mapFile));
 
+		// The db details may be specified in Propel properties instead
+		if (!$this->url)
+		{
+			$this->url = $this->getProperty('propel.database.url');
+		}
+
 		$task->setUrl($this->url);
 		$task->setUserid($this->userid);
 		$task->setPassword($this->password);
@@ -63,7 +69,7 @@ class P2P_Propel_SqlRunner extends P2P_Propel_Task
 			throw new Exception('No map file specified');
 		}
 		
-		if (!$this->url)
+		if (!$this->propertyExists('propel.database.url') && !$this->url)
 		{
 			throw new Exception('Database credentials not specified');
 		}
