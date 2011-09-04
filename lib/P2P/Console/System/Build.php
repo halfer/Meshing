@@ -5,16 +5,10 @@
  *
  * @author jon
  */
-class P2P_Console_System_Build implements P2P_Console_Interface
+class P2P_Console_System_Build extends P2P_Console_Base implements P2P_Console_Interface
 {
-	private $argv;
 	private $opts;
 	private $projectRoot;
-
-	public function __construct($argv = array())
-	{
-		$this->argv = $argv;
-	}
 
 	public function getDescription()
 	{

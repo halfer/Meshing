@@ -33,10 +33,22 @@ class P2P_Console_Help implements P2P_Console_Interface
 
 	public function run()
 	{
-		// @todo The camel-cased versions can be derived
+		// @todo The camel-cased versions can be derived from each command
+		// @todo Better yet, these can be read from the filing system!
 		$commands = array(
-			'system:build' => 'System_Build',
-			'help' => 'Help',
+			'system:build'		=> 'System_Build',
+			'system:config'		=> 'System_Config',
+			'help'				=> 'Help',
+			'connection:add'	=> 'Connection_Add',
+			'connection:list'	=> 'Connection_List',
+			'connection:config'	=> 'Connection_Config',
+			'connection:delete'	=> 'Connection_Delete',
+			'node:add'			=> 'Node_Add',
+			'node:list'			=> 'Node_List',
+			'node:config'		=> 'Node_Config',
+			'node:delete'		=> 'Node_Delete',
+			'trust:add'			=> 'Trust_Add',
+			'trust:delete'		=> 'Trust_Delete',
 		);
 
 		// Print a hint for all commands
@@ -45,7 +57,10 @@ class P2P_Console_Help implements P2P_Console_Interface
 			$classname = 'P2P_Console_' . $camelCased;
 			$class = new $classname();
 			$desc = $class->getDescription();
-			echo $command . str_repeat(' ', 16 - strlen($command)) . $desc . "\n";
+
+			$count = 20 - strlen($command);
+			$count = $count > 0 ? $count : 1;
+			echo $command . str_repeat(' ', $count) . $desc . "\n";
 		}
 	}
 }
