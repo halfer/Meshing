@@ -5,8 +5,8 @@ $projectPath = realpath(
 );
 set_include_path(
 	get_include_path() . PATH_SEPARATOR .
-	$projectPath . '/lib/propel-1.6/generator/lib' . PATH_SEPARATOR .
-	$projectPath . '/lib/phing-2.4/classes'
+	$projectPath . '/vendor/propel-1.6/generator/lib' . PATH_SEPARATOR .
+	$projectPath . '/vendor/phing-2.4/classes'
 );
 
 require_once 'phing/Phing.php';
@@ -23,7 +23,7 @@ $targetDb = 'pgsql';
 $schemaFolder = $projectPath . '/database/system';
 $schemas = "schema.xml";
 $outputFolder = $projectPath . "/database/sql/system";
-$propertiesFile = $projectPath . '/lib/propel-1.6/generator/default.properties';
+$propertiesFile = $projectPath . '/vendor/propel-1.6/generator/default.properties';
 
 // Set custom props here
 $customProps = array(
