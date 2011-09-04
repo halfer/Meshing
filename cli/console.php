@@ -14,19 +14,16 @@ array_shift($argv);
 
 if ($command)
 {
-	$filter = new Zend_Filter_Word_UnderscoreToCamelCase();
-
-	// Create an implementor class using a camel-cased copy of the command
-	$commandParts = explode(':', $command);
-	foreach ($commandParts as $i => $part)
+	$className = P2P_Console_Utils::getCommandClass($command);
+	if ($className === false)
 	{
-		$commandParts[$i] = $filter->filter($part);
+		echo "Unrecognised command.\n";
+		exit(1);
 	}
-	$className = 'P2P_Console_' . implode('_', $commandParts);
 }
 else
 {
-	$className = 'P2P_Console_Help';
+	$className = 'P2P_Console_Command_Help';
 }
 
 // Run the implementation

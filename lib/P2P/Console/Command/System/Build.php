@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_System_Build extends P2P_Console_Base implements P2P_Console_Interface
+class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_Console_Interface
 {
 	private $opts;
 	private $projectRoot;
