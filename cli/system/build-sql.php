@@ -18,7 +18,7 @@ $propertiesFile = $projectPath . '/vendor/propel-1.6/generator/default.propertie
 $task = new P2P_Propel_SqlBuilder();
 
 $task->setDatabaseType($targetDb);
-$task->setPropertiesFile($propertiesFile);
+$task->addPropertiesFile($propertiesFile);
 $task->setSchemaDir($schemaDir);
 $task->setSchemas($schemas);
 $task->setOutputDir($outputFolder);

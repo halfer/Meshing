@@ -2,8 +2,9 @@
 
 abstract class P2P_Propel_Task
 {
+	protected $fileProps = array();
 	protected $customProps = array();
-	protected $propertiesFile;
+	protected $propertiesFiles = array();
 	protected $inputDir;
 	protected $outputDir;
 
@@ -18,11 +19,11 @@ abstract class P2P_Propel_Task
 	}
 
 	/**
-	 * Can this go in SchemaTask instead?
+	 * Permits an arbitrary number of property files to be added
 	 */
-	public function setPropertiesFile($propertiesFile)
+	public function addPropertiesFile($propertiesFile)
 	{
-		$this->propertiesFile = $propertiesFile;
+		$this->propertiesFiles[] = $propertiesFile;
 	}
 
 	public function run()
@@ -45,15 +46,26 @@ abstract class P2P_Propel_Task
 
 	protected function initPhingProperties(Project $project)
 	{
-		// Read in default properties file if it has been specified
-		$properties = new Properties();
-		if ($this->propertiesFile)
+		// Read all the merged properties values (later pairs may overwrite earlier ones)
+		foreach ($this->propertiesFiles as $propertiesFile)
 		{
-			$properties->load(new PhingFile($this->propertiesFile));
+			$properties = new Properties();
+			$properties->load(new PhingFile($propertiesFile));
+			
+			$this->fileProps = array_merge(
+				$this->fileProps,
+				$properties->getProperties()
+			);
 		}
-		
-		// Add any custom values
-		foreach( $this->customProps as $key => $value ) {
+
+		// Apply all file properties, then all non-file properties
+		$properties = new Properties();
+		foreach($this->fileProps as $key => $value)
+		{
+			$properties->put($key, $value);
+		}
+		foreach($this->customProps as $key => $value)
+		{
 			$properties->put($key, $value);
 		}
 
