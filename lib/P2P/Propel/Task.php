@@ -41,7 +41,7 @@ abstract class P2P_Propel_Task
 		$this->postRun();
 	}
 	
-	abstract function preRunCheck();
+	abstract protected function preRunCheck();
 
 	protected function initPhingProperties(Project $project)
 	{
@@ -65,9 +65,9 @@ abstract class P2P_Propel_Task
 		}
 	}
 
-	abstract function createTask(Project $project);
+	abstract protected function createTask(Project $project);
 
-	public function runTask(Project $project, Task $task)
+	protected function runTask(Project $project, Task $task)
 	{
 		// Add if the client has not already done so
 		if (!$task->getProject())
@@ -78,7 +78,7 @@ abstract class P2P_Propel_Task
 		$task->main();
 	}
 
-	public function postRun()
+	protected function postRun()
 	{
 		
 	}

@@ -41,7 +41,7 @@ abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
 		$this->customProps['propel.database'] = $type;
 	}
 
-	public function preRunCheck()
+	protected function preRunCheck()
 	{
 		if (!$this->inputDir)
 		{

@@ -7,7 +7,7 @@
  */
 class P2P_Propel_SqlBuilder extends P2P_Propel_SchemaTask
 {
-	public function createTask(Project $project)
+	protected function createTask(Project $project)
 	{
 		require_once 'phing/types/Mapper.php';
 		require_once 'task/AbstractPropelDataModelTask.php';
@@ -26,7 +26,7 @@ class P2P_Propel_SqlBuilder extends P2P_Propel_SchemaTask
 		return $task;
 	}
 
-	public function postRun()
+	protected function postRun()
 	{
 		// Rename the "*.xml" SQL file to "*.sql"
 		rename(

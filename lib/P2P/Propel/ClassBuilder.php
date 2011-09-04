@@ -7,7 +7,7 @@
  */
 class P2P_Propel_ClassBuilder extends P2P_Propel_SchemaTask
 {
-	public function createTask(Project $project)
+	protected function createTask(Project $project)
 	{
 		require_once 'task/PropelOMTask.php';
 		$task = new PropelOMTask();
