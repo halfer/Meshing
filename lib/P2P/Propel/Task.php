@@ -34,9 +34,11 @@ abstract class P2P_Propel_Task
 
 		$this->initPhingProperties($project);
 
-		$task = $this->createTask();
+		$task = $this->createTask($project);
 		
 		$this->runTask($project, $task);
+		
+		$this->postRun();
 	}
 	
 	abstract function preRunCheck();
@@ -63,11 +65,21 @@ abstract class P2P_Propel_Task
 		}
 	}
 
-	abstract function createTask();
+	abstract function createTask(Project $project);
 
 	public function runTask(Project $project, Task $task)
 	{
-		$task->setProject($project);				
-		$task->main();		
+		// Add if the client has not already done so
+		if (!$task->getProject())
+		{
+			$task->setProject($project);				
+		}
+
+		$task->main();
+	}
+
+	public function postRun()
+	{
+		
 	}
 }
