@@ -28,7 +28,9 @@ class P2P_Console_Command_Connection_Delete extends P2P_Console_Command_Connecti
 		{
 			throw new Zend_Console_Getopt_Exception('The connection name must be specified.');			
 		}
-		
+
+		// @todo Check that this connection isn't in use
+
 		P2P_Utils::initialiseDb();
 
 		$this->connection = P2PConnectionQuery::create()->findOneByName($name);
