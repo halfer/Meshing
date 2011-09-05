@@ -34,4 +34,24 @@ class P2P_Utils
 		// Autoload our own classes
 		$loader->registerNamespace('P2P_');
 	}
+
+	/**
+	 * Initialise the database (we don't always want this, so it's offered separately)
+	 * 
+	 * @todo Only offers system database connectivity at the moment. What would be the best way
+	 * to load the connection(s) and class mapping(s) required?
+	 */
+	public static function initialiseDb()
+	{
+		$projectRoot = self::getProjectRoot();
+		
+		// Include system models
+		set_include_path(
+			$projectRoot . '/database/models' . PATH_SEPARATOR .
+			get_include_path()
+		);
+
+		require_once $projectRoot . '/vendor/propel-1.6/runtime/lib/Propel.php';
+		Propel::init($projectRoot . '/database/connections/database-conf.php');
+	}
 }

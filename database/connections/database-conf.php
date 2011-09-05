@@ -9,7 +9,7 @@ $conf = array (
       'adapter' => 'pgsql',
       'connection' => 
       array (
-        'dsn' => 'pgsql:host=localhost dbname=p2p user=jon password=',
+        'dsn' => 'pgsql:host=localhost dbname=p2p2 user=jon password=',
         'user' => 'jon',
         'password' => '',
       ),

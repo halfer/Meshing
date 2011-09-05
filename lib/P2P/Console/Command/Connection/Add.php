@@ -48,6 +48,8 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Stub implements P2P
 	 */
 	public function run()
 	{
+		P2P_Utils::initialiseDb();
+		
 		$Connection = new P2PConnection();
 		$Connection->setName($this->opts->name);
 		$Connection->setHost($this->opts->host);

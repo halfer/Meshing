@@ -5,7 +5,7 @@
 			<datasource id="default">
 				<adapter>pgsql</adapter>
 				<connection>
-					<dsn>pgsql:host=localhost dbname=p2p user=jon password=</dsn>
+					<dsn>pgsql:host=localhost dbname=p2p2 user=jon password=</dsn>
 					<user>jon</user>
 					<password></password>
 				</connection>
