@@ -5,7 +5,9 @@ abstract class P2P_Propel_Task
 	protected $fileProps = array();
 	protected $customProps = array();
 	protected $propertiesFiles = array();
+	// @todo Not all tasks have an input dir - move this to sub-classes that need it?
 	protected $inputDir;
+	// @todo Not all tasks have an output dir - move this to sub-classes that need it?
 	protected $outputDir;
 
 	public function __construct()

@@ -27,24 +27,38 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Stub implements P2P
 	{
 		if (!$this->opts->name)
 		{
-			throw new Exception('All connections need a name');			
+			throw new Zend_Console_Getopt_Exception('All connections need a name.');			
 		}
 	
 		if (!$this->opts->host)
 		{
-			throw new Exception('All connections need a host');
+			throw new Zend_Console_Getopt_Exception('All connections need a host.');
 		}
 		
 		if ($this->opts->getOption('password-file'))
 		{
-			throw new Exception('This option is not currently implemented');
+			throw new Zend_Console_Getopt_Exception('This option is not currently implemented.');
 		}
 	}
 
+	/**
+	 * Creates a new, named connection
+	 * 
+	 * @todo Need to validate string lengths etc (or catch exceptions properly)
+	 */
 	public function run()
 	{
-		$this->projectRoot = P2P_Utils::getProjectRoot();
-
-		$Connection = new Connection();
+		$Connection = new P2PConnection();
+		$Connection->setName($this->opts->name);
+		$Connection->setHost($this->opts->host);
+		if ($this->opts->user)
+		{
+			$Connection->setUser($this->opts->user);
+		}
+		if ($this->opts->password)
+		{
+			$Connection->setPassword($this->opts->password);
+		}
+		$Connection->save();
 	}
 }

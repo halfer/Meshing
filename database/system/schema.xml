@@ -3,6 +3,7 @@
 
 	<table name="p2p_connection" phpName="P2PConnection" className="P2PConnection" package="system">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="name" type="varchar" size="100" required="true" />
 		<column name="host" type="varchar" required="true" size="100" />
 		<column name="user" type="varchar" size="100" />
 		<column name="password" type="varchar" size="100" />

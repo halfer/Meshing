@@ -96,6 +96,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 	{
 		$this->buildSql($verbose);
 		$this->runSql($verbose);
+		$this->buildConnections($verbose);
 
 		// @todo More detail required here
 		if ($verbose)
@@ -115,7 +116,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 	{
 		$schemaDir = $this->projectRoot . '/database/system';
 		$schemas = "schema.xml";
-		$outputFolder = $this->projectRoot . "/database/sql/system";
+		$outputDir = $this->projectRoot . "/database/sql/system";
 		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
 
 		// Create task, configure, then run
@@ -124,7 +125,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 		$task->addPropertiesFile($extraPropsFile);
 		$task->setSchemaDir($schemaDir);
 		$task->setSchemas($schemas);
-		$task->setOutputDir($outputFolder);
+		$task->setOutputDir($outputDir);
 
 		$task->run();		
 	}
@@ -149,5 +150,33 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 		$task->addPropertiesFile($extraPropsFile);
 
 		$task->run();		
+	}
+
+	/**
+	 * Converts the known connections to XML and converts to a Propel-friendly conf file
+	 * 
+	 * @todo This is required by connection:add as well, how shall we share it?
+	 * 
+	 * @param boolean $verbose 
+	 */
+	protected function buildConnections($verbose)
+	{
+		$schemaDir = $this->projectRoot . '/database/system';
+		$schemas = "schema.xml";
+		$xmlFile = $this->projectRoot . '/database/system/runtime-conf.xml';
+		$outputDir = $this->projectRoot . '/database/connections';
+		$outputFile = 'database-conf.php';
+		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
+
+		$task = new P2P_Propel_ConfBuilder();
+		
+		$task->setSchemaDir($schemaDir);
+		$task->setSchemas($schemas);
+		$task->setXmlFile($xmlFile);
+		$task->setOutputDir($outputDir);
+		$task->setOutputFile($outputFile);
+		$task->addPropertiesFile($extraPropsFile);
+
+		$task->run();
 	}
 }

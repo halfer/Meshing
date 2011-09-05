@@ -82,7 +82,7 @@ abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
 		$fileSet->setIncludes($this->schemaFiles);
 		$task->addSchemaFileset($fileSet);
 
-		// Sets up output dir, for class or SQL output
+		// Sets up output dir, for class, SQL or conf output
 		$task->setOutputDirectory(new PhingFile($this->outputDir));
 	}
 }
