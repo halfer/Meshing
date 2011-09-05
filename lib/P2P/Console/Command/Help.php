@@ -27,6 +27,10 @@ class P2P_Console_Command_Help implements P2P_Console_Interface
 		return array();
 	}
 
+	public function parseOpts()
+	{
+	}
+
 	public function preRunCheck()
 	{
 	}
