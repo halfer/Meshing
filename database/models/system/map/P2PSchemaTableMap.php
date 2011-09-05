@@ -1,13 +1,9 @@
 <?php
 
-namespace P2PT/System\map;
-
-use \RelationMap;
-use \TableMap;
 
 
 /**
- * This class defines the structure of the 'schema' table.
+ * This class defines the structure of the 'p2p_schema' table.
  *
  *
  *
@@ -18,13 +14,13 @@ use \TableMap;
  *
  * @package    propel.generator.system.map
  */
-class SchemaTableMap extends TableMap
+class P2PSchemaTableMap extends TableMap
 {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'system.map.SchemaTableMap';
+	const CLASS_NAME = 'system.map.P2PSchemaTableMap';
 
 	/**
 	 * Initialize the table attributes, columns and validators
@@ -36,12 +32,12 @@ class SchemaTableMap extends TableMap
 	public function initialize()
 	{
 		// attributes
-		$this->setName('schema');
-		$this->setPhpName('Schema');
-		$this->setClassname('P2PT/System\\Schema');
+		$this->setName('p2p_schema');
+		$this->setPhpName('P2PSchema');
+		$this->setClassname('P2PSchema');
 		$this->setPackage('system');
 		$this->setUseIdGenerator(true);
-		$this->setPrimaryKeyMethodInfo('schema_id_seq');
+		$this->setPrimaryKeyMethodInfo('p2p_schema_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('XML', 'Xml', 'LONGVARCHAR', true, null, null);
@@ -63,8 +59,8 @@ class SchemaTableMap extends TableMap
 	 */
 	public function buildRelations()
 	{
-		$this->addRelation('OwnNode', 'P2PT/System\\OwnNode', RelationMap::ONE_TO_MANY, array('id' => 'schema_id', ), null, null);
-		$this->addRelation('SchemaTable', 'P2PT/System\\SchemaTable', RelationMap::ONE_TO_MANY, array('id' => 'schema_id', ), null, null);
+		$this->addRelation('P2POwnNode', 'P2POwnNode', RelationMap::ONE_TO_MANY, array('id' => 'schema_id', ), null, null);
+		$this->addRelation('P2PSchemaTable', 'P2PSchemaTable', RelationMap::ONE_TO_MANY, array('id' => 'schema_id', ), null, null);
 	} // buildRelations()
 
-} // SchemaTableMap
+} // P2PSchemaTableMap

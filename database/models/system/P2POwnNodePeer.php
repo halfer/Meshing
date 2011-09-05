@@ -1,12 +1,9 @@
 <?php
 
-namespace P2PT/System;
-
-use P2PT/System\om\BaseConnection;
 
 
 /**
- * Skeleton subclass for representing a row from the 'connection' table.
+ * Skeleton subclass for performing query and update operations on the 'p2p_own_node' table.
  *
  * 
  *
@@ -16,6 +13,6 @@ use P2PT/System\om\BaseConnection;
  *
  * @package    propel.generator.system
  */
-class Connection extends BaseConnection {
+class P2POwnNodePeer extends BaseP2POwnNodePeer {
 
-} // Connection
+} // P2POwnNodePeer

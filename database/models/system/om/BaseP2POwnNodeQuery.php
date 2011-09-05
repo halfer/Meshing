@@ -1,93 +1,81 @@
 <?php
 
-namespace P2PT/System\om;
-
-use \Criteria;
-use \ModelCriteria;
-use \ModelJoin;
-use \PropelCollection;
-use \PropelException;
-use \PropelPDO;
-use P2PT/System\Connection;
-use P2PT/System\OwnNodePeer;
-use P2PT/System\OwnNodeQuery;
-use P2PT/System\Schema;
 
 /**
- * Base class that represents a query for the 'own_node' table.
+ * Base class that represents a query for the 'p2p_own_node' table.
  *
  * 
  *
- * @method     OwnNodeQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     OwnNodeQuery orderBySchemaId($order = Criteria::ASC) Order by the schema_id column
- * @method     OwnNodeQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
- * @method     OwnNodeQuery orderByConnectionId($order = Criteria::ASC) Order by the connection_id column
- * @method     OwnNodeQuery orderByIsEnabled($order = Criteria::ASC) Order by the is_enabled column
+ * @method     P2POwnNodeQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     P2POwnNodeQuery orderBySchemaId($order = Criteria::ASC) Order by the schema_id column
+ * @method     P2POwnNodeQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
+ * @method     P2POwnNodeQuery orderByConnectionId($order = Criteria::ASC) Order by the connection_id column
+ * @method     P2POwnNodeQuery orderByIsEnabled($order = Criteria::ASC) Order by the is_enabled column
  *
- * @method     OwnNodeQuery groupById() Group by the id column
- * @method     OwnNodeQuery groupBySchemaId() Group by the schema_id column
- * @method     OwnNodeQuery groupByShortName() Group by the short_name column
- * @method     OwnNodeQuery groupByConnectionId() Group by the connection_id column
- * @method     OwnNodeQuery groupByIsEnabled() Group by the is_enabled column
+ * @method     P2POwnNodeQuery groupById() Group by the id column
+ * @method     P2POwnNodeQuery groupBySchemaId() Group by the schema_id column
+ * @method     P2POwnNodeQuery groupByShortName() Group by the short_name column
+ * @method     P2POwnNodeQuery groupByConnectionId() Group by the connection_id column
+ * @method     P2POwnNodeQuery groupByIsEnabled() Group by the is_enabled column
  *
- * @method     OwnNodeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     OwnNodeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     OwnNodeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     P2POwnNodeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     P2POwnNodeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     P2POwnNodeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     OwnNodeQuery leftJoinSchema($relationAlias = null) Adds a LEFT JOIN clause to the query using the Schema relation
- * @method     OwnNodeQuery rightJoinSchema($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Schema relation
- * @method     OwnNodeQuery innerJoinSchema($relationAlias = null) Adds a INNER JOIN clause to the query using the Schema relation
+ * @method     P2POwnNodeQuery leftJoinP2PSchema($relationAlias = null) Adds a LEFT JOIN clause to the query using the P2PSchema relation
+ * @method     P2POwnNodeQuery rightJoinP2PSchema($relationAlias = null) Adds a RIGHT JOIN clause to the query using the P2PSchema relation
+ * @method     P2POwnNodeQuery innerJoinP2PSchema($relationAlias = null) Adds a INNER JOIN clause to the query using the P2PSchema relation
  *
- * @method     OwnNodeQuery leftJoinConnection($relationAlias = null) Adds a LEFT JOIN clause to the query using the Connection relation
- * @method     OwnNodeQuery rightJoinConnection($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Connection relation
- * @method     OwnNodeQuery innerJoinConnection($relationAlias = null) Adds a INNER JOIN clause to the query using the Connection relation
+ * @method     P2POwnNodeQuery leftJoinP2PConnection($relationAlias = null) Adds a LEFT JOIN clause to the query using the P2PConnection relation
+ * @method     P2POwnNodeQuery rightJoinP2PConnection($relationAlias = null) Adds a RIGHT JOIN clause to the query using the P2PConnection relation
+ * @method     P2POwnNodeQuery innerJoinP2PConnection($relationAlias = null) Adds a INNER JOIN clause to the query using the P2PConnection relation
  *
- * @method     OwnNode findOne(PropelPDO $con = null) Return the first OwnNode matching the query
- * @method     OwnNode findOneOrCreate(PropelPDO $con = null) Return the first OwnNode matching the query, or a new OwnNode object populated from the query conditions when no match is found
+ * @method     P2POwnNode findOne(PropelPDO $con = null) Return the first P2POwnNode matching the query
+ * @method     P2POwnNode findOneOrCreate(PropelPDO $con = null) Return the first P2POwnNode matching the query, or a new P2POwnNode object populated from the query conditions when no match is found
  *
- * @method     OwnNode findOneById(int $id) Return the first OwnNode filtered by the id column
- * @method     OwnNode findOneBySchemaId(int $schema_id) Return the first OwnNode filtered by the schema_id column
- * @method     OwnNode findOneByShortName(string $short_name) Return the first OwnNode filtered by the short_name column
- * @method     OwnNode findOneByConnectionId(int $connection_id) Return the first OwnNode filtered by the connection_id column
- * @method     OwnNode findOneByIsEnabled(boolean $is_enabled) Return the first OwnNode filtered by the is_enabled column
+ * @method     P2POwnNode findOneById(int $id) Return the first P2POwnNode filtered by the id column
+ * @method     P2POwnNode findOneBySchemaId(int $schema_id) Return the first P2POwnNode filtered by the schema_id column
+ * @method     P2POwnNode findOneByShortName(string $short_name) Return the first P2POwnNode filtered by the short_name column
+ * @method     P2POwnNode findOneByConnectionId(int $connection_id) Return the first P2POwnNode filtered by the connection_id column
+ * @method     P2POwnNode findOneByIsEnabled(boolean $is_enabled) Return the first P2POwnNode filtered by the is_enabled column
  *
- * @method     array findById(int $id) Return OwnNode objects filtered by the id column
- * @method     array findBySchemaId(int $schema_id) Return OwnNode objects filtered by the schema_id column
- * @method     array findByShortName(string $short_name) Return OwnNode objects filtered by the short_name column
- * @method     array findByConnectionId(int $connection_id) Return OwnNode objects filtered by the connection_id column
- * @method     array findByIsEnabled(boolean $is_enabled) Return OwnNode objects filtered by the is_enabled column
+ * @method     array findById(int $id) Return P2POwnNode objects filtered by the id column
+ * @method     array findBySchemaId(int $schema_id) Return P2POwnNode objects filtered by the schema_id column
+ * @method     array findByShortName(string $short_name) Return P2POwnNode objects filtered by the short_name column
+ * @method     array findByConnectionId(int $connection_id) Return P2POwnNode objects filtered by the connection_id column
+ * @method     array findByIsEnabled(boolean $is_enabled) Return P2POwnNode objects filtered by the is_enabled column
  *
  * @package    propel.generator.system.om
  */
-abstract class BaseOwnNodeQuery extends ModelCriteria
+abstract class BaseP2POwnNodeQuery extends ModelCriteria
 {
 
 	/**
-	 * Initializes internal state of BaseOwnNodeQuery object.
+	 * Initializes internal state of BaseP2POwnNodeQuery object.
 	 *
 	 * @param     string $dbName The dabase name
 	 * @param     string $modelName The phpName of a model, e.g. 'Book'
 	 * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
 	 */
-	public function __construct($dbName = 'default', $modelName = 'P2PT/System\\OwnNode', $modelAlias = null)
+	public function __construct($dbName = 'default', $modelName = 'P2POwnNode', $modelAlias = null)
 	{
 		parent::__construct($dbName, $modelName, $modelAlias);
 	}
 
 	/**
-	 * Returns a new OwnNodeQuery object.
+	 * Returns a new P2POwnNodeQuery object.
 	 *
 	 * @param     string $modelAlias The alias of a model in the query
 	 * @param     Criteria $criteria Optional Criteria to build the query from
 	 *
-	 * @return    OwnNodeQuery
+	 * @return    P2POwnNodeQuery
 	 */
 	public static function create($modelAlias = null, $criteria = null)
 	{
-		if ($criteria instanceof OwnNodeQuery) {
+		if ($criteria instanceof P2POwnNodeQuery) {
 			return $criteria;
 		}
-		$query = new OwnNodeQuery();
+		$query = new P2POwnNodeQuery();
 		if (null !== $modelAlias) {
 			$query->setModelAlias($modelAlias);
 		}
@@ -106,11 +94,11 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 * @param     mixed $key Primary key to use for the query
 	 * @param     PropelPDO $con an optional connection object
 	 *
-	 * @return    OwnNode|array|mixed the result, formatted by the current formatter
+	 * @return    P2POwnNode|array|mixed the result, formatted by the current formatter
 	 */
 	public function findPk($key, $con = null)
 	{
-		if ((null !== ($obj = OwnNodePeer::getInstanceFromPool((string) $key))) && $this->getFormatter()->isObjectFormatter()) {
+		if ((null !== ($obj = P2POwnNodePeer::getInstanceFromPool((string) $key))) && $this->getFormatter()->isObjectFormatter()) {
 			// the object is alredy in the instance pool
 			return $obj;
 		} else {
@@ -146,11 +134,11 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 *
 	 * @param     mixed $key Primary key to use for the query
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
 	public function filterByPrimaryKey($key)
 	{
-		return $this->addUsingAlias(OwnNodePeer::ID, $key, Criteria::EQUAL);
+		return $this->addUsingAlias(P2POwnNodePeer::ID, $key, Criteria::EQUAL);
 	}
 
 	/**
@@ -158,11 +146,11 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 *
 	 * @param     array $keys The list of primary key to use for the query
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
 	public function filterByPrimaryKeys($keys)
 	{
-		return $this->addUsingAlias(OwnNodePeer::ID, $keys, Criteria::IN);
+		return $this->addUsingAlias(P2POwnNodePeer::ID, $keys, Criteria::IN);
 	}
 
 	/**
@@ -181,14 +169,14 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
 	public function filterById($id = null, $comparison = null)
 	{
 		if (is_array($id) && null === $comparison) {
 			$comparison = Criteria::IN;
 		}
-		return $this->addUsingAlias(OwnNodePeer::ID, $id, $comparison);
+		return $this->addUsingAlias(P2POwnNodePeer::ID, $id, $comparison);
 	}
 
 	/**
@@ -201,7 +189,7 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 * $query->filterBySchemaId(array('min' => 12)); // WHERE schema_id > 12
 	 * </code>
 	 *
-	 * @see       filterBySchema()
+	 * @see       filterByP2PSchema()
 	 *
 	 * @param     mixed $schemaId The value to use as filter.
 	 *              Use scalar values for equality.
@@ -209,18 +197,18 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
 	public function filterBySchemaId($schemaId = null, $comparison = null)
 	{
 		if (is_array($schemaId)) {
 			$useMinMax = false;
 			if (isset($schemaId['min'])) {
-				$this->addUsingAlias(OwnNodePeer::SCHEMA_ID, $schemaId['min'], Criteria::GREATER_EQUAL);
+				$this->addUsingAlias(P2POwnNodePeer::SCHEMA_ID, $schemaId['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
 			if (isset($schemaId['max'])) {
-				$this->addUsingAlias(OwnNodePeer::SCHEMA_ID, $schemaId['max'], Criteria::LESS_EQUAL);
+				$this->addUsingAlias(P2POwnNodePeer::SCHEMA_ID, $schemaId['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -230,7 +218,7 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(OwnNodePeer::SCHEMA_ID, $schemaId, $comparison);
+		return $this->addUsingAlias(P2POwnNodePeer::SCHEMA_ID, $schemaId, $comparison);
 	}
 
 	/**
@@ -246,7 +234,7 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
 	public function filterByShortName($shortName = null, $comparison = null)
 	{
@@ -258,7 +246,7 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(OwnNodePeer::SHORT_NAME, $shortName, $comparison);
+		return $this->addUsingAlias(P2POwnNodePeer::SHORT_NAME, $shortName, $comparison);
 	}
 
 	/**
@@ -271,7 +259,7 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 * $query->filterByConnectionId(array('min' => 12)); // WHERE connection_id > 12
 	 * </code>
 	 *
-	 * @see       filterByConnection()
+	 * @see       filterByP2PConnection()
 	 *
 	 * @param     mixed $connectionId The value to use as filter.
 	 *              Use scalar values for equality.
@@ -279,18 +267,18 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
 	public function filterByConnectionId($connectionId = null, $comparison = null)
 	{
 		if (is_array($connectionId)) {
 			$useMinMax = false;
 			if (isset($connectionId['min'])) {
-				$this->addUsingAlias(OwnNodePeer::CONNECTION_ID, $connectionId['min'], Criteria::GREATER_EQUAL);
+				$this->addUsingAlias(P2POwnNodePeer::CONNECTION_ID, $connectionId['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
 			if (isset($connectionId['max'])) {
-				$this->addUsingAlias(OwnNodePeer::CONNECTION_ID, $connectionId['max'], Criteria::LESS_EQUAL);
+				$this->addUsingAlias(P2POwnNodePeer::CONNECTION_ID, $connectionId['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -300,7 +288,7 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(OwnNodePeer::CONNECTION_ID, $connectionId, $comparison);
+		return $this->addUsingAlias(P2POwnNodePeer::CONNECTION_ID, $connectionId, $comparison);
 	}
 
 	/**
@@ -319,52 +307,52 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
 	public function filterByIsEnabled($isEnabled = null, $comparison = null)
 	{
 		if (is_string($isEnabled)) {
 			$is_enabled = in_array(strtolower($isEnabled), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
 		}
-		return $this->addUsingAlias(OwnNodePeer::IS_ENABLED, $isEnabled, $comparison);
+		return $this->addUsingAlias(P2POwnNodePeer::IS_ENABLED, $isEnabled, $comparison);
 	}
 
 	/**
-	 * Filter the query by a related Schema object
+	 * Filter the query by a related P2PSchema object
 	 *
-	 * @param     Schema|PropelCollection $schema The related object(s) to use as filter
+	 * @param     P2PSchema|PropelCollection $p2PSchema The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
-	public function filterBySchema($schema, $comparison = null)
+	public function filterByP2PSchema($p2PSchema, $comparison = null)
 	{
-		if ($schema instanceof Schema) {
+		if ($p2PSchema instanceof P2PSchema) {
 			return $this
-				->addUsingAlias(OwnNodePeer::SCHEMA_ID, $schema->getId(), $comparison);
-		} elseif ($schema instanceof PropelCollection) {
+				->addUsingAlias(P2POwnNodePeer::SCHEMA_ID, $p2PSchema->getId(), $comparison);
+		} elseif ($p2PSchema instanceof PropelCollection) {
 			if (null === $comparison) {
 				$comparison = Criteria::IN;
 			}
 			return $this
-				->addUsingAlias(OwnNodePeer::SCHEMA_ID, $schema->toKeyValue('PrimaryKey', 'Id'), $comparison);
+				->addUsingAlias(P2POwnNodePeer::SCHEMA_ID, $p2PSchema->toKeyValue('PrimaryKey', 'Id'), $comparison);
 		} else {
-			throw new PropelException('filterBySchema() only accepts arguments of type Schema or PropelCollection');
+			throw new PropelException('filterByP2PSchema() only accepts arguments of type P2PSchema or PropelCollection');
 		}
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the Schema relation
+	 * Adds a JOIN clause to the query using the P2PSchema relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
-	public function joinSchema($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinP2PSchema($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('Schema');
+		$relationMap = $tableMap->getRelation('P2PSchema');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -379,14 +367,14 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'Schema');
+			$this->addJoinObject($join, 'P2PSchema');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the Schema relation Schema object
+	 * Use the P2PSchema relation P2PSchema object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -394,51 +382,51 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 *                                   to be used as main alias in the secondary query
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    \P2PT/System\SchemaQuery A secondary query class using the current class as primary query
+	 * @return    P2PSchemaQuery A secondary query class using the current class as primary query
 	 */
-	public function useSchemaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useP2PSchemaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		return $this
-			->joinSchema($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'Schema', '\P2PT/System\SchemaQuery');
+			->joinP2PSchema($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'P2PSchema', 'P2PSchemaQuery');
 	}
 
 	/**
-	 * Filter the query by a related Connection object
+	 * Filter the query by a related P2PConnection object
 	 *
-	 * @param     Connection|PropelCollection $connection The related object(s) to use as filter
+	 * @param     P2PConnection|PropelCollection $p2PConnection The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
-	public function filterByConnection($connection, $comparison = null)
+	public function filterByP2PConnection($p2PConnection, $comparison = null)
 	{
-		if ($connection instanceof Connection) {
+		if ($p2PConnection instanceof P2PConnection) {
 			return $this
-				->addUsingAlias(OwnNodePeer::CONNECTION_ID, $connection->getId(), $comparison);
-		} elseif ($connection instanceof PropelCollection) {
+				->addUsingAlias(P2POwnNodePeer::CONNECTION_ID, $p2PConnection->getId(), $comparison);
+		} elseif ($p2PConnection instanceof PropelCollection) {
 			if (null === $comparison) {
 				$comparison = Criteria::IN;
 			}
 			return $this
-				->addUsingAlias(OwnNodePeer::CONNECTION_ID, $connection->toKeyValue('PrimaryKey', 'Id'), $comparison);
+				->addUsingAlias(P2POwnNodePeer::CONNECTION_ID, $p2PConnection->toKeyValue('PrimaryKey', 'Id'), $comparison);
 		} else {
-			throw new PropelException('filterByConnection() only accepts arguments of type Connection or PropelCollection');
+			throw new PropelException('filterByP2PConnection() only accepts arguments of type P2PConnection or PropelCollection');
 		}
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the Connection relation
+	 * Adds a JOIN clause to the query using the P2PConnection relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
-	public function joinConnection($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinP2PConnection($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('Connection');
+		$relationMap = $tableMap->getRelation('P2PConnection');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -453,14 +441,14 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'Connection');
+			$this->addJoinObject($join, 'P2PConnection');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the Connection relation Connection object
+	 * Use the P2PConnection relation P2PConnection object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -468,29 +456,29 @@ abstract class BaseOwnNodeQuery extends ModelCriteria
 	 *                                   to be used as main alias in the secondary query
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    \P2PT/System\ConnectionQuery A secondary query class using the current class as primary query
+	 * @return    P2PConnectionQuery A secondary query class using the current class as primary query
 	 */
-	public function useConnectionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useP2PConnectionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		return $this
-			->joinConnection($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'Connection', '\P2PT/System\ConnectionQuery');
+			->joinP2PConnection($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'P2PConnection', 'P2PConnectionQuery');
 	}
 
 	/**
 	 * Exclude object from result
 	 *
-	 * @param     OwnNode $ownNode Object to remove from the list of results
+	 * @param     P2POwnNode $p2POwnNode Object to remove from the list of results
 	 *
-	 * @return    OwnNodeQuery The current query, for fluid interface
+	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
-	public function prune($ownNode = null)
+	public function prune($p2POwnNode = null)
 	{
-		if ($ownNode) {
-			$this->addUsingAlias(OwnNodePeer::ID, $ownNode->getId(), Criteria::NOT_EQUAL);
+		if ($p2POwnNode) {
+			$this->addUsingAlias(P2POwnNodePeer::ID, $p2POwnNode->getId(), Criteria::NOT_EQUAL);
 	  }
 	  
 		return $this;
 	}
 
-} // BaseOwnNodeQuery
+} // BaseP2POwnNodeQuery

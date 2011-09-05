@@ -1,11 +1,11 @@
 
 -----------------------------------------------------------------------
--- connection
+-- p2p_connection
 -----------------------------------------------------------------------
 
-DROP TABLE "connection" CASCADE;
+DROP TABLE "p2p_connection" CASCADE;
 
-CREATE TABLE "connection"
+CREATE TABLE "p2p_connection"
 (
 	"id" serial NOT NULL,
 	"host" VARCHAR(100) NOT NULL,
@@ -15,12 +15,12 @@ CREATE TABLE "connection"
 );
 
 -----------------------------------------------------------------------
--- own_node
+-- p2p_own_node
 -----------------------------------------------------------------------
 
-DROP TABLE "own_node" CASCADE;
+DROP TABLE "p2p_own_node" CASCADE;
 
-CREATE TABLE "own_node"
+CREATE TABLE "p2p_own_node"
 (
 	"id" serial NOT NULL,
 	"schema_id" INTEGER NOT NULL,
@@ -28,16 +28,16 @@ CREATE TABLE "own_node"
 	"connection_id" INTEGER NOT NULL,
 	"is_enabled" BOOLEAN DEFAULT 'f' NOT NULL,
 	PRIMARY KEY ("id"),
-	CONSTRAINT "own_node_U_1" UNIQUE ("short_name")
+	CONSTRAINT "p2p_own_node_U_1" UNIQUE ("short_name")
 );
 
 -----------------------------------------------------------------------
--- schema
+-- p2p_schema
 -----------------------------------------------------------------------
 
-DROP TABLE "schema" CASCADE;
+DROP TABLE "p2p_schema" CASCADE;
 
-CREATE TABLE "schema"
+CREATE TABLE "p2p_schema"
 (
 	"id" serial NOT NULL,
 	"xml" TEXT NOT NULL,
@@ -55,12 +55,12 @@ CREATE TABLE "schema"
 );
 
 -----------------------------------------------------------------------
--- schema_table
+-- p2p_schema_table
 -----------------------------------------------------------------------
 
-DROP TABLE "schema_table" CASCADE;
+DROP TABLE "p2p_schema_table" CASCADE;
 
-CREATE TABLE "schema_table"
+CREATE TABLE "p2p_schema_table"
 (
 	"id" serial NOT NULL,
 	"schema_id" INTEGER NOT NULL,
@@ -69,14 +69,14 @@ CREATE TABLE "schema_table"
 	PRIMARY KEY ("id")
 );
 
-ALTER TABLE "own_node" ADD CONSTRAINT "own_node_FK_1"
+ALTER TABLE "p2p_own_node" ADD CONSTRAINT "p2p_own_node_FK_1"
 	FOREIGN KEY ("schema_id")
-	REFERENCES "schema" ("id");
+	REFERENCES "p2p_schema" ("id");
 
-ALTER TABLE "own_node" ADD CONSTRAINT "own_node_FK_2"
+ALTER TABLE "p2p_own_node" ADD CONSTRAINT "p2p_own_node_FK_2"
 	FOREIGN KEY ("connection_id")
-	REFERENCES "connection" ("id");
+	REFERENCES "p2p_connection" ("id");
 
-ALTER TABLE "schema_table" ADD CONSTRAINT "schema_table_FK_1"
+ALTER TABLE "p2p_schema_table" ADD CONSTRAINT "p2p_schema_table_FK_1"
 	FOREIGN KEY ("schema_id")
-	REFERENCES "schema" ("id");
+	REFERENCES "p2p_schema" ("id");

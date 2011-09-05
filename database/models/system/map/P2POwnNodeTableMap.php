@@ -1,13 +1,9 @@
 <?php
 
-namespace P2PT/System\map;
-
-use \RelationMap;
-use \TableMap;
 
 
 /**
- * This class defines the structure of the 'own_node' table.
+ * This class defines the structure of the 'p2p_own_node' table.
  *
  *
  *
@@ -18,13 +14,13 @@ use \TableMap;
  *
  * @package    propel.generator.system.map
  */
-class OwnNodeTableMap extends TableMap
+class P2POwnNodeTableMap extends TableMap
 {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'system.map.OwnNodeTableMap';
+	const CLASS_NAME = 'system.map.P2POwnNodeTableMap';
 
 	/**
 	 * Initialize the table attributes, columns and validators
@@ -36,17 +32,17 @@ class OwnNodeTableMap extends TableMap
 	public function initialize()
 	{
 		// attributes
-		$this->setName('own_node');
-		$this->setPhpName('OwnNode');
-		$this->setClassname('P2PT/System\\OwnNode');
+		$this->setName('p2p_own_node');
+		$this->setPhpName('P2POwnNode');
+		$this->setClassname('P2POwnNode');
 		$this->setPackage('system');
 		$this->setUseIdGenerator(true);
-		$this->setPrimaryKeyMethodInfo('own_node_id_seq');
+		$this->setPrimaryKeyMethodInfo('p2p_own_node_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addForeignKey('SCHEMA_ID', 'SchemaId', 'INTEGER', 'schema', 'ID', true, null, null);
+		$this->addForeignKey('SCHEMA_ID', 'SchemaId', 'INTEGER', 'p2p_schema', 'ID', true, null, null);
 		$this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 30, null);
-		$this->addForeignKey('CONNECTION_ID', 'ConnectionId', 'INTEGER', 'connection', 'ID', true, null, null);
+		$this->addForeignKey('CONNECTION_ID', 'ConnectionId', 'INTEGER', 'p2p_connection', 'ID', true, null, null);
 		$this->addColumn('IS_ENABLED', 'IsEnabled', 'BOOLEAN', true, null, false);
 		// validators
 	} // initialize()
@@ -56,8 +52,8 @@ class OwnNodeTableMap extends TableMap
 	 */
 	public function buildRelations()
 	{
-		$this->addRelation('Schema', 'P2PT/System\\Schema', RelationMap::MANY_TO_ONE, array('schema_id' => 'id', ), null, null);
-		$this->addRelation('Connection', 'P2PT/System\\Connection', RelationMap::MANY_TO_ONE, array('connection_id' => 'id', ), null, null);
+		$this->addRelation('P2PSchema', 'P2PSchema', RelationMap::MANY_TO_ONE, array('schema_id' => 'id', ), null, null);
+		$this->addRelation('P2PConnection', 'P2PConnection', RelationMap::MANY_TO_ONE, array('connection_id' => 'id', ), null, null);
 	} // buildRelations()
 
-} // OwnNodeTableMap
+} // P2POwnNodeTableMap

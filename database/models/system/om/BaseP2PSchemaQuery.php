@@ -1,121 +1,109 @@
 <?php
 
-namespace P2PT/System\om;
-
-use \Criteria;
-use \ModelCriteria;
-use \ModelJoin;
-use \PropelCollection;
-use \PropelException;
-use \PropelPDO;
-use P2PT/System\OwnNode;
-use P2PT/System\SchemaPeer;
-use P2PT/System\SchemaQuery;
-use P2PT/System\SchemaTable;
 
 /**
- * Base class that represents a query for the 'schema' table.
+ * Base class that represents a query for the 'p2p_schema' table.
  *
  * 
  *
- * @method     SchemaQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     SchemaQuery orderByXml($order = Criteria::ASC) Order by the xml column
- * @method     SchemaQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method     SchemaQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method     SchemaQuery orderByAuthor($order = Criteria::ASC) Order by the author column
- * @method     SchemaQuery orderByContact($order = Criteria::ASC) Order by the contact column
- * @method     SchemaQuery orderByUrl($order = Criteria::ASC) Order by the url column
- * @method     SchemaQuery orderByDateRelease($order = Criteria::ASC) Order by the date_release column
- * @method     SchemaQuery orderBySchemaVersion($order = Criteria::ASC) Order by the schema_version column
- * @method     SchemaQuery orderBySoftwareVersion($order = Criteria::ASC) Order by the software_version column
- * @method     SchemaQuery orderByHistory($order = Criteria::ASC) Order by the history column
- * @method     SchemaQuery orderByInstalledAt($order = Criteria::ASC) Order by the installed_at column
+ * @method     P2PSchemaQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     P2PSchemaQuery orderByXml($order = Criteria::ASC) Order by the xml column
+ * @method     P2PSchemaQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     P2PSchemaQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     P2PSchemaQuery orderByAuthor($order = Criteria::ASC) Order by the author column
+ * @method     P2PSchemaQuery orderByContact($order = Criteria::ASC) Order by the contact column
+ * @method     P2PSchemaQuery orderByUrl($order = Criteria::ASC) Order by the url column
+ * @method     P2PSchemaQuery orderByDateRelease($order = Criteria::ASC) Order by the date_release column
+ * @method     P2PSchemaQuery orderBySchemaVersion($order = Criteria::ASC) Order by the schema_version column
+ * @method     P2PSchemaQuery orderBySoftwareVersion($order = Criteria::ASC) Order by the software_version column
+ * @method     P2PSchemaQuery orderByHistory($order = Criteria::ASC) Order by the history column
+ * @method     P2PSchemaQuery orderByInstalledAt($order = Criteria::ASC) Order by the installed_at column
  *
- * @method     SchemaQuery groupById() Group by the id column
- * @method     SchemaQuery groupByXml() Group by the xml column
- * @method     SchemaQuery groupByName() Group by the name column
- * @method     SchemaQuery groupByDescription() Group by the description column
- * @method     SchemaQuery groupByAuthor() Group by the author column
- * @method     SchemaQuery groupByContact() Group by the contact column
- * @method     SchemaQuery groupByUrl() Group by the url column
- * @method     SchemaQuery groupByDateRelease() Group by the date_release column
- * @method     SchemaQuery groupBySchemaVersion() Group by the schema_version column
- * @method     SchemaQuery groupBySoftwareVersion() Group by the software_version column
- * @method     SchemaQuery groupByHistory() Group by the history column
- * @method     SchemaQuery groupByInstalledAt() Group by the installed_at column
+ * @method     P2PSchemaQuery groupById() Group by the id column
+ * @method     P2PSchemaQuery groupByXml() Group by the xml column
+ * @method     P2PSchemaQuery groupByName() Group by the name column
+ * @method     P2PSchemaQuery groupByDescription() Group by the description column
+ * @method     P2PSchemaQuery groupByAuthor() Group by the author column
+ * @method     P2PSchemaQuery groupByContact() Group by the contact column
+ * @method     P2PSchemaQuery groupByUrl() Group by the url column
+ * @method     P2PSchemaQuery groupByDateRelease() Group by the date_release column
+ * @method     P2PSchemaQuery groupBySchemaVersion() Group by the schema_version column
+ * @method     P2PSchemaQuery groupBySoftwareVersion() Group by the software_version column
+ * @method     P2PSchemaQuery groupByHistory() Group by the history column
+ * @method     P2PSchemaQuery groupByInstalledAt() Group by the installed_at column
  *
- * @method     SchemaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     SchemaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     SchemaQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     P2PSchemaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     P2PSchemaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     P2PSchemaQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     SchemaQuery leftJoinOwnNode($relationAlias = null) Adds a LEFT JOIN clause to the query using the OwnNode relation
- * @method     SchemaQuery rightJoinOwnNode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OwnNode relation
- * @method     SchemaQuery innerJoinOwnNode($relationAlias = null) Adds a INNER JOIN clause to the query using the OwnNode relation
+ * @method     P2PSchemaQuery leftJoinP2POwnNode($relationAlias = null) Adds a LEFT JOIN clause to the query using the P2POwnNode relation
+ * @method     P2PSchemaQuery rightJoinP2POwnNode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the P2POwnNode relation
+ * @method     P2PSchemaQuery innerJoinP2POwnNode($relationAlias = null) Adds a INNER JOIN clause to the query using the P2POwnNode relation
  *
- * @method     SchemaQuery leftJoinSchemaTable($relationAlias = null) Adds a LEFT JOIN clause to the query using the SchemaTable relation
- * @method     SchemaQuery rightJoinSchemaTable($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SchemaTable relation
- * @method     SchemaQuery innerJoinSchemaTable($relationAlias = null) Adds a INNER JOIN clause to the query using the SchemaTable relation
+ * @method     P2PSchemaQuery leftJoinP2PSchemaTable($relationAlias = null) Adds a LEFT JOIN clause to the query using the P2PSchemaTable relation
+ * @method     P2PSchemaQuery rightJoinP2PSchemaTable($relationAlias = null) Adds a RIGHT JOIN clause to the query using the P2PSchemaTable relation
+ * @method     P2PSchemaQuery innerJoinP2PSchemaTable($relationAlias = null) Adds a INNER JOIN clause to the query using the P2PSchemaTable relation
  *
- * @method     Schema findOne(PropelPDO $con = null) Return the first Schema matching the query
- * @method     Schema findOneOrCreate(PropelPDO $con = null) Return the first Schema matching the query, or a new Schema object populated from the query conditions when no match is found
+ * @method     P2PSchema findOne(PropelPDO $con = null) Return the first P2PSchema matching the query
+ * @method     P2PSchema findOneOrCreate(PropelPDO $con = null) Return the first P2PSchema matching the query, or a new P2PSchema object populated from the query conditions when no match is found
  *
- * @method     Schema findOneById(int $id) Return the first Schema filtered by the id column
- * @method     Schema findOneByXml(string $xml) Return the first Schema filtered by the xml column
- * @method     Schema findOneByName(string $name) Return the first Schema filtered by the name column
- * @method     Schema findOneByDescription(string $description) Return the first Schema filtered by the description column
- * @method     Schema findOneByAuthor(string $author) Return the first Schema filtered by the author column
- * @method     Schema findOneByContact(string $contact) Return the first Schema filtered by the contact column
- * @method     Schema findOneByUrl(string $url) Return the first Schema filtered by the url column
- * @method     Schema findOneByDateRelease(string $date_release) Return the first Schema filtered by the date_release column
- * @method     Schema findOneBySchemaVersion(double $schema_version) Return the first Schema filtered by the schema_version column
- * @method     Schema findOneBySoftwareVersion(double $software_version) Return the first Schema filtered by the software_version column
- * @method     Schema findOneByHistory(string $history) Return the first Schema filtered by the history column
- * @method     Schema findOneByInstalledAt(string $installed_at) Return the first Schema filtered by the installed_at column
+ * @method     P2PSchema findOneById(int $id) Return the first P2PSchema filtered by the id column
+ * @method     P2PSchema findOneByXml(string $xml) Return the first P2PSchema filtered by the xml column
+ * @method     P2PSchema findOneByName(string $name) Return the first P2PSchema filtered by the name column
+ * @method     P2PSchema findOneByDescription(string $description) Return the first P2PSchema filtered by the description column
+ * @method     P2PSchema findOneByAuthor(string $author) Return the first P2PSchema filtered by the author column
+ * @method     P2PSchema findOneByContact(string $contact) Return the first P2PSchema filtered by the contact column
+ * @method     P2PSchema findOneByUrl(string $url) Return the first P2PSchema filtered by the url column
+ * @method     P2PSchema findOneByDateRelease(string $date_release) Return the first P2PSchema filtered by the date_release column
+ * @method     P2PSchema findOneBySchemaVersion(double $schema_version) Return the first P2PSchema filtered by the schema_version column
+ * @method     P2PSchema findOneBySoftwareVersion(double $software_version) Return the first P2PSchema filtered by the software_version column
+ * @method     P2PSchema findOneByHistory(string $history) Return the first P2PSchema filtered by the history column
+ * @method     P2PSchema findOneByInstalledAt(string $installed_at) Return the first P2PSchema filtered by the installed_at column
  *
- * @method     array findById(int $id) Return Schema objects filtered by the id column
- * @method     array findByXml(string $xml) Return Schema objects filtered by the xml column
- * @method     array findByName(string $name) Return Schema objects filtered by the name column
- * @method     array findByDescription(string $description) Return Schema objects filtered by the description column
- * @method     array findByAuthor(string $author) Return Schema objects filtered by the author column
- * @method     array findByContact(string $contact) Return Schema objects filtered by the contact column
- * @method     array findByUrl(string $url) Return Schema objects filtered by the url column
- * @method     array findByDateRelease(string $date_release) Return Schema objects filtered by the date_release column
- * @method     array findBySchemaVersion(double $schema_version) Return Schema objects filtered by the schema_version column
- * @method     array findBySoftwareVersion(double $software_version) Return Schema objects filtered by the software_version column
- * @method     array findByHistory(string $history) Return Schema objects filtered by the history column
- * @method     array findByInstalledAt(string $installed_at) Return Schema objects filtered by the installed_at column
+ * @method     array findById(int $id) Return P2PSchema objects filtered by the id column
+ * @method     array findByXml(string $xml) Return P2PSchema objects filtered by the xml column
+ * @method     array findByName(string $name) Return P2PSchema objects filtered by the name column
+ * @method     array findByDescription(string $description) Return P2PSchema objects filtered by the description column
+ * @method     array findByAuthor(string $author) Return P2PSchema objects filtered by the author column
+ * @method     array findByContact(string $contact) Return P2PSchema objects filtered by the contact column
+ * @method     array findByUrl(string $url) Return P2PSchema objects filtered by the url column
+ * @method     array findByDateRelease(string $date_release) Return P2PSchema objects filtered by the date_release column
+ * @method     array findBySchemaVersion(double $schema_version) Return P2PSchema objects filtered by the schema_version column
+ * @method     array findBySoftwareVersion(double $software_version) Return P2PSchema objects filtered by the software_version column
+ * @method     array findByHistory(string $history) Return P2PSchema objects filtered by the history column
+ * @method     array findByInstalledAt(string $installed_at) Return P2PSchema objects filtered by the installed_at column
  *
  * @package    propel.generator.system.om
  */
-abstract class BaseSchemaQuery extends ModelCriteria
+abstract class BaseP2PSchemaQuery extends ModelCriteria
 {
 
 	/**
-	 * Initializes internal state of BaseSchemaQuery object.
+	 * Initializes internal state of BaseP2PSchemaQuery object.
 	 *
 	 * @param     string $dbName The dabase name
 	 * @param     string $modelName The phpName of a model, e.g. 'Book'
 	 * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
 	 */
-	public function __construct($dbName = 'default', $modelName = 'P2PT/System\\Schema', $modelAlias = null)
+	public function __construct($dbName = 'default', $modelName = 'P2PSchema', $modelAlias = null)
 	{
 		parent::__construct($dbName, $modelName, $modelAlias);
 	}
 
 	/**
-	 * Returns a new SchemaQuery object.
+	 * Returns a new P2PSchemaQuery object.
 	 *
 	 * @param     string $modelAlias The alias of a model in the query
 	 * @param     Criteria $criteria Optional Criteria to build the query from
 	 *
-	 * @return    SchemaQuery
+	 * @return    P2PSchemaQuery
 	 */
 	public static function create($modelAlias = null, $criteria = null)
 	{
-		if ($criteria instanceof SchemaQuery) {
+		if ($criteria instanceof P2PSchemaQuery) {
 			return $criteria;
 		}
-		$query = new SchemaQuery();
+		$query = new P2PSchemaQuery();
 		if (null !== $modelAlias) {
 			$query->setModelAlias($modelAlias);
 		}
@@ -134,11 +122,11 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 * @param     mixed $key Primary key to use for the query
 	 * @param     PropelPDO $con an optional connection object
 	 *
-	 * @return    Schema|array|mixed the result, formatted by the current formatter
+	 * @return    P2PSchema|array|mixed the result, formatted by the current formatter
 	 */
 	public function findPk($key, $con = null)
 	{
-		if ((null !== ($obj = SchemaPeer::getInstanceFromPool((string) $key))) && $this->getFormatter()->isObjectFormatter()) {
+		if ((null !== ($obj = P2PSchemaPeer::getInstanceFromPool((string) $key))) && $this->getFormatter()->isObjectFormatter()) {
 			// the object is alredy in the instance pool
 			return $obj;
 		} else {
@@ -174,11 +162,11 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *
 	 * @param     mixed $key Primary key to use for the query
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByPrimaryKey($key)
 	{
-		return $this->addUsingAlias(SchemaPeer::ID, $key, Criteria::EQUAL);
+		return $this->addUsingAlias(P2PSchemaPeer::ID, $key, Criteria::EQUAL);
 	}
 
 	/**
@@ -186,11 +174,11 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *
 	 * @param     array $keys The list of primary key to use for the query
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByPrimaryKeys($keys)
 	{
-		return $this->addUsingAlias(SchemaPeer::ID, $keys, Criteria::IN);
+		return $this->addUsingAlias(P2PSchemaPeer::ID, $keys, Criteria::IN);
 	}
 
 	/**
@@ -209,14 +197,14 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterById($id = null, $comparison = null)
 	{
 		if (is_array($id) && null === $comparison) {
 			$comparison = Criteria::IN;
 		}
-		return $this->addUsingAlias(SchemaPeer::ID, $id, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::ID, $id, $comparison);
 	}
 
 	/**
@@ -232,7 +220,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByXml($xml = null, $comparison = null)
 	{
@@ -244,7 +232,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::XML, $xml, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::XML, $xml, $comparison);
 	}
 
 	/**
@@ -260,7 +248,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByName($name = null, $comparison = null)
 	{
@@ -272,7 +260,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::NAME, $name, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::NAME, $name, $comparison);
 	}
 
 	/**
@@ -288,7 +276,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByDescription($description = null, $comparison = null)
 	{
@@ -300,7 +288,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::DESCRIPTION, $description, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::DESCRIPTION, $description, $comparison);
 	}
 
 	/**
@@ -316,7 +304,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByAuthor($author = null, $comparison = null)
 	{
@@ -328,7 +316,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::AUTHOR, $author, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::AUTHOR, $author, $comparison);
 	}
 
 	/**
@@ -344,7 +332,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByContact($contact = null, $comparison = null)
 	{
@@ -356,7 +344,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::CONTACT, $contact, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::CONTACT, $contact, $comparison);
 	}
 
 	/**
@@ -372,7 +360,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByUrl($url = null, $comparison = null)
 	{
@@ -384,7 +372,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::URL, $url, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::URL, $url, $comparison);
 	}
 
 	/**
@@ -405,18 +393,18 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByDateRelease($dateRelease = null, $comparison = null)
 	{
 		if (is_array($dateRelease)) {
 			$useMinMax = false;
 			if (isset($dateRelease['min'])) {
-				$this->addUsingAlias(SchemaPeer::DATE_RELEASE, $dateRelease['min'], Criteria::GREATER_EQUAL);
+				$this->addUsingAlias(P2PSchemaPeer::DATE_RELEASE, $dateRelease['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
 			if (isset($dateRelease['max'])) {
-				$this->addUsingAlias(SchemaPeer::DATE_RELEASE, $dateRelease['max'], Criteria::LESS_EQUAL);
+				$this->addUsingAlias(P2PSchemaPeer::DATE_RELEASE, $dateRelease['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -426,7 +414,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::DATE_RELEASE, $dateRelease, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::DATE_RELEASE, $dateRelease, $comparison);
 	}
 
 	/**
@@ -445,18 +433,18 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterBySchemaVersion($schemaVersion = null, $comparison = null)
 	{
 		if (is_array($schemaVersion)) {
 			$useMinMax = false;
 			if (isset($schemaVersion['min'])) {
-				$this->addUsingAlias(SchemaPeer::SCHEMA_VERSION, $schemaVersion['min'], Criteria::GREATER_EQUAL);
+				$this->addUsingAlias(P2PSchemaPeer::SCHEMA_VERSION, $schemaVersion['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
 			if (isset($schemaVersion['max'])) {
-				$this->addUsingAlias(SchemaPeer::SCHEMA_VERSION, $schemaVersion['max'], Criteria::LESS_EQUAL);
+				$this->addUsingAlias(P2PSchemaPeer::SCHEMA_VERSION, $schemaVersion['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -466,7 +454,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::SCHEMA_VERSION, $schemaVersion, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::SCHEMA_VERSION, $schemaVersion, $comparison);
 	}
 
 	/**
@@ -485,18 +473,18 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterBySoftwareVersion($softwareVersion = null, $comparison = null)
 	{
 		if (is_array($softwareVersion)) {
 			$useMinMax = false;
 			if (isset($softwareVersion['min'])) {
-				$this->addUsingAlias(SchemaPeer::SOFTWARE_VERSION, $softwareVersion['min'], Criteria::GREATER_EQUAL);
+				$this->addUsingAlias(P2PSchemaPeer::SOFTWARE_VERSION, $softwareVersion['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
 			if (isset($softwareVersion['max'])) {
-				$this->addUsingAlias(SchemaPeer::SOFTWARE_VERSION, $softwareVersion['max'], Criteria::LESS_EQUAL);
+				$this->addUsingAlias(P2PSchemaPeer::SOFTWARE_VERSION, $softwareVersion['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -506,7 +494,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::SOFTWARE_VERSION, $softwareVersion, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::SOFTWARE_VERSION, $softwareVersion, $comparison);
 	}
 
 	/**
@@ -522,7 +510,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByHistory($history = null, $comparison = null)
 	{
@@ -534,7 +522,7 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::HISTORY, $history, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::HISTORY, $history, $comparison);
 	}
 
 	/**
@@ -555,18 +543,18 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
 	public function filterByInstalledAt($installedAt = null, $comparison = null)
 	{
 		if (is_array($installedAt)) {
 			$useMinMax = false;
 			if (isset($installedAt['min'])) {
-				$this->addUsingAlias(SchemaPeer::INSTALLED_AT, $installedAt['min'], Criteria::GREATER_EQUAL);
+				$this->addUsingAlias(P2PSchemaPeer::INSTALLED_AT, $installedAt['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
 			if (isset($installedAt['max'])) {
-				$this->addUsingAlias(SchemaPeer::INSTALLED_AT, $installedAt['max'], Criteria::LESS_EQUAL);
+				$this->addUsingAlias(P2PSchemaPeer::INSTALLED_AT, $installedAt['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -576,44 +564,44 @@ abstract class BaseSchemaQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(SchemaPeer::INSTALLED_AT, $installedAt, $comparison);
+		return $this->addUsingAlias(P2PSchemaPeer::INSTALLED_AT, $installedAt, $comparison);
 	}
 
 	/**
-	 * Filter the query by a related OwnNode object
+	 * Filter the query by a related P2POwnNode object
 	 *
-	 * @param     OwnNode $ownNode  the related object to use as filter
+	 * @param     P2POwnNode $p2POwnNode  the related object to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
-	public function filterByOwnNode($ownNode, $comparison = null)
+	public function filterByP2POwnNode($p2POwnNode, $comparison = null)
 	{
-		if ($ownNode instanceof OwnNode) {
+		if ($p2POwnNode instanceof P2POwnNode) {
 			return $this
-				->addUsingAlias(SchemaPeer::ID, $ownNode->getSchemaId(), $comparison);
-		} elseif ($ownNode instanceof PropelCollection) {
+				->addUsingAlias(P2PSchemaPeer::ID, $p2POwnNode->getSchemaId(), $comparison);
+		} elseif ($p2POwnNode instanceof PropelCollection) {
 			return $this
-				->useOwnNodeQuery()
-					->filterByPrimaryKeys($ownNode->getPrimaryKeys())
+				->useP2POwnNodeQuery()
+					->filterByPrimaryKeys($p2POwnNode->getPrimaryKeys())
 				->endUse();
 		} else {
-			throw new PropelException('filterByOwnNode() only accepts arguments of type OwnNode or PropelCollection');
+			throw new PropelException('filterByP2POwnNode() only accepts arguments of type P2POwnNode or PropelCollection');
 		}
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the OwnNode relation
+	 * Adds a JOIN clause to the query using the P2POwnNode relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
-	public function joinOwnNode($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinP2POwnNode($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('OwnNode');
+		$relationMap = $tableMap->getRelation('P2POwnNode');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -628,14 +616,14 @@ abstract class BaseSchemaQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'OwnNode');
+			$this->addJoinObject($join, 'P2POwnNode');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the OwnNode relation OwnNode object
+	 * Use the P2POwnNode relation P2POwnNode object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -643,50 +631,50 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *                                   to be used as main alias in the secondary query
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    \P2PT/System\OwnNodeQuery A secondary query class using the current class as primary query
+	 * @return    P2POwnNodeQuery A secondary query class using the current class as primary query
 	 */
-	public function useOwnNodeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useP2POwnNodeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		return $this
-			->joinOwnNode($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'OwnNode', '\P2PT/System\OwnNodeQuery');
+			->joinP2POwnNode($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'P2POwnNode', 'P2POwnNodeQuery');
 	}
 
 	/**
-	 * Filter the query by a related SchemaTable object
+	 * Filter the query by a related P2PSchemaTable object
 	 *
-	 * @param     SchemaTable $schemaTable  the related object to use as filter
+	 * @param     P2PSchemaTable $p2PSchemaTable  the related object to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
-	public function filterBySchemaTable($schemaTable, $comparison = null)
+	public function filterByP2PSchemaTable($p2PSchemaTable, $comparison = null)
 	{
-		if ($schemaTable instanceof SchemaTable) {
+		if ($p2PSchemaTable instanceof P2PSchemaTable) {
 			return $this
-				->addUsingAlias(SchemaPeer::ID, $schemaTable->getSchemaId(), $comparison);
-		} elseif ($schemaTable instanceof PropelCollection) {
+				->addUsingAlias(P2PSchemaPeer::ID, $p2PSchemaTable->getSchemaId(), $comparison);
+		} elseif ($p2PSchemaTable instanceof PropelCollection) {
 			return $this
-				->useSchemaTableQuery()
-					->filterByPrimaryKeys($schemaTable->getPrimaryKeys())
+				->useP2PSchemaTableQuery()
+					->filterByPrimaryKeys($p2PSchemaTable->getPrimaryKeys())
 				->endUse();
 		} else {
-			throw new PropelException('filterBySchemaTable() only accepts arguments of type SchemaTable or PropelCollection');
+			throw new PropelException('filterByP2PSchemaTable() only accepts arguments of type P2PSchemaTable or PropelCollection');
 		}
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the SchemaTable relation
+	 * Adds a JOIN clause to the query using the P2PSchemaTable relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
-	public function joinSchemaTable($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinP2PSchemaTable($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('SchemaTable');
+		$relationMap = $tableMap->getRelation('P2PSchemaTable');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -701,14 +689,14 @@ abstract class BaseSchemaQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'SchemaTable');
+			$this->addJoinObject($join, 'P2PSchemaTable');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the SchemaTable relation SchemaTable object
+	 * Use the P2PSchemaTable relation P2PSchemaTable object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -716,29 +704,29 @@ abstract class BaseSchemaQuery extends ModelCriteria
 	 *                                   to be used as main alias in the secondary query
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    \P2PT/System\SchemaTableQuery A secondary query class using the current class as primary query
+	 * @return    P2PSchemaTableQuery A secondary query class using the current class as primary query
 	 */
-	public function useSchemaTableQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useP2PSchemaTableQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		return $this
-			->joinSchemaTable($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'SchemaTable', '\P2PT/System\SchemaTableQuery');
+			->joinP2PSchemaTable($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'P2PSchemaTable', 'P2PSchemaTableQuery');
 	}
 
 	/**
 	 * Exclude object from result
 	 *
-	 * @param     Schema $schema Object to remove from the list of results
+	 * @param     P2PSchema $p2PSchema Object to remove from the list of results
 	 *
-	 * @return    SchemaQuery The current query, for fluid interface
+	 * @return    P2PSchemaQuery The current query, for fluid interface
 	 */
-	public function prune($schema = null)
+	public function prune($p2PSchema = null)
 	{
-		if ($schema) {
-			$this->addUsingAlias(SchemaPeer::ID, $schema->getId(), Criteria::NOT_EQUAL);
+		if ($p2PSchema) {
+			$this->addUsingAlias(P2PSchemaPeer::ID, $p2PSchema->getId(), Criteria::NOT_EQUAL);
 	  }
 	  
 		return $this;
 	}
 
-} // BaseSchemaQuery
+} // BaseP2PSchemaQuery

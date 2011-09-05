@@ -1,46 +1,26 @@
 <?php
 
-namespace P2PT/System\om;
-
-use \BaseObject;
-use \BasePeer;
-use \Criteria;
-use \DateTime;
-use \DateTimeZone;
-use \PDO;
-use \Persistent;
-use \Propel;
-use \PropelDateTime;
-use \PropelException;
-use \PropelObjectCollection;
-use \PropelPDO;
-use P2PT/System\OwnNode;
-use P2PT/System\OwnNodeQuery;
-use P2PT/System\SchemaPeer;
-use P2PT/System\SchemaQuery;
-use P2PT/System\SchemaTable;
-use P2PT/System\SchemaTableQuery;
 
 /**
- * Base class that represents a row from the 'schema' table.
+ * Base class that represents a row from the 'p2p_schema' table.
  *
  * 
  *
  * @package    propel.generator.system.om
  */
-abstract class BaseSchema extends BaseObject  implements Persistent
+abstract class BaseP2PSchema extends BaseObject  implements Persistent
 {
 
 	/**
 	 * Peer class name
 	 */
-	const PEER = 'P2PT/System\\SchemaPeer';
+	const PEER = 'P2PSchemaPeer';
 
 	/**
 	 * The Peer class.
 	 * Instance provides a convenient way of calling static methods on a class
 	 * that calling code may not be able to identify.
-	 * @var        SchemaPeer
+	 * @var        P2PSchemaPeer
 	 */
 	protected static $peer;
 
@@ -117,14 +97,14 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	protected $installed_at;
 
 	/**
-	 * @var        array OwnNode[] Collection to store aggregation of OwnNode objects.
+	 * @var        array P2POwnNode[] Collection to store aggregation of P2POwnNode objects.
 	 */
-	protected $collOwnNodes;
+	protected $collP2POwnNodes;
 
 	/**
-	 * @var        array SchemaTable[] Collection to store aggregation of SchemaTable objects.
+	 * @var        array P2PSchemaTable[] Collection to store aggregation of P2PSchemaTable objects.
 	 */
-	protected $collSchemaTables;
+	protected $collP2PSchemaTables;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -310,7 +290,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setId($v)
 	{
@@ -320,7 +300,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = SchemaPeer::ID;
+			$this->modifiedColumns[] = P2PSchemaPeer::ID;
 		}
 
 		return $this;
@@ -330,7 +310,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * Set the value of [xml] column.
 	 * 
 	 * @param      string $v new value
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setXml($v)
 	{
@@ -340,7 +320,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($this->xml !== $v) {
 			$this->xml = $v;
-			$this->modifiedColumns[] = SchemaPeer::XML;
+			$this->modifiedColumns[] = P2PSchemaPeer::XML;
 		}
 
 		return $this;
@@ -350,7 +330,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * Set the value of [name] column.
 	 * 
 	 * @param      string $v new value
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setName($v)
 	{
@@ -360,7 +340,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($this->name !== $v) {
 			$this->name = $v;
-			$this->modifiedColumns[] = SchemaPeer::NAME;
+			$this->modifiedColumns[] = P2PSchemaPeer::NAME;
 		}
 
 		return $this;
@@ -370,7 +350,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * Set the value of [description] column.
 	 * 
 	 * @param      string $v new value
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setDescription($v)
 	{
@@ -380,7 +360,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($this->description !== $v) {
 			$this->description = $v;
-			$this->modifiedColumns[] = SchemaPeer::DESCRIPTION;
+			$this->modifiedColumns[] = P2PSchemaPeer::DESCRIPTION;
 		}
 
 		return $this;
@@ -390,7 +370,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * Set the value of [author] column.
 	 * 
 	 * @param      string $v new value
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setAuthor($v)
 	{
@@ -400,7 +380,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($this->author !== $v) {
 			$this->author = $v;
-			$this->modifiedColumns[] = SchemaPeer::AUTHOR;
+			$this->modifiedColumns[] = P2PSchemaPeer::AUTHOR;
 		}
 
 		return $this;
@@ -410,7 +390,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * Set the value of [contact] column.
 	 * 
 	 * @param      string $v new value
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setContact($v)
 	{
@@ -420,7 +400,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($this->contact !== $v) {
 			$this->contact = $v;
-			$this->modifiedColumns[] = SchemaPeer::CONTACT;
+			$this->modifiedColumns[] = P2PSchemaPeer::CONTACT;
 		}
 
 		return $this;
@@ -430,7 +410,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * Set the value of [url] column.
 	 * 
 	 * @param      string $v new value
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setUrl($v)
 	{
@@ -440,7 +420,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($this->url !== $v) {
 			$this->url = $v;
-			$this->modifiedColumns[] = SchemaPeer::URL;
+			$this->modifiedColumns[] = P2PSchemaPeer::URL;
 		}
 
 		return $this;
@@ -451,7 +431,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * 
 	 * @param      mixed $v string, integer (timestamp), or DateTime value.
 	 *               Empty strings are treated as NULL.
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setDateRelease($v)
 	{
@@ -461,7 +441,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 			$newDateAsString = $dt ? $dt->format('Y-m-d') : null;
 			if ($currentDateAsString !== $newDateAsString) {
 				$this->date_release = $newDateAsString;
-				$this->modifiedColumns[] = SchemaPeer::DATE_RELEASE;
+				$this->modifiedColumns[] = P2PSchemaPeer::DATE_RELEASE;
 			}
 		} // if either are not null
 
@@ -472,7 +452,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * Set the value of [schema_version] column.
 	 * 
 	 * @param      double $v new value
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setSchemaVersion($v)
 	{
@@ -482,7 +462,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($this->schema_version !== $v) {
 			$this->schema_version = $v;
-			$this->modifiedColumns[] = SchemaPeer::SCHEMA_VERSION;
+			$this->modifiedColumns[] = P2PSchemaPeer::SCHEMA_VERSION;
 		}
 
 		return $this;
@@ -492,7 +472,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * Set the value of [software_version] column.
 	 * 
 	 * @param      double $v new value
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setSoftwareVersion($v)
 	{
@@ -502,7 +482,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($this->software_version !== $v) {
 			$this->software_version = $v;
-			$this->modifiedColumns[] = SchemaPeer::SOFTWARE_VERSION;
+			$this->modifiedColumns[] = P2PSchemaPeer::SOFTWARE_VERSION;
 		}
 
 		return $this;
@@ -512,7 +492,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * Set the value of [history] column.
 	 * 
 	 * @param      string $v new value
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setHistory($v)
 	{
@@ -522,7 +502,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($this->history !== $v) {
 			$this->history = $v;
-			$this->modifiedColumns[] = SchemaPeer::HISTORY;
+			$this->modifiedColumns[] = P2PSchemaPeer::HISTORY;
 		}
 
 		return $this;
@@ -533,7 +513,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * 
 	 * @param      mixed $v string, integer (timestamp), or DateTime value.
 	 *               Empty strings are treated as NULL.
-	 * @return     Schema The current object (for fluent API support)
+	 * @return     P2PSchema The current object (for fluent API support)
 	 */
 	public function setInstalledAt($v)
 	{
@@ -543,7 +523,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 			$newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
 			if ($currentDateAsString !== $newDateAsString) {
 				$this->installed_at = $newDateAsString;
-				$this->modifiedColumns[] = SchemaPeer::INSTALLED_AT;
+				$this->modifiedColumns[] = P2PSchemaPeer::INSTALLED_AT;
 			}
 		} // if either are not null
 
@@ -602,10 +582,10 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 12; // 12 = SchemaPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 12; // 12 = P2PSchemaPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
-			throw new PropelException("Error populating Schema object", $e);
+			throw new PropelException("Error populating P2PSchema object", $e);
 		}
 	}
 
@@ -648,13 +628,13 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(SchemaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(P2PSchemaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		// We don't need to alter the object instance pool; we're just modifying this instance
 		// already in the pool.
 
-		$stmt = SchemaPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+		$stmt = P2PSchemaPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
 		$row = $stmt->fetch(PDO::FETCH_NUM);
 		$stmt->closeCursor();
 		if (!$row) {
@@ -664,9 +644,9 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->collOwnNodes = null;
+			$this->collP2POwnNodes = null;
 
-			$this->collSchemaTables = null;
+			$this->collP2PSchemaTables = null;
 
 		} // if (deep)
 	}
@@ -687,14 +667,14 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(SchemaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(P2PSchemaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
 			if ($ret) {
-				SchemaQuery::create()
+				P2PSchemaQuery::create()
 					->filterByPrimaryKey($this->getPrimaryKey())
 					->delete($con);
 				$this->postDelete($con);
@@ -729,7 +709,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(SchemaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(P2PSchemaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$con->beginTransaction();
@@ -749,7 +729,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
-				SchemaPeer::addInstanceToPool($this);
+				P2PSchemaPeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
 			}
@@ -779,15 +759,15 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 			$this->alreadyInSave = true;
 
 			if ($this->isNew() ) {
-				$this->modifiedColumns[] = SchemaPeer::ID;
+				$this->modifiedColumns[] = P2PSchemaPeer::ID;
 			}
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
 					$criteria = $this->buildCriteria();
-					if ($criteria->keyContainsValue(SchemaPeer::ID) ) {
-						throw new PropelException('Cannot insert a value for auto-increment primary key ('.SchemaPeer::ID.')');
+					if ($criteria->keyContainsValue(P2PSchemaPeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.P2PSchemaPeer::ID.')');
 					}
 
 					$pk = BasePeer::doInsert($criteria, $con);
@@ -795,22 +775,22 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 					$this->setId($pk);  //[IMV] update autoincrement primary key
 					$this->setNew(false);
 				} else {
-					$affectedRows = SchemaPeer::doUpdate($this, $con);
+					$affectedRows = P2PSchemaPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
-			if ($this->collOwnNodes !== null) {
-				foreach ($this->collOwnNodes as $referrerFK) {
+			if ($this->collP2POwnNodes !== null) {
+				foreach ($this->collP2POwnNodes as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->collSchemaTables !== null) {
-				foreach ($this->collSchemaTables as $referrerFK) {
+			if ($this->collP2PSchemaTables !== null) {
+				foreach ($this->collP2PSchemaTables as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -883,21 +863,21 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 			$failureMap = array();
 
 
-			if (($retval = SchemaPeer::doValidate($this, $columns)) !== true) {
+			if (($retval = P2PSchemaPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
 
-				if ($this->collOwnNodes !== null) {
-					foreach ($this->collOwnNodes as $referrerFK) {
+				if ($this->collP2POwnNodes !== null) {
+					foreach ($this->collP2POwnNodes as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->collSchemaTables !== null) {
-					foreach ($this->collSchemaTables as $referrerFK) {
+				if ($this->collP2PSchemaTables !== null) {
+					foreach ($this->collP2PSchemaTables as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -922,7 +902,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 */
 	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = SchemaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = P2PSchemaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		$field = $this->getByPosition($pos);
 		return $field;
 	}
@@ -996,11 +976,11 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 */
 	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
-		if (isset($alreadyDumpedObjects['Schema'][$this->getPrimaryKey()])) {
+		if (isset($alreadyDumpedObjects['P2PSchema'][$this->getPrimaryKey()])) {
 			return '*RECURSION*';
 		}
-		$alreadyDumpedObjects['Schema'][$this->getPrimaryKey()] = true;
-		$keys = SchemaPeer::getFieldNames($keyType);
+		$alreadyDumpedObjects['P2PSchema'][$this->getPrimaryKey()] = true;
+		$keys = P2PSchemaPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getXml(),
@@ -1016,11 +996,11 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 			$keys[11] => $this->getInstalledAt(),
 		);
 		if ($includeForeignObjects) {
-			if (null !== $this->collOwnNodes) {
-				$result['OwnNodes'] = $this->collOwnNodes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			if (null !== $this->collP2POwnNodes) {
+				$result['P2POwnNodes'] = $this->collP2POwnNodes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
 			}
-			if (null !== $this->collSchemaTables) {
-				$result['SchemaTables'] = $this->collSchemaTables->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			if (null !== $this->collP2PSchemaTables) {
+				$result['P2PSchemaTables'] = $this->collP2PSchemaTables->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
 			}
 		}
 		return $result;
@@ -1038,7 +1018,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 */
 	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = SchemaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = P2PSchemaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->setByPosition($pos, $value);
 	}
 
@@ -1111,7 +1091,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 */
 	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = SchemaPeer::getFieldNames($keyType);
+		$keys = P2PSchemaPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setXml($arr[$keys[1]]);
@@ -1134,20 +1114,20 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 */
 	public function buildCriteria()
 	{
-		$criteria = new Criteria(SchemaPeer::DATABASE_NAME);
+		$criteria = new Criteria(P2PSchemaPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(SchemaPeer::ID)) $criteria->add(SchemaPeer::ID, $this->id);
-		if ($this->isColumnModified(SchemaPeer::XML)) $criteria->add(SchemaPeer::XML, $this->xml);
-		if ($this->isColumnModified(SchemaPeer::NAME)) $criteria->add(SchemaPeer::NAME, $this->name);
-		if ($this->isColumnModified(SchemaPeer::DESCRIPTION)) $criteria->add(SchemaPeer::DESCRIPTION, $this->description);
-		if ($this->isColumnModified(SchemaPeer::AUTHOR)) $criteria->add(SchemaPeer::AUTHOR, $this->author);
-		if ($this->isColumnModified(SchemaPeer::CONTACT)) $criteria->add(SchemaPeer::CONTACT, $this->contact);
-		if ($this->isColumnModified(SchemaPeer::URL)) $criteria->add(SchemaPeer::URL, $this->url);
-		if ($this->isColumnModified(SchemaPeer::DATE_RELEASE)) $criteria->add(SchemaPeer::DATE_RELEASE, $this->date_release);
-		if ($this->isColumnModified(SchemaPeer::SCHEMA_VERSION)) $criteria->add(SchemaPeer::SCHEMA_VERSION, $this->schema_version);
-		if ($this->isColumnModified(SchemaPeer::SOFTWARE_VERSION)) $criteria->add(SchemaPeer::SOFTWARE_VERSION, $this->software_version);
-		if ($this->isColumnModified(SchemaPeer::HISTORY)) $criteria->add(SchemaPeer::HISTORY, $this->history);
-		if ($this->isColumnModified(SchemaPeer::INSTALLED_AT)) $criteria->add(SchemaPeer::INSTALLED_AT, $this->installed_at);
+		if ($this->isColumnModified(P2PSchemaPeer::ID)) $criteria->add(P2PSchemaPeer::ID, $this->id);
+		if ($this->isColumnModified(P2PSchemaPeer::XML)) $criteria->add(P2PSchemaPeer::XML, $this->xml);
+		if ($this->isColumnModified(P2PSchemaPeer::NAME)) $criteria->add(P2PSchemaPeer::NAME, $this->name);
+		if ($this->isColumnModified(P2PSchemaPeer::DESCRIPTION)) $criteria->add(P2PSchemaPeer::DESCRIPTION, $this->description);
+		if ($this->isColumnModified(P2PSchemaPeer::AUTHOR)) $criteria->add(P2PSchemaPeer::AUTHOR, $this->author);
+		if ($this->isColumnModified(P2PSchemaPeer::CONTACT)) $criteria->add(P2PSchemaPeer::CONTACT, $this->contact);
+		if ($this->isColumnModified(P2PSchemaPeer::URL)) $criteria->add(P2PSchemaPeer::URL, $this->url);
+		if ($this->isColumnModified(P2PSchemaPeer::DATE_RELEASE)) $criteria->add(P2PSchemaPeer::DATE_RELEASE, $this->date_release);
+		if ($this->isColumnModified(P2PSchemaPeer::SCHEMA_VERSION)) $criteria->add(P2PSchemaPeer::SCHEMA_VERSION, $this->schema_version);
+		if ($this->isColumnModified(P2PSchemaPeer::SOFTWARE_VERSION)) $criteria->add(P2PSchemaPeer::SOFTWARE_VERSION, $this->software_version);
+		if ($this->isColumnModified(P2PSchemaPeer::HISTORY)) $criteria->add(P2PSchemaPeer::HISTORY, $this->history);
+		if ($this->isColumnModified(P2PSchemaPeer::INSTALLED_AT)) $criteria->add(P2PSchemaPeer::INSTALLED_AT, $this->installed_at);
 
 		return $criteria;
 	}
@@ -1162,8 +1142,8 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 */
 	public function buildPkeyCriteria()
 	{
-		$criteria = new Criteria(SchemaPeer::DATABASE_NAME);
-		$criteria->add(SchemaPeer::ID, $this->id);
+		$criteria = new Criteria(P2PSchemaPeer::DATABASE_NAME);
+		$criteria->add(P2PSchemaPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -1203,7 +1183,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * If desired, this method can also make copies of all associated (fkey referrers)
 	 * objects.
 	 *
-	 * @param      object $copyObj An object of Schema (or compatible) type.
+	 * @param      object $copyObj An object of P2PSchema (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
 	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
@@ -1227,15 +1207,15 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			foreach ($this->getOwnNodes() as $relObj) {
+			foreach ($this->getP2POwnNodes() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addOwnNode($relObj->copy($deepCopy));
+					$copyObj->addP2POwnNode($relObj->copy($deepCopy));
 				}
 			}
 
-			foreach ($this->getSchemaTables() as $relObj) {
+			foreach ($this->getP2PSchemaTables() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addSchemaTable($relObj->copy($deepCopy));
+					$copyObj->addP2PSchemaTable($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1256,7 +1236,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * objects.
 	 *
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-	 * @return     Schema Clone of current object.
+	 * @return     P2PSchema Clone of current object.
 	 * @throws     PropelException
 	 */
 	public function copy($deepCopy = false)
@@ -1275,12 +1255,12 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 * same instance for all member of this class. The method could therefore
 	 * be static, but this would prevent one from overriding the behavior.
 	 *
-	 * @return     SchemaPeer
+	 * @return     P2PSchemaPeer
 	 */
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new SchemaPeer();
+			self::$peer = new P2PSchemaPeer();
 		}
 		return self::$peer;
 	}
@@ -1296,32 +1276,32 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 */
 	public function initRelation($relationName)
 	{
-		if ('OwnNode' == $relationName) {
-			return $this->initOwnNodes();
+		if ('P2POwnNode' == $relationName) {
+			return $this->initP2POwnNodes();
 		}
-		if ('SchemaTable' == $relationName) {
-			return $this->initSchemaTables();
+		if ('P2PSchemaTable' == $relationName) {
+			return $this->initP2PSchemaTables();
 		}
 	}
 
 	/**
-	 * Clears out the collOwnNodes collection
+	 * Clears out the collP2POwnNodes collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addOwnNodes()
+	 * @see        addP2POwnNodes()
 	 */
-	public function clearOwnNodes()
+	public function clearP2POwnNodes()
 	{
-		$this->collOwnNodes = null; // important to set this to NULL since that means it is uninitialized
+		$this->collP2POwnNodes = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collOwnNodes collection.
+	 * Initializes the collP2POwnNodes collection.
 	 *
-	 * By default this just sets the collOwnNodes collection to an empty array (like clearcollOwnNodes());
+	 * By default this just sets the collP2POwnNodes collection to an empty array (like clearcollP2POwnNodes());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
@@ -1330,92 +1310,92 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 *
 	 * @return     void
 	 */
-	public function initOwnNodes($overrideExisting = true)
+	public function initP2POwnNodes($overrideExisting = true)
 	{
-		if (null !== $this->collOwnNodes && !$overrideExisting) {
+		if (null !== $this->collP2POwnNodes && !$overrideExisting) {
 			return;
 		}
-		$this->collOwnNodes = new PropelObjectCollection();
-		$this->collOwnNodes->setModel('OwnNode');
+		$this->collP2POwnNodes = new PropelObjectCollection();
+		$this->collP2POwnNodes->setModel('P2POwnNode');
 	}
 
 	/**
-	 * Gets an array of OwnNode objects which contain a foreign key that references this object.
+	 * Gets an array of P2POwnNode objects which contain a foreign key that references this object.
 	 *
 	 * If the $criteria is not null, it is used to always fetch the results from the database.
 	 * Otherwise the results are fetched from the database the first time, then cached.
 	 * Next time the same method is called without $criteria, the cached collection is returned.
-	 * If this Schema is new, it will return
+	 * If this P2PSchema is new, it will return
 	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
 	 * @param      PropelPDO $con optional connection object
-	 * @return     PropelCollection|array OwnNode[] List of OwnNode objects
+	 * @return     PropelCollection|array P2POwnNode[] List of P2POwnNode objects
 	 * @throws     PropelException
 	 */
-	public function getOwnNodes($criteria = null, PropelPDO $con = null)
+	public function getP2POwnNodes($criteria = null, PropelPDO $con = null)
 	{
-		if(null === $this->collOwnNodes || null !== $criteria) {
-			if ($this->isNew() && null === $this->collOwnNodes) {
+		if(null === $this->collP2POwnNodes || null !== $criteria) {
+			if ($this->isNew() && null === $this->collP2POwnNodes) {
 				// return empty collection
-				$this->initOwnNodes();
+				$this->initP2POwnNodes();
 			} else {
-				$collOwnNodes = OwnNodeQuery::create(null, $criteria)
-					->filterBySchema($this)
+				$collP2POwnNodes = P2POwnNodeQuery::create(null, $criteria)
+					->filterByP2PSchema($this)
 					->find($con);
 				if (null !== $criteria) {
-					return $collOwnNodes;
+					return $collP2POwnNodes;
 				}
-				$this->collOwnNodes = $collOwnNodes;
+				$this->collP2POwnNodes = $collP2POwnNodes;
 			}
 		}
-		return $this->collOwnNodes;
+		return $this->collP2POwnNodes;
 	}
 
 	/**
-	 * Returns the number of related OwnNode objects.
+	 * Returns the number of related P2POwnNode objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related OwnNode objects.
+	 * @return     int Count of related P2POwnNode objects.
 	 * @throws     PropelException
 	 */
-	public function countOwnNodes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countP2POwnNodes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if(null === $this->collOwnNodes || null !== $criteria) {
-			if ($this->isNew() && null === $this->collOwnNodes) {
+		if(null === $this->collP2POwnNodes || null !== $criteria) {
+			if ($this->isNew() && null === $this->collP2POwnNodes) {
 				return 0;
 			} else {
-				$query = OwnNodeQuery::create(null, $criteria);
+				$query = P2POwnNodeQuery::create(null, $criteria);
 				if($distinct) {
 					$query->distinct();
 				}
 				return $query
-					->filterBySchema($this)
+					->filterByP2PSchema($this)
 					->count($con);
 			}
 		} else {
-			return count($this->collOwnNodes);
+			return count($this->collP2POwnNodes);
 		}
 	}
 
 	/**
-	 * Method called to associate a OwnNode object to this object
-	 * through the OwnNode foreign key attribute.
+	 * Method called to associate a P2POwnNode object to this object
+	 * through the P2POwnNode foreign key attribute.
 	 *
-	 * @param      OwnNode $l OwnNode
+	 * @param      P2POwnNode $l P2POwnNode
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addOwnNode(OwnNode $l)
+	public function addP2POwnNode(P2POwnNode $l)
 	{
-		if ($this->collOwnNodes === null) {
-			$this->initOwnNodes();
+		if ($this->collP2POwnNodes === null) {
+			$this->initP2POwnNodes();
 		}
-		if (!$this->collOwnNodes->contains($l)) { // only add it if the **same** object is not already associated
-			$this->collOwnNodes[]= $l;
-			$l->setSchema($this);
+		if (!$this->collP2POwnNodes->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collP2POwnNodes[]= $l;
+			$l->setP2PSchema($this);
 		}
 	}
 
@@ -1423,45 +1403,45 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	/**
 	 * If this collection has already been initialized with
 	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Schema is new, it will return
-	 * an empty collection; or if this Schema has previously
-	 * been saved, it will retrieve related OwnNodes from storage.
+	 * Otherwise if this P2PSchema is new, it will return
+	 * an empty collection; or if this P2PSchema has previously
+	 * been saved, it will retrieve related P2POwnNodes from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Schema.
+	 * actually need in P2PSchema.
 	 *
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
 	 * @param      PropelPDO $con optional connection object
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-	 * @return     PropelCollection|array OwnNode[] List of OwnNode objects
+	 * @return     PropelCollection|array P2POwnNode[] List of P2POwnNode objects
 	 */
-	public function getOwnNodesJoinConnection($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getP2POwnNodesJoinP2PConnection($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
-		$query = OwnNodeQuery::create(null, $criteria);
-		$query->joinWith('Connection', $join_behavior);
+		$query = P2POwnNodeQuery::create(null, $criteria);
+		$query->joinWith('P2PConnection', $join_behavior);
 
-		return $this->getOwnNodes($query, $con);
+		return $this->getP2POwnNodes($query, $con);
 	}
 
 	/**
-	 * Clears out the collSchemaTables collection
+	 * Clears out the collP2PSchemaTables collection
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addSchemaTables()
+	 * @see        addP2PSchemaTables()
 	 */
-	public function clearSchemaTables()
+	public function clearP2PSchemaTables()
 	{
-		$this->collSchemaTables = null; // important to set this to NULL since that means it is uninitialized
+		$this->collP2PSchemaTables = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collSchemaTables collection.
+	 * Initializes the collP2PSchemaTables collection.
 	 *
-	 * By default this just sets the collSchemaTables collection to an empty array (like clearcollSchemaTables());
+	 * By default this just sets the collP2PSchemaTables collection to an empty array (like clearcollP2PSchemaTables());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
@@ -1470,92 +1450,92 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 *
 	 * @return     void
 	 */
-	public function initSchemaTables($overrideExisting = true)
+	public function initP2PSchemaTables($overrideExisting = true)
 	{
-		if (null !== $this->collSchemaTables && !$overrideExisting) {
+		if (null !== $this->collP2PSchemaTables && !$overrideExisting) {
 			return;
 		}
-		$this->collSchemaTables = new PropelObjectCollection();
-		$this->collSchemaTables->setModel('SchemaTable');
+		$this->collP2PSchemaTables = new PropelObjectCollection();
+		$this->collP2PSchemaTables->setModel('P2PSchemaTable');
 	}
 
 	/**
-	 * Gets an array of SchemaTable objects which contain a foreign key that references this object.
+	 * Gets an array of P2PSchemaTable objects which contain a foreign key that references this object.
 	 *
 	 * If the $criteria is not null, it is used to always fetch the results from the database.
 	 * Otherwise the results are fetched from the database the first time, then cached.
 	 * Next time the same method is called without $criteria, the cached collection is returned.
-	 * If this Schema is new, it will return
+	 * If this P2PSchema is new, it will return
 	 * an empty collection or the current collection; the criteria is ignored on a new object.
 	 *
 	 * @param      Criteria $criteria optional Criteria object to narrow the query
 	 * @param      PropelPDO $con optional connection object
-	 * @return     PropelCollection|array SchemaTable[] List of SchemaTable objects
+	 * @return     PropelCollection|array P2PSchemaTable[] List of P2PSchemaTable objects
 	 * @throws     PropelException
 	 */
-	public function getSchemaTables($criteria = null, PropelPDO $con = null)
+	public function getP2PSchemaTables($criteria = null, PropelPDO $con = null)
 	{
-		if(null === $this->collSchemaTables || null !== $criteria) {
-			if ($this->isNew() && null === $this->collSchemaTables) {
+		if(null === $this->collP2PSchemaTables || null !== $criteria) {
+			if ($this->isNew() && null === $this->collP2PSchemaTables) {
 				// return empty collection
-				$this->initSchemaTables();
+				$this->initP2PSchemaTables();
 			} else {
-				$collSchemaTables = SchemaTableQuery::create(null, $criteria)
-					->filterBySchema($this)
+				$collP2PSchemaTables = P2PSchemaTableQuery::create(null, $criteria)
+					->filterByP2PSchema($this)
 					->find($con);
 				if (null !== $criteria) {
-					return $collSchemaTables;
+					return $collP2PSchemaTables;
 				}
-				$this->collSchemaTables = $collSchemaTables;
+				$this->collP2PSchemaTables = $collP2PSchemaTables;
 			}
 		}
-		return $this->collSchemaTables;
+		return $this->collP2PSchemaTables;
 	}
 
 	/**
-	 * Returns the number of related SchemaTable objects.
+	 * Returns the number of related P2PSchemaTable objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related SchemaTable objects.
+	 * @return     int Count of related P2PSchemaTable objects.
 	 * @throws     PropelException
 	 */
-	public function countSchemaTables(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countP2PSchemaTables(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
-		if(null === $this->collSchemaTables || null !== $criteria) {
-			if ($this->isNew() && null === $this->collSchemaTables) {
+		if(null === $this->collP2PSchemaTables || null !== $criteria) {
+			if ($this->isNew() && null === $this->collP2PSchemaTables) {
 				return 0;
 			} else {
-				$query = SchemaTableQuery::create(null, $criteria);
+				$query = P2PSchemaTableQuery::create(null, $criteria);
 				if($distinct) {
 					$query->distinct();
 				}
 				return $query
-					->filterBySchema($this)
+					->filterByP2PSchema($this)
 					->count($con);
 			}
 		} else {
-			return count($this->collSchemaTables);
+			return count($this->collP2PSchemaTables);
 		}
 	}
 
 	/**
-	 * Method called to associate a SchemaTable object to this object
-	 * through the SchemaTable foreign key attribute.
+	 * Method called to associate a P2PSchemaTable object to this object
+	 * through the P2PSchemaTable foreign key attribute.
 	 *
-	 * @param      SchemaTable $l SchemaTable
+	 * @param      P2PSchemaTable $l P2PSchemaTable
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addSchemaTable(SchemaTable $l)
+	public function addP2PSchemaTable(P2PSchemaTable $l)
 	{
-		if ($this->collSchemaTables === null) {
-			$this->initSchemaTables();
+		if ($this->collP2PSchemaTables === null) {
+			$this->initP2PSchemaTables();
 		}
-		if (!$this->collSchemaTables->contains($l)) { // only add it if the **same** object is not already associated
-			$this->collSchemaTables[]= $l;
-			$l->setSchema($this);
+		if (!$this->collP2PSchemaTables->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collP2PSchemaTables[]= $l;
+			$l->setP2PSchema($this);
 		}
 	}
 
@@ -1596,26 +1576,26 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collOwnNodes) {
-				foreach ($this->collOwnNodes as $o) {
+			if ($this->collP2POwnNodes) {
+				foreach ($this->collP2POwnNodes as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collSchemaTables) {
-				foreach ($this->collSchemaTables as $o) {
+			if ($this->collP2PSchemaTables) {
+				foreach ($this->collP2PSchemaTables as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 		} // if ($deep)
 
-		if ($this->collOwnNodes instanceof PropelCollection) {
-			$this->collOwnNodes->clearIterator();
+		if ($this->collP2POwnNodes instanceof PropelCollection) {
+			$this->collP2POwnNodes->clearIterator();
 		}
-		$this->collOwnNodes = null;
-		if ($this->collSchemaTables instanceof PropelCollection) {
-			$this->collSchemaTables->clearIterator();
+		$this->collP2POwnNodes = null;
+		if ($this->collP2PSchemaTables instanceof PropelCollection) {
+			$this->collP2PSchemaTables->clearIterator();
 		}
-		$this->collSchemaTables = null;
+		$this->collP2PSchemaTables = null;
 	}
 
 	/**
@@ -1625,7 +1605,7 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 	 */
 	public function __toString()
 	{
-		return (string) $this->exportTo(SchemaPeer::DEFAULT_STRING_FORMAT);
+		return (string) $this->exportTo(P2PSchemaPeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**
@@ -1647,4 +1627,4 @@ abstract class BaseSchema extends BaseObject  implements Persistent
 		return parent::__call($name, $params);
 	}
 
-} // BaseSchema
+} // BaseP2PSchema

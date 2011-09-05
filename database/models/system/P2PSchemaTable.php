@@ -1,12 +1,9 @@
 <?php
 
-namespace P2PT/System;
-
-use P2PT/System\om\BaseOwnNode;
 
 
 /**
- * Skeleton subclass for representing a row from the 'own_node' table.
+ * Skeleton subclass for representing a row from the 'p2p_schema_table' table.
  *
  * 
  *
@@ -16,6 +13,6 @@ use P2PT/System\om\BaseOwnNode;
  *
  * @package    propel.generator.system
  */
-class OwnNode extends BaseOwnNode {
+class P2PSchemaTable extends BaseP2PSchemaTable {
 
-} // OwnNode
+} // P2PSchemaTable

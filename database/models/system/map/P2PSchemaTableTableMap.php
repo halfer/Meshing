@@ -1,13 +1,9 @@
 <?php
 
-namespace P2PT/System\map;
-
-use \RelationMap;
-use \TableMap;
 
 
 /**
- * This class defines the structure of the 'connection' table.
+ * This class defines the structure of the 'p2p_schema_table' table.
  *
  *
  *
@@ -18,13 +14,13 @@ use \TableMap;
  *
  * @package    propel.generator.system.map
  */
-class ConnectionTableMap extends TableMap
+class P2PSchemaTableTableMap extends TableMap
 {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'system.map.ConnectionTableMap';
+	const CLASS_NAME = 'system.map.P2PSchemaTableTableMap';
 
 	/**
 	 * Initialize the table attributes, columns and validators
@@ -36,17 +32,17 @@ class ConnectionTableMap extends TableMap
 	public function initialize()
 	{
 		// attributes
-		$this->setName('connection');
-		$this->setPhpName('Connection');
-		$this->setClassname('P2PT/System\\Connection');
+		$this->setName('p2p_schema_table');
+		$this->setPhpName('P2PSchemaTable');
+		$this->setClassname('P2PSchemaTable');
 		$this->setPackage('system');
 		$this->setUseIdGenerator(true);
-		$this->setPrimaryKeyMethodInfo('connection_id_seq');
+		$this->setPrimaryKeyMethodInfo('p2p_schema_table_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('HOST', 'Host', 'VARCHAR', true, 100, null);
-		$this->addColumn('USER', 'User', 'VARCHAR', false, 100, null);
-		$this->addColumn('PASSWORD', 'Password', 'VARCHAR', false, 100, null);
+		$this->addForeignKey('SCHEMA_ID', 'SchemaId', 'INTEGER', 'p2p_schema', 'ID', true, null, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 50, null);
+		$this->addColumn('ROW_ORD_CURRENT', 'RowOrdCurrent', 'INTEGER', false, null, null);
 		// validators
 	} // initialize()
 
@@ -55,7 +51,7 @@ class ConnectionTableMap extends TableMap
 	 */
 	public function buildRelations()
 	{
-		$this->addRelation('OwnNode', 'P2PT/System\\OwnNode', RelationMap::ONE_TO_MANY, array('id' => 'connection_id', ), null, null);
+		$this->addRelation('P2PSchema', 'P2PSchema', RelationMap::MANY_TO_ONE, array('schema_id' => 'id', ), null, null);
 	} // buildRelations()
 
-} // ConnectionTableMap
+} // P2PSchemaTableTableMap

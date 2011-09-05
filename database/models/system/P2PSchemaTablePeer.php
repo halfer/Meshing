@@ -1,12 +1,9 @@
 <?php
 
-namespace P2PT/System;
-
-use P2PT/System\om\BaseOwnNodePeer;
 
 
 /**
- * Skeleton subclass for performing query and update operations on the 'own_node' table.
+ * Skeleton subclass for performing query and update operations on the 'p2p_schema_table' table.
  *
  * 
  *
@@ -16,6 +13,6 @@ use P2PT/System\om\BaseOwnNodePeer;
  *
  * @package    propel.generator.system
  */
-class OwnNodePeer extends BaseOwnNodePeer {
+class P2PSchemaTablePeer extends BaseP2PSchemaTablePeer {
 
-} // OwnNodePeer
+} // P2PSchemaTablePeer

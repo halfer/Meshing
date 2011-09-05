@@ -1,84 +1,73 @@
 <?php
 
-namespace P2PT/System\om;
-
-use \Criteria;
-use \ModelCriteria;
-use \ModelJoin;
-use \PropelCollection;
-use \PropelException;
-use \PropelPDO;
-use P2PT/System\ConnectionPeer;
-use P2PT/System\ConnectionQuery;
-use P2PT/System\OwnNode;
 
 /**
- * Base class that represents a query for the 'connection' table.
+ * Base class that represents a query for the 'p2p_connection' table.
  *
  * 
  *
- * @method     ConnectionQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ConnectionQuery orderByHost($order = Criteria::ASC) Order by the host column
- * @method     ConnectionQuery orderByUser($order = Criteria::ASC) Order by the user column
- * @method     ConnectionQuery orderByPassword($order = Criteria::ASC) Order by the password column
+ * @method     P2PConnectionQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     P2PConnectionQuery orderByHost($order = Criteria::ASC) Order by the host column
+ * @method     P2PConnectionQuery orderByUser($order = Criteria::ASC) Order by the user column
+ * @method     P2PConnectionQuery orderByPassword($order = Criteria::ASC) Order by the password column
  *
- * @method     ConnectionQuery groupById() Group by the id column
- * @method     ConnectionQuery groupByHost() Group by the host column
- * @method     ConnectionQuery groupByUser() Group by the user column
- * @method     ConnectionQuery groupByPassword() Group by the password column
+ * @method     P2PConnectionQuery groupById() Group by the id column
+ * @method     P2PConnectionQuery groupByHost() Group by the host column
+ * @method     P2PConnectionQuery groupByUser() Group by the user column
+ * @method     P2PConnectionQuery groupByPassword() Group by the password column
  *
- * @method     ConnectionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ConnectionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ConnectionQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     P2PConnectionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     P2PConnectionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     P2PConnectionQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ConnectionQuery leftJoinOwnNode($relationAlias = null) Adds a LEFT JOIN clause to the query using the OwnNode relation
- * @method     ConnectionQuery rightJoinOwnNode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OwnNode relation
- * @method     ConnectionQuery innerJoinOwnNode($relationAlias = null) Adds a INNER JOIN clause to the query using the OwnNode relation
+ * @method     P2PConnectionQuery leftJoinP2POwnNode($relationAlias = null) Adds a LEFT JOIN clause to the query using the P2POwnNode relation
+ * @method     P2PConnectionQuery rightJoinP2POwnNode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the P2POwnNode relation
+ * @method     P2PConnectionQuery innerJoinP2POwnNode($relationAlias = null) Adds a INNER JOIN clause to the query using the P2POwnNode relation
  *
- * @method     Connection findOne(PropelPDO $con = null) Return the first Connection matching the query
- * @method     Connection findOneOrCreate(PropelPDO $con = null) Return the first Connection matching the query, or a new Connection object populated from the query conditions when no match is found
+ * @method     P2PConnection findOne(PropelPDO $con = null) Return the first P2PConnection matching the query
+ * @method     P2PConnection findOneOrCreate(PropelPDO $con = null) Return the first P2PConnection matching the query, or a new P2PConnection object populated from the query conditions when no match is found
  *
- * @method     Connection findOneById(int $id) Return the first Connection filtered by the id column
- * @method     Connection findOneByHost(string $host) Return the first Connection filtered by the host column
- * @method     Connection findOneByUser(string $user) Return the first Connection filtered by the user column
- * @method     Connection findOneByPassword(string $password) Return the first Connection filtered by the password column
+ * @method     P2PConnection findOneById(int $id) Return the first P2PConnection filtered by the id column
+ * @method     P2PConnection findOneByHost(string $host) Return the first P2PConnection filtered by the host column
+ * @method     P2PConnection findOneByUser(string $user) Return the first P2PConnection filtered by the user column
+ * @method     P2PConnection findOneByPassword(string $password) Return the first P2PConnection filtered by the password column
  *
- * @method     array findById(int $id) Return Connection objects filtered by the id column
- * @method     array findByHost(string $host) Return Connection objects filtered by the host column
- * @method     array findByUser(string $user) Return Connection objects filtered by the user column
- * @method     array findByPassword(string $password) Return Connection objects filtered by the password column
+ * @method     array findById(int $id) Return P2PConnection objects filtered by the id column
+ * @method     array findByHost(string $host) Return P2PConnection objects filtered by the host column
+ * @method     array findByUser(string $user) Return P2PConnection objects filtered by the user column
+ * @method     array findByPassword(string $password) Return P2PConnection objects filtered by the password column
  *
  * @package    propel.generator.system.om
  */
-abstract class BaseConnectionQuery extends ModelCriteria
+abstract class BaseP2PConnectionQuery extends ModelCriteria
 {
 
 	/**
-	 * Initializes internal state of BaseConnectionQuery object.
+	 * Initializes internal state of BaseP2PConnectionQuery object.
 	 *
 	 * @param     string $dbName The dabase name
 	 * @param     string $modelName The phpName of a model, e.g. 'Book'
 	 * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
 	 */
-	public function __construct($dbName = 'default', $modelName = 'P2PT/System\\Connection', $modelAlias = null)
+	public function __construct($dbName = 'default', $modelName = 'P2PConnection', $modelAlias = null)
 	{
 		parent::__construct($dbName, $modelName, $modelAlias);
 	}
 
 	/**
-	 * Returns a new ConnectionQuery object.
+	 * Returns a new P2PConnectionQuery object.
 	 *
 	 * @param     string $modelAlias The alias of a model in the query
 	 * @param     Criteria $criteria Optional Criteria to build the query from
 	 *
-	 * @return    ConnectionQuery
+	 * @return    P2PConnectionQuery
 	 */
 	public static function create($modelAlias = null, $criteria = null)
 	{
-		if ($criteria instanceof ConnectionQuery) {
+		if ($criteria instanceof P2PConnectionQuery) {
 			return $criteria;
 		}
-		$query = new ConnectionQuery();
+		$query = new P2PConnectionQuery();
 		if (null !== $modelAlias) {
 			$query->setModelAlias($modelAlias);
 		}
@@ -97,11 +86,11 @@ abstract class BaseConnectionQuery extends ModelCriteria
 	 * @param     mixed $key Primary key to use for the query
 	 * @param     PropelPDO $con an optional connection object
 	 *
-	 * @return    Connection|array|mixed the result, formatted by the current formatter
+	 * @return    P2PConnection|array|mixed the result, formatted by the current formatter
 	 */
 	public function findPk($key, $con = null)
 	{
-		if ((null !== ($obj = ConnectionPeer::getInstanceFromPool((string) $key))) && $this->getFormatter()->isObjectFormatter()) {
+		if ((null !== ($obj = P2PConnectionPeer::getInstanceFromPool((string) $key))) && $this->getFormatter()->isObjectFormatter()) {
 			// the object is alredy in the instance pool
 			return $obj;
 		} else {
@@ -137,11 +126,11 @@ abstract class BaseConnectionQuery extends ModelCriteria
 	 *
 	 * @param     mixed $key Primary key to use for the query
 	 *
-	 * @return    ConnectionQuery The current query, for fluid interface
+	 * @return    P2PConnectionQuery The current query, for fluid interface
 	 */
 	public function filterByPrimaryKey($key)
 	{
-		return $this->addUsingAlias(ConnectionPeer::ID, $key, Criteria::EQUAL);
+		return $this->addUsingAlias(P2PConnectionPeer::ID, $key, Criteria::EQUAL);
 	}
 
 	/**
@@ -149,11 +138,11 @@ abstract class BaseConnectionQuery extends ModelCriteria
 	 *
 	 * @param     array $keys The list of primary key to use for the query
 	 *
-	 * @return    ConnectionQuery The current query, for fluid interface
+	 * @return    P2PConnectionQuery The current query, for fluid interface
 	 */
 	public function filterByPrimaryKeys($keys)
 	{
-		return $this->addUsingAlias(ConnectionPeer::ID, $keys, Criteria::IN);
+		return $this->addUsingAlias(P2PConnectionPeer::ID, $keys, Criteria::IN);
 	}
 
 	/**
@@ -172,14 +161,14 @@ abstract class BaseConnectionQuery extends ModelCriteria
 	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    ConnectionQuery The current query, for fluid interface
+	 * @return    P2PConnectionQuery The current query, for fluid interface
 	 */
 	public function filterById($id = null, $comparison = null)
 	{
 		if (is_array($id) && null === $comparison) {
 			$comparison = Criteria::IN;
 		}
-		return $this->addUsingAlias(ConnectionPeer::ID, $id, $comparison);
+		return $this->addUsingAlias(P2PConnectionPeer::ID, $id, $comparison);
 	}
 
 	/**
@@ -195,7 +184,7 @@ abstract class BaseConnectionQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    ConnectionQuery The current query, for fluid interface
+	 * @return    P2PConnectionQuery The current query, for fluid interface
 	 */
 	public function filterByHost($host = null, $comparison = null)
 	{
@@ -207,7 +196,7 @@ abstract class BaseConnectionQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(ConnectionPeer::HOST, $host, $comparison);
+		return $this->addUsingAlias(P2PConnectionPeer::HOST, $host, $comparison);
 	}
 
 	/**
@@ -223,7 +212,7 @@ abstract class BaseConnectionQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    ConnectionQuery The current query, for fluid interface
+	 * @return    P2PConnectionQuery The current query, for fluid interface
 	 */
 	public function filterByUser($user = null, $comparison = null)
 	{
@@ -235,7 +224,7 @@ abstract class BaseConnectionQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(ConnectionPeer::USER, $user, $comparison);
+		return $this->addUsingAlias(P2PConnectionPeer::USER, $user, $comparison);
 	}
 
 	/**
@@ -251,7 +240,7 @@ abstract class BaseConnectionQuery extends ModelCriteria
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    ConnectionQuery The current query, for fluid interface
+	 * @return    P2PConnectionQuery The current query, for fluid interface
 	 */
 	public function filterByPassword($password = null, $comparison = null)
 	{
@@ -263,44 +252,44 @@ abstract class BaseConnectionQuery extends ModelCriteria
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(ConnectionPeer::PASSWORD, $password, $comparison);
+		return $this->addUsingAlias(P2PConnectionPeer::PASSWORD, $password, $comparison);
 	}
 
 	/**
-	 * Filter the query by a related OwnNode object
+	 * Filter the query by a related P2POwnNode object
 	 *
-	 * @param     OwnNode $ownNode  the related object to use as filter
+	 * @param     P2POwnNode $p2POwnNode  the related object to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
-	 * @return    ConnectionQuery The current query, for fluid interface
+	 * @return    P2PConnectionQuery The current query, for fluid interface
 	 */
-	public function filterByOwnNode($ownNode, $comparison = null)
+	public function filterByP2POwnNode($p2POwnNode, $comparison = null)
 	{
-		if ($ownNode instanceof OwnNode) {
+		if ($p2POwnNode instanceof P2POwnNode) {
 			return $this
-				->addUsingAlias(ConnectionPeer::ID, $ownNode->getConnectionId(), $comparison);
-		} elseif ($ownNode instanceof PropelCollection) {
+				->addUsingAlias(P2PConnectionPeer::ID, $p2POwnNode->getConnectionId(), $comparison);
+		} elseif ($p2POwnNode instanceof PropelCollection) {
 			return $this
-				->useOwnNodeQuery()
-					->filterByPrimaryKeys($ownNode->getPrimaryKeys())
+				->useP2POwnNodeQuery()
+					->filterByPrimaryKeys($p2POwnNode->getPrimaryKeys())
 				->endUse();
 		} else {
-			throw new PropelException('filterByOwnNode() only accepts arguments of type OwnNode or PropelCollection');
+			throw new PropelException('filterByP2POwnNode() only accepts arguments of type P2POwnNode or PropelCollection');
 		}
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the OwnNode relation
+	 * Adds a JOIN clause to the query using the P2POwnNode relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    ConnectionQuery The current query, for fluid interface
+	 * @return    P2PConnectionQuery The current query, for fluid interface
 	 */
-	public function joinOwnNode($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinP2POwnNode($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('OwnNode');
+		$relationMap = $tableMap->getRelation('P2POwnNode');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -315,14 +304,14 @@ abstract class BaseConnectionQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'OwnNode');
+			$this->addJoinObject($join, 'P2POwnNode');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the OwnNode relation OwnNode object
+	 * Use the P2POwnNode relation P2POwnNode object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -330,29 +319,29 @@ abstract class BaseConnectionQuery extends ModelCriteria
 	 *                                   to be used as main alias in the secondary query
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    \P2PT/System\OwnNodeQuery A secondary query class using the current class as primary query
+	 * @return    P2POwnNodeQuery A secondary query class using the current class as primary query
 	 */
-	public function useOwnNodeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useP2POwnNodeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		return $this
-			->joinOwnNode($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'OwnNode', '\P2PT/System\OwnNodeQuery');
+			->joinP2POwnNode($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'P2POwnNode', 'P2POwnNodeQuery');
 	}
 
 	/**
 	 * Exclude object from result
 	 *
-	 * @param     Connection $connection Object to remove from the list of results
+	 * @param     P2PConnection $p2PConnection Object to remove from the list of results
 	 *
-	 * @return    ConnectionQuery The current query, for fluid interface
+	 * @return    P2PConnectionQuery The current query, for fluid interface
 	 */
-	public function prune($connection = null)
+	public function prune($p2PConnection = null)
 	{
-		if ($connection) {
-			$this->addUsingAlias(ConnectionPeer::ID, $connection->getId(), Criteria::NOT_EQUAL);
+		if ($p2PConnection) {
+			$this->addUsingAlias(P2PConnectionPeer::ID, $p2PConnection->getId(), Criteria::NOT_EQUAL);
 	  }
 	  
 		return $this;
 	}
 
-} // BaseConnectionQuery
+} // BaseP2PConnectionQuery

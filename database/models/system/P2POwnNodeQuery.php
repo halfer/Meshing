@@ -1,12 +1,9 @@
 <?php
 
-namespace P2PT/System;
-
-use P2PT/System\om\BaseSchemaTable;
 
 
 /**
- * Skeleton subclass for representing a row from the 'schema_table' table.
+ * Skeleton subclass for performing query and update operations on the 'p2p_own_node' table.
  *
  * 
  *
@@ -16,6 +13,6 @@ use P2PT/System\om\BaseSchemaTable;
  *
  * @package    propel.generator.system
  */
-class SchemaTable extends BaseSchemaTable {
+class P2POwnNodeQuery extends BaseP2POwnNodeQuery {
 
-} // SchemaTable
+} // P2POwnNodeQuery

@@ -1,12 +1,9 @@
 <?php
 
-namespace P2PT/System;
-
-use P2PT/System\om\BaseSchemaQuery;
 
 
 /**
- * Skeleton subclass for performing query and update operations on the 'schema' table.
+ * Skeleton subclass for performing query and update operations on the 'p2p_connection' table.
  *
  * 
  *
@@ -16,6 +13,6 @@ use P2PT/System\om\BaseSchemaQuery;
  *
  * @package    propel.generator.system
  */
-class SchemaQuery extends BaseSchemaQuery {
+class P2PConnectionQuery extends BaseP2PConnectionQuery {
 
-} // SchemaQuery
+} // P2PConnectionQuery
