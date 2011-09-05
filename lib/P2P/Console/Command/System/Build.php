@@ -40,7 +40,11 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 		$this->projectRoot = P2P_Utils::getProjectRoot();
 
 		$verbose = $this->opts->verbose;
-		
+		if ($verbose)
+		{
+			echo "Generating... ";
+		}
+
 		if ($this->opts->classes)
 		{
 			$this->buildModel($verbose);
@@ -48,11 +52,17 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 		
 		if ($this->opts->database)
 		{
-			$this->buildSql($verbose);
-			$this->runSql($verbose);
+			$this->buildDatabase($verbose);
 		}
 	}
 
+	/**
+	 * Generates the system model
+	 * 
+	 * @todo Move the paths to the build.properties file
+	 * 
+	 * @param boolean $verbose 
+	 */
 	protected function buildModel($verbose)
 	{
 		// Set db type, schema and output folder here
@@ -70,15 +80,78 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 		$task->setOutputDir($outputDir);
 
 		$task->run();
+		
+		if ($verbose)
+		{
+			echo "done\n";
+			echo "Schemas: " . $schemaDir . "\n";
+			echo "Output: " . $outputDir . "\n";
+		}
 	}
 
+	/**
+	 * Builds the SQL for the system database, and runs it (deletes the existing system tables)
+	 * 
+	 * @todo Move the paths to the build.properties file
+	 * 
+	 * @param boolean $verbose 
+	 */
+	protected function buildDatabase($verbose)
+	{
+		$this->buildSql($verbose);
+		$this->runSql($verbose);
+
+		// @todo More detail required here
+		if ($verbose)
+		{
+			echo "done\n";			
+		}
+	}
+
+	/**
+	 * Builds the SQL for the system database (doesn't touch the db)
+	 * 
+	 * @todo Move the paths to the build.properties file
+	 * 
+	 * @param boolean $verbose 
+	 */
 	protected function buildSql($verbose)
 	{
-		
+		$schemaDir = $this->projectRoot . '/database/system';
+		$schemas = "schema.xml";
+		$outputFolder = $this->projectRoot . "/database/sql/system";
+		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
+
+		// Create task, configure, then run
+		$task = new P2P_Propel_SqlBuilder();
+
+		$task->addPropertiesFile($extraPropsFile);
+		$task->setSchemaDir($schemaDir);
+		$task->setSchemas($schemas);
+		$task->setOutputDir($outputFolder);
+
+		$task->run();		
 	}
 
+	/**
+	 * Runs the already-built SQL for the system db (deletes the existing system tables)
+	 * 
+	 * @todo Move the paths to the build.properties file
+	 * 
+	 * @param boolean $verbose 
+	 */
 	protected function runSql($verbose)
 	{
-		
+		$sqlDir = $this->projectRoot . '/database/sql/system';
+		$mapFile = $this->projectRoot . '/database/system/sqldb.map';
+		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
+
+		$task = new P2P_Propel_SqlRunner();
+
+		$task->setSqlDir($sqlDir);
+		$task->setMapFile($mapFile);
+		$task->addPropertiesFile($extraPropsFile);
+
+		$task->run();		
 	}
 }
