@@ -7,7 +7,6 @@
  */
 class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_Console_Interface
 {
-	private $opts;
 	private $projectRoot;
 
 	public function getDescription()
@@ -26,9 +25,6 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 
 	public function preRunCheck()
 	{
-		$this->opts = new Zend_Console_Getopt($this->getOpts(), $this->argv);
-		$this->opts->parse();
-
 		// Check that at least one of the options has been provided
 		if (!$this->opts->classes && !$this->opts->database) {
 			throw new Zend_Console_Getopt_Exception('Nothing to do.');

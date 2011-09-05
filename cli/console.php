@@ -30,6 +30,7 @@ else
 try
 {
 	$console = new $className($argv);
+	$console->parseOpts();
 	$console->preRunCheck();
 	$ok = $console->run();
 }
