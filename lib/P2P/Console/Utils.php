@@ -49,9 +49,15 @@ class P2P_Console_Utils
 				$item = strtolower(
 					str_replace(DIRECTORY_SEPARATOR, ':', $item)
 				);
+				
+				// Classes without this method are deemed to be hidden
+				$realCommand = method_exists($className, 'getDescription');
 
 				// Push onto the array, move to next
-				$commands[$className] = $item;
+				if ($realCommand)
+				{
+					$commands[$className] = $item;
+				}
 				$regex->next();
 			}
 		}
@@ -60,5 +66,14 @@ class P2P_Console_Utils
 		asort($commands);
 		
 		return $commands;
+	}
+
+	public static function runCommand($className, $argv)
+	{
+		$console = new $className($argv);
+		$console->parseOpts();
+		$console->preRunCheck();
+
+		return $console->run();		
 	}
 }

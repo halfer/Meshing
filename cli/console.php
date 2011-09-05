@@ -29,10 +29,7 @@ else
 // Run the implementation
 try
 {
-	$console = new $className($argv);
-	$console->parseOpts();
-	$console->preRunCheck();
-	$ok = $console->run();
+	$ok = P2P_Console_Utils::runCommand($className, $argv);
 }
 catch (Zend_Console_Getopt_Exception $e)
 {

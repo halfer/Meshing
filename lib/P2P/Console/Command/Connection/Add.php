@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Connection_Add extends P2P_Console_Stub implements P2P_Console_Interface
+class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_Base implements P2P_Console_Interface
 {
 	public function getDescription()
 	{
@@ -29,12 +29,14 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Stub implements P2P
 		{
 			throw new Zend_Console_Getopt_Exception('All connections need a name.');			
 		}
-	
+
+		// @todo Check that the connection name is unique
+
 		if (!$this->opts->host)
 		{
 			throw new Zend_Console_Getopt_Exception('All connections need a host.');
 		}
-		
+
 		if ($this->opts->getOption('password-file'))
 		{
 			throw new Zend_Console_Getopt_Exception('This option is not currently implemented.');
@@ -62,5 +64,8 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Stub implements P2P
 			$Connection->setPassword($this->opts->password);
 		}
 		$Connection->save();
+
+		// Recreate the connections config files
+		$this->rebuildConfigFiles();
 	}
 }
