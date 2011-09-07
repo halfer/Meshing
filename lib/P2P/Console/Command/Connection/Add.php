@@ -27,14 +27,14 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 	{
 		if (!$this->opts->name)
 		{
-			throw new Zend_Console_Getopt_Exception('All connections need a name.');			
+			throw new Zend_Console_Getopt_Exception('All connections need a name (use --name <name>).');			
 		}
 
 		// @todo Check that the connection name is unique
 
 		if (!$this->opts->host)
 		{
-			throw new Zend_Console_Getopt_Exception('All connections need a host.');
+			throw new Zend_Console_Getopt_Exception('All connections need a host (use --host <host>).');
 		}
 
 		if ($this->opts->getOption('password-file'))
