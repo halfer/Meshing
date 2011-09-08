@@ -7,6 +7,8 @@
  */
 class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_Base implements P2P_Console_Interface
 {
+	const ILLEGAL_NAME = 'p2p';
+	
 	public function getDescription()
 	{
 		return 'Creates a connection to allow a node to connect to a database';
@@ -35,6 +37,11 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 		if (!$this->opts->host)
 		{
 			throw new Zend_Console_Getopt_Exception('All connections need a host (use --host <host>).');
+		}
+
+		if ($this->opts->name == self::ILLEGAL_NAME)
+		{
+			throw new Zend_Console_Getopt_Exception('That name is reserved for the system; please choose another');
 		}
 
 		if ($this->opts->getOption('password-file'))
