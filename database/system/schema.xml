@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="default" defaultIdMethod="native">
+<database name="p2p" defaultIdMethod="native">
 
 	<table name="p2p_connection" phpName="P2PConnection" className="P2PConnection" package="system">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />

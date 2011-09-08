@@ -11,7 +11,7 @@
 abstract class BaseP2POwnNodePeer {
 
 	/** the default database name for this class */
-	const DATABASE_NAME = 'default';
+	const DATABASE_NAME = 'p2p';
 
 	/** the table name for this class */
 	const TABLE_NAME = 'p2p_own_node';

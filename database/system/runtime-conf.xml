@@ -2,15 +2,7 @@
 <config>
 	<propel>
 		<datasources>
-			<datasource id="default">
-				<adapter>pgsql</adapter>
-				<connection>
-					<dsn>pgsql:host=localhost dbname=p2p2 user=jon password=</dsn>
-					<user>jon</user>
-					<password></password>
-				</connection>
-			</datasource>
-			<datasource id="propel2">
+			<datasource id="p2p">
 				<adapter>pgsql</adapter>
 				<connection>
 					<dsn>pgsql:host=localhost dbname=p2p2 user=jon password=</dsn>

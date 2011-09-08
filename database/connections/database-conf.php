@@ -4,17 +4,7 @@
 $conf = array (
   'datasources' => 
   array (
-    'default' => 
-    array (
-      'adapter' => 'pgsql',
-      'connection' => 
-      array (
-        'dsn' => 'pgsql:host=localhost dbname=p2p2 user=jon password=',
-        'user' => 'jon',
-        'password' => '',
-      ),
-    ),
-    'propel2' => 
+    'p2p' => 
     array (
       'adapter' => 'pgsql',
       'connection' => 

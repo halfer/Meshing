@@ -53,7 +53,7 @@ abstract class BaseP2PConnectionQuery extends ModelCriteria
 	 * @param     string $modelName The phpName of a model, e.g. 'Book'
 	 * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
 	 */
-	public function __construct($dbName = 'default', $modelName = 'P2PConnection', $modelAlias = null)
+	public function __construct($dbName = 'p2p', $modelName = 'P2PConnection', $modelAlias = null)
 	{
 		parent::__construct($dbName, $modelName, $modelAlias);
 	}
