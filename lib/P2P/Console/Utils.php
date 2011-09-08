@@ -68,7 +68,7 @@ class P2P_Console_Utils
 		return $commands;
 	}
 
-	public static function runCommand($className, $argv)
+	public static function runCommand($className, $argv = array())
 	{
 		$console = new $className($argv);
 		$console->parseOpts();

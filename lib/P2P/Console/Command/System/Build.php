@@ -155,28 +155,13 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 	/**
 	 * Converts the known connections to XML and converts to a Propel-friendly conf file
 	 * 
-	 * @todo This is required by connection:add as well, how shall we share it?
-	 * 
 	 * @param boolean $verbose 
 	 */
 	protected function buildConnections($verbose)
 	{
-		$schemaDir = $this->projectRoot . '/database/system';
-		$schemas = "schema.xml";
-		$xmlFile = $this->projectRoot . '/database/system/runtime-conf.xml';
-		$outputDir = $this->projectRoot . '/database/connections';
-		$outputFile = 'database-conf.php';
-		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
-
-		$task = new P2P_Propel_ConfBuilder();
-		
-		$task->setSchemaDir($schemaDir);
-		$task->setSchemas($schemas);
-		$task->setXmlFile($xmlFile);
-		$task->setOutputDir($outputDir);
-		$task->setOutputFile($outputFile);
-		$task->addPropertiesFile($extraPropsFile);
-
-		$task->run();
+		P2P_Console_Utils::runCommand(
+			'P2P_Console_Command_Connection_Regen',
+			$verbose ? array('--verbose') : array()
+		);
 	}
 }
