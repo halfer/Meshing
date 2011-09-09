@@ -45,22 +45,20 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Stub implements P
 
 		// Create a Propel runtime XML containing all connections 
 		$this->createRuntimeXml(
-			$projectRoot . '/database/system',
-			'runtime-conf.xml',
-			'runtime-conf-all.xml'
+			$projectRoot . '/database/system/runtime-conf.xml',
+			$projectRoot . '/database/connections/runtime-conf-regen.xml'
 		);
 	}
 
 	/**
 	 * Get XML version of runtime file, return temp version
 	 */
-	protected function createRuntimeXml($dir, $runTime, $newRunTime)
+	protected function createRuntimeXml($runTime, $newRunTime)
 	{
 		// Ensure the file exists
-		$path = $dir . DIRECTORY_SEPARATOR . $runTime;
-		if (!is_readable($path))
+		if (!is_readable($runTime))
 		{
-			throw new Exception("Can't load '$runTime' runtime configuration");
+			throw new Exception("Can't load runtime configuration");
 		}
 
 		// Ensure the new file won't overwrite the old one!
@@ -70,7 +68,9 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Stub implements P
 		}
 
 		// Load up the XML doc
-		$xml = simplexml_load_file($path);
+		$xml = simplexml_load_file($runTime);
+
+		// @todo Validate XML file
 
 		// Grab the connections known to the system (@todo would we want more than 50!?)
 		P2P_Utils::initialiseDb();
@@ -100,7 +100,7 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Stub implements P
 		}
 
 		// Write out modified XML doc to new file
-		$xml->asXml($dir . DIRECTORY_SEPARATOR . $newRunTime);
+		$xml->asXml($newRunTime);
 
 		// @todo create a new XML file here, process in Propel, then delete it
 		echo "Built, but need to add dbname support\n";

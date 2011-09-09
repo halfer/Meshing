@@ -1,5 +1,5 @@
 # Normal files/folders to ignore
-
+database/connections/runtime-conf-regen.xml
 
 # Any IDE folders to ignore
 nbproject
