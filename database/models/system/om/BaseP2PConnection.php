@@ -37,6 +37,12 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 	protected $name;
 
 	/**
+	 * The value for the adaptor field.
+	 * @var        string
+	 */
+	protected $adaptor;
+
+	/**
 	 * The value for the host field.
 	 * @var        string
 	 */
@@ -91,6 +97,16 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * Get the [adaptor] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getAdaptor()
+	{
+		return $this->adaptor;
 	}
 
 	/**
@@ -162,6 +178,26 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 
 		return $this;
 	} // setName()
+
+	/**
+	 * Set the value of [adaptor] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     P2PConnection The current object (for fluent API support)
+	 */
+	public function setAdaptor($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->adaptor !== $v) {
+			$this->adaptor = $v;
+			$this->modifiedColumns[] = P2PConnectionPeer::ADAPTOR;
+		}
+
+		return $this;
+	} // setAdaptor()
 
 	/**
 	 * Set the value of [host] column.
@@ -257,9 +293,10 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->host = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->user = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-			$this->password = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->adaptor = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->host = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->user = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->password = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -268,7 +305,7 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 5; // 5 = P2PConnectionPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 6; // 6 = P2PConnectionPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating P2PConnection object", $e);
@@ -592,12 +629,15 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 				return $this->getName();
 				break;
 			case 2:
-				return $this->getHost();
+				return $this->getAdaptor();
 				break;
 			case 3:
-				return $this->getUser();
+				return $this->getHost();
 				break;
 			case 4:
+				return $this->getUser();
+				break;
+			case 5:
 				return $this->getPassword();
 				break;
 			default:
@@ -631,9 +671,10 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
-			$keys[2] => $this->getHost(),
-			$keys[3] => $this->getUser(),
-			$keys[4] => $this->getPassword(),
+			$keys[2] => $this->getAdaptor(),
+			$keys[3] => $this->getHost(),
+			$keys[4] => $this->getUser(),
+			$keys[5] => $this->getPassword(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->collP2POwnNodes) {
@@ -677,12 +718,15 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 				$this->setName($value);
 				break;
 			case 2:
-				$this->setHost($value);
+				$this->setAdaptor($value);
 				break;
 			case 3:
-				$this->setUser($value);
+				$this->setHost($value);
 				break;
 			case 4:
+				$this->setUser($value);
+				break;
+			case 5:
 				$this->setPassword($value);
 				break;
 		} // switch()
@@ -711,9 +755,10 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setHost($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setUser($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setPassword($arr[$keys[4]]);
+		if (array_key_exists($keys[2], $arr)) $this->setAdaptor($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setHost($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setUser($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setPassword($arr[$keys[5]]);
 	}
 
 	/**
@@ -727,6 +772,7 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 
 		if ($this->isColumnModified(P2PConnectionPeer::ID)) $criteria->add(P2PConnectionPeer::ID, $this->id);
 		if ($this->isColumnModified(P2PConnectionPeer::NAME)) $criteria->add(P2PConnectionPeer::NAME, $this->name);
+		if ($this->isColumnModified(P2PConnectionPeer::ADAPTOR)) $criteria->add(P2PConnectionPeer::ADAPTOR, $this->adaptor);
 		if ($this->isColumnModified(P2PConnectionPeer::HOST)) $criteria->add(P2PConnectionPeer::HOST, $this->host);
 		if ($this->isColumnModified(P2PConnectionPeer::USER)) $criteria->add(P2PConnectionPeer::USER, $this->user);
 		if ($this->isColumnModified(P2PConnectionPeer::PASSWORD)) $criteria->add(P2PConnectionPeer::PASSWORD, $this->password);
@@ -793,6 +839,7 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
 		$copyObj->setName($this->getName());
+		$copyObj->setAdaptor($this->getAdaptor());
 		$copyObj->setHost($this->getHost());
 		$copyObj->setUser($this->getUser());
 		$copyObj->setPassword($this->getPassword());
@@ -1017,6 +1064,7 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 	{
 		$this->id = null;
 		$this->name = null;
+		$this->adaptor = null;
 		$this->host = null;
 		$this->user = null;
 		$this->password = null;

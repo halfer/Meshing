@@ -9,6 +9,7 @@ CREATE TABLE "p2p_connection"
 (
 	"id" serial NOT NULL,
 	"name" VARCHAR(100) NOT NULL,
+	"adaptor" VARCHAR(20) NOT NULL,
 	"host" VARCHAR(100) NOT NULL,
 	"user" VARCHAR(100),
 	"password" VARCHAR(100),

@@ -41,6 +41,7 @@ class P2PConnectionTableMap extends TableMap
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 100, null);
+		$this->addColumn('ADAPTOR', 'Adaptor', 'VARCHAR', true, 20, null);
 		$this->addColumn('HOST', 'Host', 'VARCHAR', true, 100, null);
 		$this->addColumn('USER', 'User', 'VARCHAR', false, 100, null);
 		$this->addColumn('PASSWORD', 'Password', 'VARCHAR', false, 100, null);

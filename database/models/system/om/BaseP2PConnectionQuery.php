@@ -8,12 +8,14 @@
  *
  * @method     P2PConnectionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     P2PConnectionQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     P2PConnectionQuery orderByAdaptor($order = Criteria::ASC) Order by the adaptor column
  * @method     P2PConnectionQuery orderByHost($order = Criteria::ASC) Order by the host column
  * @method     P2PConnectionQuery orderByUser($order = Criteria::ASC) Order by the user column
  * @method     P2PConnectionQuery orderByPassword($order = Criteria::ASC) Order by the password column
  *
  * @method     P2PConnectionQuery groupById() Group by the id column
  * @method     P2PConnectionQuery groupByName() Group by the name column
+ * @method     P2PConnectionQuery groupByAdaptor() Group by the adaptor column
  * @method     P2PConnectionQuery groupByHost() Group by the host column
  * @method     P2PConnectionQuery groupByUser() Group by the user column
  * @method     P2PConnectionQuery groupByPassword() Group by the password column
@@ -31,12 +33,14 @@
  *
  * @method     P2PConnection findOneById(int $id) Return the first P2PConnection filtered by the id column
  * @method     P2PConnection findOneByName(string $name) Return the first P2PConnection filtered by the name column
+ * @method     P2PConnection findOneByAdaptor(string $adaptor) Return the first P2PConnection filtered by the adaptor column
  * @method     P2PConnection findOneByHost(string $host) Return the first P2PConnection filtered by the host column
  * @method     P2PConnection findOneByUser(string $user) Return the first P2PConnection filtered by the user column
  * @method     P2PConnection findOneByPassword(string $password) Return the first P2PConnection filtered by the password column
  *
  * @method     array findById(int $id) Return P2PConnection objects filtered by the id column
  * @method     array findByName(string $name) Return P2PConnection objects filtered by the name column
+ * @method     array findByAdaptor(string $adaptor) Return P2PConnection objects filtered by the adaptor column
  * @method     array findByHost(string $host) Return P2PConnection objects filtered by the host column
  * @method     array findByUser(string $user) Return P2PConnection objects filtered by the user column
  * @method     array findByPassword(string $password) Return P2PConnection objects filtered by the password column
@@ -201,6 +205,34 @@ abstract class BaseP2PConnectionQuery extends ModelCriteria
 			}
 		}
 		return $this->addUsingAlias(P2PConnectionPeer::NAME, $name, $comparison);
+	}
+
+	/**
+	 * Filter the query on the adaptor column
+	 * 
+	 * Example usage:
+	 * <code>
+	 * $query->filterByAdaptor('fooValue');   // WHERE adaptor = 'fooValue'
+	 * $query->filterByAdaptor('%fooValue%'); // WHERE adaptor LIKE '%fooValue%'
+	 * </code>
+	 *
+	 * @param     string $adaptor The value to use as filter.
+	 *              Accepts wildcards (* and % trigger a LIKE)
+	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+	 *
+	 * @return    P2PConnectionQuery The current query, for fluid interface
+	 */
+	public function filterByAdaptor($adaptor = null, $comparison = null)
+	{
+		if (null === $comparison) {
+			if (is_array($adaptor)) {
+				$comparison = Criteria::IN;
+			} elseif (preg_match('/[\%\*]/', $adaptor)) {
+				$adaptor = str_replace('*', '%', $adaptor);
+				$comparison = Criteria::LIKE;
+			}
+		}
+		return $this->addUsingAlias(P2PConnectionPeer::ADAPTOR, $adaptor, $comparison);
 	}
 
 	/**

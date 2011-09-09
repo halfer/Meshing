@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+	<propel>
+		<datasources>
+			<datasource id="p2p">
+				<adapter>pgsql</adapter>
+				<connection>
+					<dsn>pgsql:host=localhost dbname=p2p2 user=jon password=</dsn>
+					<user>jon</user>
+					<password/>
+				</connection>
+			</datasource>
+		</datasources>
+	</propel>
+</config>
