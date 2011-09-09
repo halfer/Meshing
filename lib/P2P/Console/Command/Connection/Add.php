@@ -22,6 +22,7 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 			'name|n=s' => 'A name to help you remember what this connection is for',
 			'adaptor|a=s' => 'The PDO adaptor to use for this connection',
 			'host|h=s' => 'The database host for this connection',
+			'database|d=s' => 'The name of the database you wish to connect to',
 			'user|u=s' => 'The username for this connection',
 			'password|p=s' => 'The password for this connection',
 			'password-file|f=s' => 'A text file containing the password for this connection',
@@ -69,19 +70,23 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 	{
 		P2P_Utils::initialiseDb();
 		
-		$Connection = new P2PConnection();
-		$Connection->setName($this->opts->name);
-		$Connection->setAdaptor($this->opts->adaptor);
-		$Connection->setHost($this->opts->host);
+		$connection = new P2PConnection();
+		$connection->setName($this->opts->name);
+		$connection->setAdaptor($this->opts->adaptor);
+		$connection->setHost($this->opts->host);
+		if ($this->opts->database)
+		{
+			$connection->setDatabase($this->opts->database);
+		}
 		if ($this->opts->user)
 		{
-			$Connection->setUser($this->opts->user);
+			$connection->setUser($this->opts->user);
 		}
 		if ($this->opts->password)
 		{
-			$Connection->setPassword($this->opts->password);
+			$connection->setPassword($this->opts->password);
 		}
-		$Connection->save();
+		$connection->save();
 
 		// Recreate the connections config files
 		$this->rebuildConfigFiles();

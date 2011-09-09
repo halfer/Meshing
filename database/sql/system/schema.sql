@@ -11,6 +11,7 @@ CREATE TABLE "p2p_connection"
 	"name" VARCHAR(100) NOT NULL,
 	"adaptor" VARCHAR(20) NOT NULL,
 	"host" VARCHAR(100) NOT NULL,
+	"database" VARCHAR(100),
 	"user" VARCHAR(100),
 	"password" VARCHAR(100),
 	PRIMARY KEY ("id")

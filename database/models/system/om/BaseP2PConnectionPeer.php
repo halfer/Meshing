@@ -26,13 +26,13 @@ abstract class BaseP2PConnectionPeer {
 	const TM_CLASS = 'P2PConnectionTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 6;
+	const NUM_COLUMNS = 7;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 6;
+	const NUM_HYDRATE_COLUMNS = 7;
 
 	/** the column name for the ID field */
 	const ID = 'p2p_connection.ID';
@@ -45,6 +45,9 @@ abstract class BaseP2PConnectionPeer {
 
 	/** the column name for the HOST field */
 	const HOST = 'p2p_connection.HOST';
+
+	/** the column name for the DATABASE field */
+	const DATABASE = 'p2p_connection.DATABASE';
 
 	/** the column name for the USER field */
 	const USER = 'p2p_connection.USER';
@@ -71,12 +74,12 @@ abstract class BaseP2PConnectionPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Adaptor', 'Host', 'User', 'Password', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'adaptor', 'host', 'user', 'password', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ADAPTOR, self::HOST, self::USER, self::PASSWORD, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ADAPTOR', 'HOST', 'USER', 'PASSWORD', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'adaptor', 'host', 'user', 'password', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Adaptor', 'Host', 'Database', 'User', 'Password', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'adaptor', 'host', 'database', 'user', 'password', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ADAPTOR, self::HOST, self::DATABASE, self::USER, self::PASSWORD, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ADAPTOR', 'HOST', 'DATABASE', 'USER', 'PASSWORD', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'adaptor', 'host', 'database', 'user', 'password', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	/**
@@ -86,12 +89,12 @@ abstract class BaseP2PConnectionPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Adaptor' => 2, 'Host' => 3, 'User' => 4, 'Password' => 5, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'adaptor' => 2, 'host' => 3, 'user' => 4, 'password' => 5, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ADAPTOR => 2, self::HOST => 3, self::USER => 4, self::PASSWORD => 5, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ADAPTOR' => 2, 'HOST' => 3, 'USER' => 4, 'PASSWORD' => 5, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'adaptor' => 2, 'host' => 3, 'user' => 4, 'password' => 5, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Adaptor' => 2, 'Host' => 3, 'Database' => 4, 'User' => 5, 'Password' => 6, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'adaptor' => 2, 'host' => 3, 'database' => 4, 'user' => 5, 'password' => 6, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ADAPTOR => 2, self::HOST => 3, self::DATABASE => 4, self::USER => 5, self::PASSWORD => 6, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ADAPTOR' => 2, 'HOST' => 3, 'DATABASE' => 4, 'USER' => 5, 'PASSWORD' => 6, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'adaptor' => 2, 'host' => 3, 'database' => 4, 'user' => 5, 'password' => 6, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	/**
@@ -167,6 +170,7 @@ abstract class BaseP2PConnectionPeer {
 			$criteria->addSelectColumn(P2PConnectionPeer::NAME);
 			$criteria->addSelectColumn(P2PConnectionPeer::ADAPTOR);
 			$criteria->addSelectColumn(P2PConnectionPeer::HOST);
+			$criteria->addSelectColumn(P2PConnectionPeer::DATABASE);
 			$criteria->addSelectColumn(P2PConnectionPeer::USER);
 			$criteria->addSelectColumn(P2PConnectionPeer::PASSWORD);
 		} else {
@@ -174,6 +178,7 @@ abstract class BaseP2PConnectionPeer {
 			$criteria->addSelectColumn($alias . '.NAME');
 			$criteria->addSelectColumn($alias . '.ADAPTOR');
 			$criteria->addSelectColumn($alias . '.HOST');
+			$criteria->addSelectColumn($alias . '.DATABASE');
 			$criteria->addSelectColumn($alias . '.USER');
 			$criteria->addSelectColumn($alias . '.PASSWORD');
 		}
