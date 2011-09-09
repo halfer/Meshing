@@ -16,8 +16,11 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 
 	public function getOpts()
 	{
+		// @todo Support --test, the purpose for which is obvious!
+
 		return array(
 			'name|n=s' => 'A name to help you remember what this connection is for',
+			'adaptor|a=s' => 'The PDO adaptor to use for this connection',
 			'host|h=s' => 'The database host for this connection',
 			'user|u=s' => 'The username for this connection',
 			'password|p=s' => 'The password for this connection',
@@ -33,6 +36,13 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 		}
 
 		// @todo Check that the connection name is unique
+
+		if (!$this->opts->adaptor)
+		{
+			throw new Zend_Console_Getopt_Exception('All connections need an adaptor (use --adaptor <adaptor>)');
+		}
+
+		// @todo Check the adaptor exists in Propel
 
 		if (!$this->opts->host)
 		{
@@ -61,6 +71,7 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 		
 		$Connection = new P2PConnection();
 		$Connection->setName($this->opts->name);
+		$Connection->setAdaptor($this->opts->adaptor);
 		$Connection->setHost($this->opts->host);
 		if ($this->opts->user)
 		{

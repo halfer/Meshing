@@ -24,10 +24,11 @@ class P2P_Console_Command_Connection_List extends P2P_Console_Stub implements P2
 	public function run()
 	{
 		P2P_Utils::initialiseDb();
-		
-		$outFormat = '%-15s%-15s%-40s';
+
+		// @todo Fix spelling of 'adaptor' to Propel 'adapter'?
+		$outFormat = '%-15s%-12s%-15s%-40s';
 		$this->ruleOff();
-		echo sprintf($outFormat, 'Name', 'User', 'Host') . "\n";
+		echo sprintf($outFormat, 'Name', 'Adaptor', 'User', 'Host') . "\n";
 		$this->ruleOff();
 		
 		$connections = P2PConnectionPeer::doSelect(new Criteria());
@@ -37,6 +38,7 @@ class P2P_Console_Command_Connection_List extends P2P_Console_Stub implements P2
 			echo sprintf(
 				$outFormat,
 				$connection->getName(),
+				$connection->getAdaptor(),
 				$connection->getUser() ? $connection->getUser() : 'n/a',
 				$connection->getHost()
 			);
