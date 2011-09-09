@@ -71,21 +71,39 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Stub implements P
 
 		// Load up the XML doc
 		$xml = simplexml_load_file($path);
+
+		// Grab the connections known to the system (@todo would we want more than 50!?)
+		P2P_Utils::initialiseDb();
+		$c = new Criteria();
+		$c->setLimit(50);
+		$connections = P2PConnectionPeer::doSelect($c);
 		
-		// Create new datasource xml element
-		$element = $xml->propel->datasources->addChild('datasource');
-		$element['id'] = 'propel-conn-name';
-		$inner1 = $element->addChild('adaptor', 'pgsql');
-		$inner2 = $element->addChild('connection');
-		$inner2->addChild('dsn', 'pgsql:host=localhost dbname=p2p2 user=jon password=');
-		$inner2->addChild('user', 'jon');
-		$inner2->addChild('password', '');
+		// Add each connection in as a datasource
+		/* @var $connection P2PConnection */
+		foreach ($connections as $connection)
+		{
+			// Build DSN string
+			$dsn = $connection->getAdaptor() . ':' .
+				'host=' . $connection->getHost() . ' ' .
+				'dbname=xxx ' .
+				'user=' . $connection->getUser() . ' ' .
+				'password=' . $connection->getPassword();
+
+			// Modify XML document
+			$element = $xml->propel->datasources->addChild('datasource');
+			$element['id'] = $connection->getName();
+			$inner1 = $element->addChild('adaptor', $connection->getAdaptor());
+			$inner2 = $element->addChild('connection');
+			$inner2->addChild('dsn', $dsn);
+			$inner2->addChild('user', $connection->getUser());
+			$inner2->addChild('password', $connection->getPassword());
+		}
 
 		// Write out modified XML doc to new file
 		$xml->asXml($dir . DIRECTORY_SEPARATOR . $newRunTime);
 
 		// @todo create a new XML file here, process in Propel, then delete it
-		throw new Exception('Demo implementation only');
+		echo "Built, but need to add dbname support\n";
 	}
 
 	protected function deleteRuntimeXml($tempName)
