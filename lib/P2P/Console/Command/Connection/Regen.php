@@ -62,12 +62,30 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Stub implements P
 		{
 			throw new Exception("Can't load '$runTime' runtime configuration");
 		}
-		
+
+		// Ensure the new file won't overwrite the old one!
+		if ( $runTime == $newRunTime )
+		{
+			throw new Exception('The new XML location must be different to the existing one');
+		}
+
 		// Load up the XML doc
 		$xml = simplexml_load_file($path);
-		print_r($xml);
 		
+		// Create new datasource xml element
+		$element = $xml->propel->datasources->addChild('datasource');
+		$element['id'] = 'propel-conn-name';
+		$inner1 = $element->addChild('adaptor', 'pgsql');
+		$inner2 = $element->addChild('connection');
+		$inner2->addChild('dsn', 'pgsql:host=localhost dbname=p2p2 user=jon password=');
+		$inner2->addChild('user', 'jon');
+		$inner2->addChild('password', '');
+
+		// Write out modified XML doc to new file
+		$xml->asXml($dir . DIRECTORY_SEPARATOR . $newRunTime);
+
 		// @todo create a new XML file here, process in Propel, then delete it
+		throw new Exception('Demo implementation only');
 	}
 
 	protected function deleteRuntimeXml($tempName)
