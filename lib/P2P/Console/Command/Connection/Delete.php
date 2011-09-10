@@ -46,6 +46,7 @@ class P2P_Console_Command_Connection_Delete extends P2P_Console_Command_Connecti
 		$this->connection->delete();
 
 		// Recreate the connections config files
-		$this->rebuildConfigFiles();		
+		// @todo Support --quiet flag in this command
+		$this->buildConnections(false);
 	}
 }

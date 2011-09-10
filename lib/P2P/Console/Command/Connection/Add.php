@@ -89,6 +89,7 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 		$connection->save();
 
 		// Recreate the connections config files
-		$this->rebuildConfigFiles();
+		// @todo Support --quiet flag in this command
+		$this->buildConnections(false);
 	}
 }
