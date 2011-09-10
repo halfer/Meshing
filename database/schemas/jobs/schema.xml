@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE page [
+<!ENTITY pk SYSTEM "pk.xml">
+<!ENTITY current_meta SYSTEM "current_meta.xml">
+]>
 <database name="propel" defaultIdMethod="native">
 
 	<table name="role_current" package="jobsite">
@@ -47,9 +51,11 @@
 		<foreign-key foreignTable="known_node">
 			<reference local="editor_node_id" foreign="id" />
 		</foreign-key>
+		<!--
 		<foreign-key foreignTable="received_change">
 			<reference local="received_change_id" foreign="id" />
 		</foreign-key>
+		-->
 
 		<!-- hash for this record -->
 		<column name="hash" type="varchar" size="80" />
@@ -70,7 +76,7 @@
 		<column name="currency"	type="varchar" size="2" />
 	</table>
 
-	<table name="location">
+	<table name="location" package="jobsite">
 		<!-- special PK defined by system -->
 		<column name="creator_node_id" type="integer" required="true" primaryKey="true" />
 		<column name="row_ord" type="integer" required="true" primaryKey="true" />
@@ -81,7 +87,38 @@
 		<!-- hash for this record -->
 		<column name="hash" type="varchar" size="80" />
 
+		<!-- need some columns here ;-) -->
+	</table>
 
+	<table name="location_versionable" package="jobsite">
+		<!-- special PK defined by system -->
+		<column name="creator_node_id" type="integer" required="true" primaryKey="true" />
+		<column name="row_ord" type="integer" required="true" primaryKey="true" />
+		<column name="version" type="integer" required="true" primaryKey="true" />
+		<foreign-key foreignTable="known_node">
+			<reference local="creator_node_id" foreign="id" />
+		</foreign-key>
+
+		<!-- metadata for this record -->
+		<column name="editor_node_id" type="integer" />
+		<column name="received_change_id" type="integer" />
+		<column name="time_created" type="timestamp" />
+		<column name="time_edited" type="timestamp" />
+		<column name="time_received" type="timestamp" />
+		<column name="time_applied" type="timestamp" />
+		<foreign-key foreignTable="known_node">
+			<reference local="editor_node_id" foreign="id" />
+		</foreign-key>
+		<!--
+		<foreign-key foreignTable="received_change">
+			<reference local="received_change_id" foreign="id" />
+		</foreign-key>
+		-->
+
+		<!-- hash for this record -->
+		<column name="hash" type="varchar" size="80" />
+
+		<!-- need some columns here ;-) -->
 	</table>
 
 	<!-- System table -->
