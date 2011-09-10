@@ -159,9 +159,14 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 	 */
 	protected function buildConnections($verbose)
 	{
-		P2P_Console_Utils::runCommand(
-			'P2P_Console_Command_Connection_Regen',
-			$verbose ? array('--verbose') : array()
-		);
+		// Regen only system connections
+		$opts = array('--system-only');
+
+		if (!$verbose)
+		{
+			$opts[] = '--quiet';
+		}
+		
+		P2P_Console_Utils::runCommand('P2P_Console_Command_Connection_Regen', $opts);
 	}
 }
