@@ -36,7 +36,12 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 			throw new Zend_Console_Getopt_Exception('All connections need a name (use --name <name>).');			
 		}
 
-		// @todo Check that the connection name is unique
+		// Check that the connection name is unique
+		P2P_Utils::initialiseDb();
+		if ($this->connectionExists($this->opts->name))
+		{
+			throw new Zend_Console_Getopt_Exception('That connection name is already taken');
+		}
 
 		if (!$this->opts->adaptor)
 		{
@@ -61,6 +66,11 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 		}
 	}
 
+	protected function connectionExists($name)
+	{
+		return (bool) P2PConnectionQuery::create()->findOneByName($name);
+	}
+
 	/**
 	 * Creates a new, named connection
 	 * 
@@ -68,8 +78,6 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 	 */
 	public function run()
 	{
-		P2P_Utils::initialiseDb();
-		
 		$connection = new P2PConnection();
 		$connection->setName($this->opts->name);
 		$connection->setAdaptor($this->opts->adaptor);
