@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database name="propel" defaultIdMethod="native">
 
-	<table name="role_current" package="jobsite">
+	<table name="role" package="jobsite">
 		&current_header;
 
 		<!-- rows for this record -->
@@ -18,7 +18,20 @@
 		<column name="annual_salary" type="real" />
 		<column name="daily_rate" type="real" />
 		<column name="currency"	type="varchar" size="2" />
-		<!-- @todo need fk to location -->
+		
+		<!-- foreign keys for this record -->
+		<column name="location_creator_node_id" type="integer" />
+		<column name="location_row_ord" type="integer" />
+		<foreign-key foreignTable="location">
+			<reference local="location_creator_node_id" foreign="creator_node_id" />
+			<reference local="location_row_ord" foreign="row_ord" />
+		</foreign-key>
+		<column name="group_creator_node_id" type="integer" />
+		<column name="group_row_ord" type="integer" />
+		<foreign-key foreignTable="group">
+			<reference local="group_creator_node_id" foreign="creator_node_id" />
+			<reference local="group_row_ord" foreign="row_ord" />
+		</foreign-key>
 	</table>
 
 	<table name="role_versionable" package="jobsite">
@@ -38,19 +51,64 @@
 		<column name="annual_salary" type="real" />
 		<column name="daily_rate" type="real" />
 		<column name="currency"	type="varchar" size="2" />
-		<!-- @todo need fk to location -->
+
+		<!-- foreign keys for this record -->
+		<column name="location_creator_node_id" type="integer" />
+		<column name="location_row_ord" type="integer" />
+		<foreign-key foreignTable="location">
+			<reference local="location_creator_node_id" foreign="creator_node_id" />
+			<reference local="location_row_ord" foreign="row_ord" />
+		</foreign-key>
+		<column name="group_creator_node_id" type="integer" />
+		<column name="group_row_ord" type="integer" />
+		<foreign-key foreignTable="group">
+			<reference local="group_creator_node_id" foreign="creator_node_id" />
+			<reference local="group_row_ord" foreign="row_ord" />
+		</foreign-key>
 	</table>
 
 	<table name="location" package="jobsite">
 		&current_header;
 
-		<!-- @todo need some columns here ;-) -->
+		<!-- rows for this record -->
+		<column name="country" type="varchar" size="30" required="true" />
+		<column name="address" type="varchar" size="100" required="true" />
+		<column name="postcode" type="varchar" size="10" required="true" />
+		<column name="latitude" type="real" />
+		<column name="longitude" type="real" />
 	</table>
 
 	<table name="location_versionable" package="jobsite">
 		&versionable_header;
 
-		<!-- @todo need some columns here ;-) -->
+		<!-- rows for this record -->
+		<column name="country" type="varchar" size="30" required="true" />
+		<column name="address" type="varchar" size="100" required="true" />
+		<column name="postcode" type="varchar" size="10" required="true" />
+		<column name="latitude" type="real" />
+		<column name="longitude" type="real" />
+	</table>
+	
+	<table name="group" package="jobsite">
+		&current_header;
+
+		<!-- rows for this record -->
+		<column name="name" type="varchar" size="50" required="true" />
+		<column name="email" type="varchar" size="100" />
+		<column name="tel" type="varchar" size="20" />
+		<column name="web" type="varchar" size="50" />
+		<column name="type" type="varchar" size="1" />
+	</table>
+
+	<table name="group_versionable" package="jobsite">
+		&versionable_header;
+
+		<!-- rows for this record -->
+		<column name="name" type="varchar" size="50" required="true" />
+		<column name="email" type="varchar" size="100" />
+		<column name="tel" type="varchar" size="20" />
+		<column name="web" type="varchar" size="50" />
+		<column name="type" type="varchar" size="1" />
 	</table>
 
 	&known_nodes;

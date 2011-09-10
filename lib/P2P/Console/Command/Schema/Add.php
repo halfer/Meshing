@@ -37,6 +37,13 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 		
 	}
 
+	/**
+	 * Modifies and then builds a Propel schema
+	 * 
+	 * @todo Each table should have a versioned copy created automatically
+	 * @todo Table names should be converted into something unique eg JobsDotComRole
+	 * @todo An easier way to specify FKs?
+	 */
 	public function run()
 	{
 		// Set db type, schema and output folder here
