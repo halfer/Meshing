@@ -5,16 +5,26 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Connection_Regen extends P2P_Console_Stub implements P2P_Console_Interface
+class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P2P_Console_Interface
 {
+	public function __construct($argv = array())
+	{
+		parent::__construct($argv);
+		
+		$this->projectRoot = P2P_Utils::getProjectRoot();
+	}
+
 	public function getDescription()
 	{
-		return 'Regenerates the config files for the database';
+		return 'Regenerates the database connection config files';
 	}
 
 	public function getOpts()
 	{
-		return array();
+		return array(
+			'quiet|q' => 'Suppress console output',
+			'system-only|s' => 'Only regen the system connections'
+		);
 	}
 
 	public function preRunCheck()
@@ -23,35 +33,76 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Stub implements P
 
 	public function run()
 	{
-		$projectRoot = P2P_Utils::getProjectRoot();
-
-		$schemaDir = $projectRoot . '/database/system';
-		$schemas = "schema.xml";
-		$xmlFile = $projectRoot . '/database/system/runtime-conf.xml';
-		$outputDir = $projectRoot . '/database/connections';
+		$outputDir = $this->projectRoot . '/database/connections';
 		$outputFile = 'database-conf.php';
-		$extraPropsFile = $projectRoot . '/database/system/build.properties';
+
+		// If the PHP config files are missing, regen just system ones to start with
+		$conf1 = $outputDir . DIRECTORY_SEPARATOR . $outputFile;
+		$conf2 = $outputDir . DIRECTORY_SEPARATOR . 'classmap-' . $outputFile;
+		if (!is_readable($conf1) || !is_readable($conf2) || $this->opts->{'system-only'})
+		{
+			// Create a Propel runtime XML for just the system connection
+			$xmlFile = $this->projectRoot . '/database/system/runtime-conf.xml';
+			$this->convertConf($xmlFile, $outputDir, $outputFile);
+			
+			if (!$this->opts->quiet)
+			{
+				echo "Generated system connections config file.\n";
+			}
+		}
+
+		// If system only has been specified, we're done
+		if ($this->opts->{'system-only'})
+		{
+			return;
+		}
+		
+		// Create a Propel runtime XML containing all connections		
+		$xmlFile = $this->projectRoot . '/database/connections/runtime-conf-regen.xml';
+		$this->createRuntimeXml(
+			$this->projectRoot . '/database/system/runtime-conf.xml',
+			$xmlFile
+		);
+		
+		// Then generate the connections file again, against the new config
+		$this->convertConf($xmlFile, $outputDir, $outputFile);
+
+		if (!$this->opts->quiet)
+		{
+			echo "Generated user connections config file.\n";
+		}
+
+		// Finally delete the temp XML file
+		$this->deleteRuntimeXml($xmlFile);
+	}
+
+	/**
+	 * Takes an XML config file and converts it to PHP config files
+	 * 
+	 * @param string $runTime Full pathname of the XML config file
+	 * @param string $outputDir Path of the output directory
+	 * @param string $outputFile Base leafname of the output PHP file
+	 */
+	public function convertConf($runTime, $outputDir, $outputFile)
+	{
+		$schemaDir = $this->projectRoot . '/database/system';
+		$schemas = "schema.xml";
+		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
 
 		$task = new P2P_Propel_ConfBuilder();
 		
 		$task->setSchemaDir($schemaDir);
 		$task->setSchemas($schemas);
-		$task->setXmlFile($xmlFile);
+		$task->setXmlFile($runTime);
 		$task->setOutputDir($outputDir);
 		$task->setOutputFile($outputFile);
 		$task->addPropertiesFile($extraPropsFile);
 
-		$task->run();
-
-		// Create a Propel runtime XML containing all connections 
-		$this->createRuntimeXml(
-			$projectRoot . '/database/system/runtime-conf.xml',
-			$projectRoot . '/database/connections/runtime-conf-regen.xml'
-		);
+		$task->run();		
 	}
 
 	/**
-	 * Get XML version of runtime file, return temp version
+	 * Get XML version of default runtime file, returns temp version to convert to PHP
 	 */
 	protected function createRuntimeXml($runTime, $newRunTime)
 	{
@@ -85,14 +136,14 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Stub implements P
 			// Build DSN string
 			$dsn = $connection->getAdaptor() . ':' .
 				'host=' . $connection->getHost() . ' ' .
-				'dbname=xxx ' .
+				'dbname=' . $connection->getDatabase() . ' ' .
 				'user=' . $connection->getUser() . ' ' .
 				'password=' . $connection->getPassword();
 
 			// Modify XML document
 			$element = $xml->propel->datasources->addChild('datasource');
 			$element['id'] = $connection->getName();
-			$inner1 = $element->addChild('adaptor', $connection->getAdaptor());
+			$inner1 = $element->addChild('adapter', $connection->getAdaptor());
 			$inner2 = $element->addChild('connection');
 			$inner2->addChild('dsn', $dsn);
 			$inner2->addChild('user', $connection->getUser());
@@ -101,9 +152,6 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Stub implements P
 
 		// Write out modified XML doc to new file
 		$xml->asXml($newRunTime);
-
-		// @todo create a new XML file here, process in Propel, then delete it
-		echo "Built, but need to add dbname support\n";
 	}
 
 	protected function deleteRuntimeXml($tempName)
