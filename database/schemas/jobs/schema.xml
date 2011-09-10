@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE page [
-<!ENTITY pk SYSTEM "pk.xml">
-<!ENTITY current_meta SYSTEM "current_meta.xml">
-]>
 <database name="propel" defaultIdMethod="native">
 
 	<table name="role_current" package="jobsite">
-		<!-- special PK defined by system -->
-		<column name="creator_node_id" type="integer" required="true" primaryKey="true" />
-		<column name="row_ord" type="integer" required="true" primaryKey="true" />
-		<foreign-key foreignTable="known_node">
-			<reference local="creator_node_id" foreign="id" />
-		</foreign-key>
-
-		<!-- hash for this record -->
-		<column name="hash" type="varchar" size="80" />
+		&current_header;
 
 		<!-- rows for this record -->
 		<column name="title" type="varchar" size="50" required="true" />
@@ -30,35 +18,11 @@
 		<column name="annual_salary" type="real" />
 		<column name="daily_rate" type="real" />
 		<column name="currency"	type="varchar" size="2" />
+		<!-- @todo need fk to location -->
 	</table>
 
 	<table name="role_versionable" package="jobsite">
-		<!-- special PK defined by system -->
-		<column name="creator_node_id" type="integer" required="true" primaryKey="true" />
-		<column name="row_ord" type="integer" required="true" primaryKey="true" />
-		<column name="version" type="integer" required="true" primaryKey="true" />
-		<foreign-key foreignTable="known_node">
-			<reference local="creator_node_id" foreign="id" />
-		</foreign-key>
-
-		<!-- metadata for this record -->
-		<column name="editor_node_id" type="integer" />
-		<column name="received_change_id" type="integer" />
-		<column name="time_created" type="timestamp" />
-		<column name="time_edited" type="timestamp" />
-		<column name="time_received" type="timestamp" />
-		<column name="time_applied" type="timestamp" />
-		<foreign-key foreignTable="known_node">
-			<reference local="editor_node_id" foreign="id" />
-		</foreign-key>
-		<!--
-		<foreign-key foreignTable="received_change">
-			<reference local="received_change_id" foreign="id" />
-		</foreign-key>
-		-->
-
-		<!-- hash for this record -->
-		<column name="hash" type="varchar" size="80" />
+		&versionable_header;
 
 		<!-- rows for this record -->
 		<column name="title" type="varchar" size="50" required="true" />
@@ -74,60 +38,20 @@
 		<column name="annual_salary" type="real" />
 		<column name="daily_rate" type="real" />
 		<column name="currency"	type="varchar" size="2" />
+		<!-- @todo need fk to location -->
 	</table>
 
 	<table name="location" package="jobsite">
-		<!-- special PK defined by system -->
-		<column name="creator_node_id" type="integer" required="true" primaryKey="true" />
-		<column name="row_ord" type="integer" required="true" primaryKey="true" />
-		<foreign-key foreignTable="known_node">
-			<reference local="creator_node_id" foreign="id" />
-		</foreign-key>
+		&current_header;
 
-		<!-- hash for this record -->
-		<column name="hash" type="varchar" size="80" />
-
-		<!-- need some columns here ;-) -->
+		<!-- @todo need some columns here ;-) -->
 	</table>
 
 	<table name="location_versionable" package="jobsite">
-		<!-- special PK defined by system -->
-		<column name="creator_node_id" type="integer" required="true" primaryKey="true" />
-		<column name="row_ord" type="integer" required="true" primaryKey="true" />
-		<column name="version" type="integer" required="true" primaryKey="true" />
-		<foreign-key foreignTable="known_node">
-			<reference local="creator_node_id" foreign="id" />
-		</foreign-key>
+		&versionable_header;
 
-		<!-- metadata for this record -->
-		<column name="editor_node_id" type="integer" />
-		<column name="received_change_id" type="integer" />
-		<column name="time_created" type="timestamp" />
-		<column name="time_edited" type="timestamp" />
-		<column name="time_received" type="timestamp" />
-		<column name="time_applied" type="timestamp" />
-		<foreign-key foreignTable="known_node">
-			<reference local="editor_node_id" foreign="id" />
-		</foreign-key>
-		<!--
-		<foreign-key foreignTable="received_change">
-			<reference local="received_change_id" foreign="id" />
-		</foreign-key>
-		-->
-
-		<!-- hash for this record -->
-		<column name="hash" type="varchar" size="80" />
-
-		<!-- need some columns here ;-) -->
+		<!-- @todo need some columns here ;-) -->
 	</table>
 
-	<!-- System table -->
-	<table name="known_node" package="system">
-		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-		<column name="hash" type="varchar" size="60" required="true" />
-		<column name="name" type="varchar" size="50" />
-		<column name="fqdn" type="varchar" size="150" />
-		<column name="port" type="integer" />
-		<column name="ip" type="varchar" size="20" />
-	</table>
+	&known_nodes;
 </database>

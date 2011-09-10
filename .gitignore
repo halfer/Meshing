@@ -1,5 +1,6 @@
 # Normal files/folders to ignore
 database/connections/*
+database/models/*
 
 # Any IDE folders to ignore
 nbproject

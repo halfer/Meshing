@@ -1,0 +1,26 @@
+		<!-- special PK defined by system -->
+		<column name="creator_node_id" type="integer" required="true" primaryKey="true" />
+		<column name="row_ord" type="integer" required="true" primaryKey="true" />
+		<column name="version" type="integer" required="true" primaryKey="true" />
+		<foreign-key foreignTable="known_node">
+			<reference local="creator_node_id" foreign="id" />
+		</foreign-key>
+
+		<!-- metadata for this record -->
+		<column name="editor_node_id" type="integer" />
+		<column name="received_change_id" type="integer" />
+		<column name="time_created" type="timestamp" />
+		<column name="time_edited" type="timestamp" />
+		<column name="time_received" type="timestamp" />
+		<column name="time_applied" type="timestamp" />
+		<foreign-key foreignTable="known_node">
+			<reference local="editor_node_id" foreign="id" />
+		</foreign-key>
+		<!-- @todo May need to support this later
+		<foreign-key foreignTable="received_change">
+			<reference local="received_change_id" foreign="id" />
+		</foreign-key>
+		-->
+
+		<!-- hash for this record -->
+		<column name="hash" type="varchar" size="80" />
