@@ -26,19 +26,16 @@ abstract class BaseP2PSchemaPeer {
 	const TM_CLASS = 'P2PSchemaTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 12;
+	const NUM_COLUMNS = 11;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 12;
+	const NUM_HYDRATE_COLUMNS = 11;
 
 	/** the column name for the ID field */
 	const ID = 'p2p_schema.ID';
-
-	/** the column name for the XML field */
-	const XML = 'p2p_schema.XML';
 
 	/** the column name for the NAME field */
 	const NAME = 'p2p_schema.NAME';
@@ -89,12 +86,12 @@ abstract class BaseP2PSchemaPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Xml', 'Name', 'Description', 'Author', 'Contact', 'Url', 'DateRelease', 'SchemaVersion', 'SoftwareVersion', 'History', 'InstalledAt', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'xml', 'name', 'description', 'author', 'contact', 'url', 'dateRelease', 'schemaVersion', 'softwareVersion', 'history', 'installedAt', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::XML, self::NAME, self::DESCRIPTION, self::AUTHOR, self::CONTACT, self::URL, self::DATE_RELEASE, self::SCHEMA_VERSION, self::SOFTWARE_VERSION, self::HISTORY, self::INSTALLED_AT, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'XML', 'NAME', 'DESCRIPTION', 'AUTHOR', 'CONTACT', 'URL', 'DATE_RELEASE', 'SCHEMA_VERSION', 'SOFTWARE_VERSION', 'HISTORY', 'INSTALLED_AT', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'xml', 'name', 'description', 'author', 'contact', 'url', 'date_release', 'schema_version', 'software_version', 'history', 'installed_at', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Description', 'Author', 'Contact', 'Url', 'DateRelease', 'SchemaVersion', 'SoftwareVersion', 'History', 'InstalledAt', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'description', 'author', 'contact', 'url', 'dateRelease', 'schemaVersion', 'softwareVersion', 'history', 'installedAt', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::DESCRIPTION, self::AUTHOR, self::CONTACT, self::URL, self::DATE_RELEASE, self::SCHEMA_VERSION, self::SOFTWARE_VERSION, self::HISTORY, self::INSTALLED_AT, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'DESCRIPTION', 'AUTHOR', 'CONTACT', 'URL', 'DATE_RELEASE', 'SCHEMA_VERSION', 'SOFTWARE_VERSION', 'HISTORY', 'INSTALLED_AT', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'description', 'author', 'contact', 'url', 'date_release', 'schema_version', 'software_version', 'history', 'installed_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
 	);
 
 	/**
@@ -104,12 +101,12 @@ abstract class BaseP2PSchemaPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Xml' => 1, 'Name' => 2, 'Description' => 3, 'Author' => 4, 'Contact' => 5, 'Url' => 6, 'DateRelease' => 7, 'SchemaVersion' => 8, 'SoftwareVersion' => 9, 'History' => 10, 'InstalledAt' => 11, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'xml' => 1, 'name' => 2, 'description' => 3, 'author' => 4, 'contact' => 5, 'url' => 6, 'dateRelease' => 7, 'schemaVersion' => 8, 'softwareVersion' => 9, 'history' => 10, 'installedAt' => 11, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::XML => 1, self::NAME => 2, self::DESCRIPTION => 3, self::AUTHOR => 4, self::CONTACT => 5, self::URL => 6, self::DATE_RELEASE => 7, self::SCHEMA_VERSION => 8, self::SOFTWARE_VERSION => 9, self::HISTORY => 10, self::INSTALLED_AT => 11, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'XML' => 1, 'NAME' => 2, 'DESCRIPTION' => 3, 'AUTHOR' => 4, 'CONTACT' => 5, 'URL' => 6, 'DATE_RELEASE' => 7, 'SCHEMA_VERSION' => 8, 'SOFTWARE_VERSION' => 9, 'HISTORY' => 10, 'INSTALLED_AT' => 11, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'xml' => 1, 'name' => 2, 'description' => 3, 'author' => 4, 'contact' => 5, 'url' => 6, 'date_release' => 7, 'schema_version' => 8, 'software_version' => 9, 'history' => 10, 'installed_at' => 11, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Description' => 2, 'Author' => 3, 'Contact' => 4, 'Url' => 5, 'DateRelease' => 6, 'SchemaVersion' => 7, 'SoftwareVersion' => 8, 'History' => 9, 'InstalledAt' => 10, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'description' => 2, 'author' => 3, 'contact' => 4, 'url' => 5, 'dateRelease' => 6, 'schemaVersion' => 7, 'softwareVersion' => 8, 'history' => 9, 'installedAt' => 10, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::DESCRIPTION => 2, self::AUTHOR => 3, self::CONTACT => 4, self::URL => 5, self::DATE_RELEASE => 6, self::SCHEMA_VERSION => 7, self::SOFTWARE_VERSION => 8, self::HISTORY => 9, self::INSTALLED_AT => 10, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'DESCRIPTION' => 2, 'AUTHOR' => 3, 'CONTACT' => 4, 'URL' => 5, 'DATE_RELEASE' => 6, 'SCHEMA_VERSION' => 7, 'SOFTWARE_VERSION' => 8, 'HISTORY' => 9, 'INSTALLED_AT' => 10, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'description' => 2, 'author' => 3, 'contact' => 4, 'url' => 5, 'date_release' => 6, 'schema_version' => 7, 'software_version' => 8, 'history' => 9, 'installed_at' => 10, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
 	);
 
 	/**
@@ -182,7 +179,6 @@ abstract class BaseP2PSchemaPeer {
 	{
 		if (null === $alias) {
 			$criteria->addSelectColumn(P2PSchemaPeer::ID);
-			$criteria->addSelectColumn(P2PSchemaPeer::XML);
 			$criteria->addSelectColumn(P2PSchemaPeer::NAME);
 			$criteria->addSelectColumn(P2PSchemaPeer::DESCRIPTION);
 			$criteria->addSelectColumn(P2PSchemaPeer::AUTHOR);
@@ -195,7 +191,6 @@ abstract class BaseP2PSchemaPeer {
 			$criteria->addSelectColumn(P2PSchemaPeer::INSTALLED_AT);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
-			$criteria->addSelectColumn($alias . '.XML');
 			$criteria->addSelectColumn($alias . '.NAME');
 			$criteria->addSelectColumn($alias . '.DESCRIPTION');
 			$criteria->addSelectColumn($alias . '.AUTHOR');

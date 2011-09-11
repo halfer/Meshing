@@ -31,12 +31,6 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 	protected $id;
 
 	/**
-	 * The value for the xml field.
-	 * @var        string
-	 */
-	protected $xml;
-
-	/**
 	 * The value for the name field.
 	 * @var        string
 	 */
@@ -128,16 +122,6 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 	public function getId()
 	{
 		return $this->id;
-	}
-
-	/**
-	 * Get the [xml] column value.
-	 * 
-	 * @return     string
-	 */
-	public function getXml()
-	{
-		return $this->xml;
 	}
 
 	/**
@@ -305,26 +289,6 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 
 		return $this;
 	} // setId()
-
-	/**
-	 * Set the value of [xml] column.
-	 * 
-	 * @param      string $v new value
-	 * @return     P2PSchema The current object (for fluent API support)
-	 */
-	public function setXml($v)
-	{
-		if ($v !== null) {
-			$v = (string) $v;
-		}
-
-		if ($this->xml !== $v) {
-			$this->xml = $v;
-			$this->modifiedColumns[] = P2PSchemaPeer::XML;
-		}
-
-		return $this;
-	} // setXml()
 
 	/**
 	 * Set the value of [name] column.
@@ -563,17 +527,16 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->xml = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->description = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-			$this->author = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->contact = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-			$this->url = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-			$this->date_release = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->schema_version = ($row[$startcol + 8] !== null) ? (double) $row[$startcol + 8] : null;
-			$this->software_version = ($row[$startcol + 9] !== null) ? (double) $row[$startcol + 9] : null;
-			$this->history = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-			$this->installed_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+			$this->description = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->author = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->contact = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->url = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->date_release = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->schema_version = ($row[$startcol + 7] !== null) ? (double) $row[$startcol + 7] : null;
+			$this->software_version = ($row[$startcol + 8] !== null) ? (double) $row[$startcol + 8] : null;
+			$this->history = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->installed_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -582,7 +545,7 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 12; // 12 = P2PSchemaPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 11; // 11 = P2PSchemaPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating P2PSchema object", $e);
@@ -921,36 +884,33 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getXml();
-				break;
-			case 2:
 				return $this->getName();
 				break;
-			case 3:
+			case 2:
 				return $this->getDescription();
 				break;
-			case 4:
+			case 3:
 				return $this->getAuthor();
 				break;
-			case 5:
+			case 4:
 				return $this->getContact();
 				break;
-			case 6:
+			case 5:
 				return $this->getUrl();
 				break;
-			case 7:
+			case 6:
 				return $this->getDateRelease();
 				break;
-			case 8:
+			case 7:
 				return $this->getSchemaVersion();
 				break;
-			case 9:
+			case 8:
 				return $this->getSoftwareVersion();
 				break;
-			case 10:
+			case 9:
 				return $this->getHistory();
 				break;
-			case 11:
+			case 10:
 				return $this->getInstalledAt();
 				break;
 			default:
@@ -983,17 +943,16 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 		$keys = P2PSchemaPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getXml(),
-			$keys[2] => $this->getName(),
-			$keys[3] => $this->getDescription(),
-			$keys[4] => $this->getAuthor(),
-			$keys[5] => $this->getContact(),
-			$keys[6] => $this->getUrl(),
-			$keys[7] => $this->getDateRelease(),
-			$keys[8] => $this->getSchemaVersion(),
-			$keys[9] => $this->getSoftwareVersion(),
-			$keys[10] => $this->getHistory(),
-			$keys[11] => $this->getInstalledAt(),
+			$keys[1] => $this->getName(),
+			$keys[2] => $this->getDescription(),
+			$keys[3] => $this->getAuthor(),
+			$keys[4] => $this->getContact(),
+			$keys[5] => $this->getUrl(),
+			$keys[6] => $this->getDateRelease(),
+			$keys[7] => $this->getSchemaVersion(),
+			$keys[8] => $this->getSoftwareVersion(),
+			$keys[9] => $this->getHistory(),
+			$keys[10] => $this->getInstalledAt(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->collP2POwnNodes) {
@@ -1037,36 +996,33 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setXml($value);
-				break;
-			case 2:
 				$this->setName($value);
 				break;
-			case 3:
+			case 2:
 				$this->setDescription($value);
 				break;
-			case 4:
+			case 3:
 				$this->setAuthor($value);
 				break;
-			case 5:
+			case 4:
 				$this->setContact($value);
 				break;
-			case 6:
+			case 5:
 				$this->setUrl($value);
 				break;
-			case 7:
+			case 6:
 				$this->setDateRelease($value);
 				break;
-			case 8:
+			case 7:
 				$this->setSchemaVersion($value);
 				break;
-			case 9:
+			case 8:
 				$this->setSoftwareVersion($value);
 				break;
-			case 10:
+			case 9:
 				$this->setHistory($value);
 				break;
-			case 11:
+			case 10:
 				$this->setInstalledAt($value);
 				break;
 		} // switch()
@@ -1094,17 +1050,16 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 		$keys = P2PSchemaPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setXml($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setAuthor($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setContact($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setUrl($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setDateRelease($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setSchemaVersion($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setSoftwareVersion($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setHistory($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setInstalledAt($arr[$keys[11]]);
+		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setDescription($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setAuthor($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setContact($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setUrl($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setDateRelease($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setSchemaVersion($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setSoftwareVersion($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setHistory($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setInstalledAt($arr[$keys[10]]);
 	}
 
 	/**
@@ -1117,7 +1072,6 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 		$criteria = new Criteria(P2PSchemaPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(P2PSchemaPeer::ID)) $criteria->add(P2PSchemaPeer::ID, $this->id);
-		if ($this->isColumnModified(P2PSchemaPeer::XML)) $criteria->add(P2PSchemaPeer::XML, $this->xml);
 		if ($this->isColumnModified(P2PSchemaPeer::NAME)) $criteria->add(P2PSchemaPeer::NAME, $this->name);
 		if ($this->isColumnModified(P2PSchemaPeer::DESCRIPTION)) $criteria->add(P2PSchemaPeer::DESCRIPTION, $this->description);
 		if ($this->isColumnModified(P2PSchemaPeer::AUTHOR)) $criteria->add(P2PSchemaPeer::AUTHOR, $this->author);
@@ -1190,7 +1144,6 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 	 */
 	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
-		$copyObj->setXml($this->getXml());
 		$copyObj->setName($this->getName());
 		$copyObj->setDescription($this->getDescription());
 		$copyObj->setAuthor($this->getAuthor());
@@ -1545,7 +1498,6 @@ abstract class BaseP2PSchema extends BaseObject  implements Persistent
 	public function clear()
 	{
 		$this->id = null;
-		$this->xml = null;
 		$this->name = null;
 		$this->description = null;
 		$this->author = null;

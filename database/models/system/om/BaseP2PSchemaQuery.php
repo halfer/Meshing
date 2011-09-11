@@ -7,7 +7,6 @@
  * 
  *
  * @method     P2PSchemaQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     P2PSchemaQuery orderByXml($order = Criteria::ASC) Order by the xml column
  * @method     P2PSchemaQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method     P2PSchemaQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method     P2PSchemaQuery orderByAuthor($order = Criteria::ASC) Order by the author column
@@ -20,7 +19,6 @@
  * @method     P2PSchemaQuery orderByInstalledAt($order = Criteria::ASC) Order by the installed_at column
  *
  * @method     P2PSchemaQuery groupById() Group by the id column
- * @method     P2PSchemaQuery groupByXml() Group by the xml column
  * @method     P2PSchemaQuery groupByName() Group by the name column
  * @method     P2PSchemaQuery groupByDescription() Group by the description column
  * @method     P2PSchemaQuery groupByAuthor() Group by the author column
@@ -48,7 +46,6 @@
  * @method     P2PSchema findOneOrCreate(PropelPDO $con = null) Return the first P2PSchema matching the query, or a new P2PSchema object populated from the query conditions when no match is found
  *
  * @method     P2PSchema findOneById(int $id) Return the first P2PSchema filtered by the id column
- * @method     P2PSchema findOneByXml(string $xml) Return the first P2PSchema filtered by the xml column
  * @method     P2PSchema findOneByName(string $name) Return the first P2PSchema filtered by the name column
  * @method     P2PSchema findOneByDescription(string $description) Return the first P2PSchema filtered by the description column
  * @method     P2PSchema findOneByAuthor(string $author) Return the first P2PSchema filtered by the author column
@@ -61,7 +58,6 @@
  * @method     P2PSchema findOneByInstalledAt(string $installed_at) Return the first P2PSchema filtered by the installed_at column
  *
  * @method     array findById(int $id) Return P2PSchema objects filtered by the id column
- * @method     array findByXml(string $xml) Return P2PSchema objects filtered by the xml column
  * @method     array findByName(string $name) Return P2PSchema objects filtered by the name column
  * @method     array findByDescription(string $description) Return P2PSchema objects filtered by the description column
  * @method     array findByAuthor(string $author) Return P2PSchema objects filtered by the author column
@@ -205,34 +201,6 @@ abstract class BaseP2PSchemaQuery extends ModelCriteria
 			$comparison = Criteria::IN;
 		}
 		return $this->addUsingAlias(P2PSchemaPeer::ID, $id, $comparison);
-	}
-
-	/**
-	 * Filter the query on the xml column
-	 * 
-	 * Example usage:
-	 * <code>
-	 * $query->filterByXml('fooValue');   // WHERE xml = 'fooValue'
-	 * $query->filterByXml('%fooValue%'); // WHERE xml LIKE '%fooValue%'
-	 * </code>
-	 *
-	 * @param     string $xml The value to use as filter.
-	 *              Accepts wildcards (* and % trigger a LIKE)
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    P2PSchemaQuery The current query, for fluid interface
-	 */
-	public function filterByXml($xml = null, $comparison = null)
-	{
-		if (null === $comparison) {
-			if (is_array($xml)) {
-				$comparison = Criteria::IN;
-			} elseif (preg_match('/[\%\*]/', $xml)) {
-				$xml = str_replace('*', '%', $xml);
-				$comparison = Criteria::LIKE;
-			}
-		}
-		return $this->addUsingAlias(P2PSchemaPeer::XML, $xml, $comparison);
 	}
 
 	/**

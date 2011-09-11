@@ -3,6 +3,7 @@ database/connections/*
 database/models/*
 !database/models/system
 database/sql/*
+database/schemas/*
 
 # Any IDE folders to ignore
 nbproject

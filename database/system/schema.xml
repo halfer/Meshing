@@ -34,7 +34,6 @@
 
 	<table name="p2p_schema" phpName="P2PSchema" class="P2PSchema" package="system">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-		<column name="xml" type="longvarchar" required="true" />
 		<column name="name" type="varchar" size="100" required="true" />
 		<!--
 			All the items below with required="false" should probably be required,

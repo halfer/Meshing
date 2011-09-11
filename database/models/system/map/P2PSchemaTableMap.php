@@ -40,7 +40,6 @@ class P2PSchemaTableMap extends TableMap
 		$this->setPrimaryKeyMethodInfo('p2p_schema_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('XML', 'Xml', 'LONGVARCHAR', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 100, null);
 		$this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
 		$this->addColumn('AUTHOR', 'Author', 'VARCHAR', false, 100, null);
