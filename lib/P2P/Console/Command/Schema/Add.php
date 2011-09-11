@@ -21,7 +21,6 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 
 	public function getOpts()
 	{
-		//--file=f --name=n
 		return array(
 			'name|n=s' => 'An identifying name for the schema',
 			'file|f=s' => 'The XML document to add',
