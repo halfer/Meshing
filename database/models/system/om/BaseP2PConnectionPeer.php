@@ -49,8 +49,8 @@ abstract class BaseP2PConnectionPeer {
 	/** the column name for the DATABASE field */
 	const DATABASE = 'p2p_connection.DATABASE';
 
-	/** the column name for the USER field */
-	const USER = 'p2p_connection.USER';
+	/** the column name for the USERNAME field */
+	const USERNAME = 'p2p_connection.USERNAME';
 
 	/** the column name for the PASSWORD field */
 	const PASSWORD = 'p2p_connection.PASSWORD';
@@ -74,11 +74,11 @@ abstract class BaseP2PConnectionPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Adaptor', 'Host', 'Database', 'User', 'Password', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'adaptor', 'host', 'database', 'user', 'password', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ADAPTOR, self::HOST, self::DATABASE, self::USER, self::PASSWORD, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ADAPTOR', 'HOST', 'DATABASE', 'USER', 'PASSWORD', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'adaptor', 'host', 'database', 'user', 'password', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Adaptor', 'Host', 'Database', 'Username', 'Password', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'adaptor', 'host', 'database', 'username', 'password', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::ADAPTOR, self::HOST, self::DATABASE, self::USERNAME, self::PASSWORD, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'ADAPTOR', 'HOST', 'DATABASE', 'USERNAME', 'PASSWORD', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'adaptor', 'host', 'database', 'username', 'password', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
@@ -89,11 +89,11 @@ abstract class BaseP2PConnectionPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Adaptor' => 2, 'Host' => 3, 'Database' => 4, 'User' => 5, 'Password' => 6, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'adaptor' => 2, 'host' => 3, 'database' => 4, 'user' => 5, 'password' => 6, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ADAPTOR => 2, self::HOST => 3, self::DATABASE => 4, self::USER => 5, self::PASSWORD => 6, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ADAPTOR' => 2, 'HOST' => 3, 'DATABASE' => 4, 'USER' => 5, 'PASSWORD' => 6, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'adaptor' => 2, 'host' => 3, 'database' => 4, 'user' => 5, 'password' => 6, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Adaptor' => 2, 'Host' => 3, 'Database' => 4, 'Username' => 5, 'Password' => 6, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'adaptor' => 2, 'host' => 3, 'database' => 4, 'username' => 5, 'password' => 6, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::ADAPTOR => 2, self::HOST => 3, self::DATABASE => 4, self::USERNAME => 5, self::PASSWORD => 6, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'ADAPTOR' => 2, 'HOST' => 3, 'DATABASE' => 4, 'USERNAME' => 5, 'PASSWORD' => 6, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'adaptor' => 2, 'host' => 3, 'database' => 4, 'username' => 5, 'password' => 6, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
@@ -171,7 +171,7 @@ abstract class BaseP2PConnectionPeer {
 			$criteria->addSelectColumn(P2PConnectionPeer::ADAPTOR);
 			$criteria->addSelectColumn(P2PConnectionPeer::HOST);
 			$criteria->addSelectColumn(P2PConnectionPeer::DATABASE);
-			$criteria->addSelectColumn(P2PConnectionPeer::USER);
+			$criteria->addSelectColumn(P2PConnectionPeer::USERNAME);
 			$criteria->addSelectColumn(P2PConnectionPeer::PASSWORD);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
@@ -179,7 +179,7 @@ abstract class BaseP2PConnectionPeer {
 			$criteria->addSelectColumn($alias . '.ADAPTOR');
 			$criteria->addSelectColumn($alias . '.HOST');
 			$criteria->addSelectColumn($alias . '.DATABASE');
-			$criteria->addSelectColumn($alias . '.USER');
+			$criteria->addSelectColumn($alias . '.USERNAME');
 			$criteria->addSelectColumn($alias . '.PASSWORD');
 		}
 	}

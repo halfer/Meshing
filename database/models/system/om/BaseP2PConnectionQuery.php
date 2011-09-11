@@ -11,7 +11,7 @@
  * @method     P2PConnectionQuery orderByAdaptor($order = Criteria::ASC) Order by the adaptor column
  * @method     P2PConnectionQuery orderByHost($order = Criteria::ASC) Order by the host column
  * @method     P2PConnectionQuery orderByDatabase($order = Criteria::ASC) Order by the database column
- * @method     P2PConnectionQuery orderByUser($order = Criteria::ASC) Order by the user column
+ * @method     P2PConnectionQuery orderByUsername($order = Criteria::ASC) Order by the username column
  * @method     P2PConnectionQuery orderByPassword($order = Criteria::ASC) Order by the password column
  *
  * @method     P2PConnectionQuery groupById() Group by the id column
@@ -19,7 +19,7 @@
  * @method     P2PConnectionQuery groupByAdaptor() Group by the adaptor column
  * @method     P2PConnectionQuery groupByHost() Group by the host column
  * @method     P2PConnectionQuery groupByDatabase() Group by the database column
- * @method     P2PConnectionQuery groupByUser() Group by the user column
+ * @method     P2PConnectionQuery groupByUsername() Group by the username column
  * @method     P2PConnectionQuery groupByPassword() Group by the password column
  *
  * @method     P2PConnectionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -38,7 +38,7 @@
  * @method     P2PConnection findOneByAdaptor(string $adaptor) Return the first P2PConnection filtered by the adaptor column
  * @method     P2PConnection findOneByHost(string $host) Return the first P2PConnection filtered by the host column
  * @method     P2PConnection findOneByDatabase(string $database) Return the first P2PConnection filtered by the database column
- * @method     P2PConnection findOneByUser(string $user) Return the first P2PConnection filtered by the user column
+ * @method     P2PConnection findOneByUsername(string $username) Return the first P2PConnection filtered by the username column
  * @method     P2PConnection findOneByPassword(string $password) Return the first P2PConnection filtered by the password column
  *
  * @method     array findById(int $id) Return P2PConnection objects filtered by the id column
@@ -46,7 +46,7 @@
  * @method     array findByAdaptor(string $adaptor) Return P2PConnection objects filtered by the adaptor column
  * @method     array findByHost(string $host) Return P2PConnection objects filtered by the host column
  * @method     array findByDatabase(string $database) Return P2PConnection objects filtered by the database column
- * @method     array findByUser(string $user) Return P2PConnection objects filtered by the user column
+ * @method     array findByUsername(string $username) Return P2PConnection objects filtered by the username column
  * @method     array findByPassword(string $password) Return P2PConnection objects filtered by the password column
  *
  * @package    propel.generator.system.om
@@ -296,31 +296,31 @@ abstract class BaseP2PConnectionQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the user column
+	 * Filter the query on the username column
 	 * 
 	 * Example usage:
 	 * <code>
-	 * $query->filterByUser('fooValue');   // WHERE user = 'fooValue'
-	 * $query->filterByUser('%fooValue%'); // WHERE user LIKE '%fooValue%'
+	 * $query->filterByUsername('fooValue');   // WHERE username = 'fooValue'
+	 * $query->filterByUsername('%fooValue%'); // WHERE username LIKE '%fooValue%'
 	 * </code>
 	 *
-	 * @param     string $user The value to use as filter.
+	 * @param     string $username The value to use as filter.
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    P2PConnectionQuery The current query, for fluid interface
 	 */
-	public function filterByUser($user = null, $comparison = null)
+	public function filterByUsername($username = null, $comparison = null)
 	{
 		if (null === $comparison) {
-			if (is_array($user)) {
+			if (is_array($username)) {
 				$comparison = Criteria::IN;
-			} elseif (preg_match('/[\%\*]/', $user)) {
-				$user = str_replace('*', '%', $user);
+			} elseif (preg_match('/[\%\*]/', $username)) {
+				$username = str_replace('*', '%', $username);
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(P2PConnectionPeer::USER, $user, $comparison);
+		return $this->addUsingAlias(P2PConnectionPeer::USERNAME, $username, $comparison);
 	}
 
 	/**

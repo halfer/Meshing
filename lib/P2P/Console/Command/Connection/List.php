@@ -39,7 +39,7 @@ class P2P_Console_Command_Connection_List extends P2P_Console_Stub implements P2
 				$outFormat,
 				$connection->getName(),
 				$connection->getAdaptor(),
-				$connection->getUser() ? $connection->getUser() : 'n/a',
+				$connection->getUsername() ? $connection->getUsername() : 'n/a',
 				$connection->getHost()
 			);
 			echo "\n";

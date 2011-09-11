@@ -137,7 +137,7 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P
 			$dsn = $connection->getAdaptor() . ':' .
 				'host=' . $connection->getHost() . ' ' .
 				'dbname=' . $connection->getDatabase() . ' ' .
-				'user=' . $connection->getUser() . ' ' .
+				'user=' . $connection->getUsername() . ' ' .
 				'password=' . $connection->getPassword();
 
 			// Modify XML document
@@ -146,7 +146,7 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P
 			$inner1 = $element->addChild('adapter', $connection->getAdaptor());
 			$inner2 = $element->addChild('connection');
 			$inner2->addChild('dsn', $dsn);
-			$inner2->addChild('user', $connection->getUser());
+			$inner2->addChild('user', $connection->getUsername());
 			$inner2->addChild('password', $connection->getPassword());
 		}
 

@@ -44,7 +44,7 @@ class P2PConnectionTableMap extends TableMap
 		$this->addColumn('ADAPTOR', 'Adaptor', 'VARCHAR', true, 20, null);
 		$this->addColumn('HOST', 'Host', 'VARCHAR', true, 100, null);
 		$this->addColumn('DATABASE', 'Database', 'VARCHAR', false, 100, null);
-		$this->addColumn('USER', 'User', 'VARCHAR', false, 100, null);
+		$this->addColumn('USERNAME', 'Username', 'VARCHAR', false, 100, null);
 		$this->addColumn('PASSWORD', 'Password', 'VARCHAR', false, 100, null);
 		// validators
 	} // initialize()

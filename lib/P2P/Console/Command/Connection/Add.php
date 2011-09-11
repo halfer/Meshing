@@ -88,7 +88,7 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 		}
 		if ($this->opts->user)
 		{
-			$connection->setUser($this->opts->user);
+			$connection->setUsername($this->opts->user);
 		}
 		if ($this->opts->password)
 		{

@@ -7,7 +7,7 @@
 		<column name="adaptor" type="varchar" size="20" required="true" />
 		<column name="host" type="varchar" required="true" size="100" />
 		<column name="database" type="varchar" size="100" />
-		<column name="user" type="varchar" size="100" />
+		<column name="username" type="varchar" size="100" />
 		<column name="password" type="varchar" size="100" />
 	</table>
 	
