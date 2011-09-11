@@ -1,7 +1,6 @@
 	<!-- System table -->
 	<table name="known_node" package="system">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-		<column name="hash" type="varchar" size="60" required="true" />
 		<column name="name" type="varchar" size="50" />
 		<column name="fqdn" type="varchar" size="150" />
 		<column name="port" type="integer" />
