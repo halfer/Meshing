@@ -25,8 +25,8 @@ class P2P_Propel_ConfBuilder extends P2P_Propel_SchemaTask
 			throw new Exception('No configuration output file specified');
 		}
 		
-		// If we pass all the tests, rebuild the XML runtime connections file
-		// TODO
+		// @todo If we pass all the tests, rebuild the XML runtime connections file
+		// ...
 	}
 
 	public function setXmlFile($xmlFile)
