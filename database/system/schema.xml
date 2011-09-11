@@ -17,9 +17,9 @@
 		<foreign-key foreignTable="p2p_schema">
 			<reference local="schema_id" foreign="id" />
 		</foreign-key>
-		<column name="short_name" type="varchar" size="30" required="true" />
+		<column name="name" type="varchar" size="30" required="true" />
 		<unique>
-			<unique-column name="short_name" />
+			<unique-column name="name" />
 		</unique>
 		<column name="connection_id" type="integer" required="true" />
 		<foreign-key foreignTable="p2p_connection">

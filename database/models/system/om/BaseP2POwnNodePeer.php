@@ -40,8 +40,8 @@ abstract class BaseP2POwnNodePeer {
 	/** the column name for the SCHEMA_ID field */
 	const SCHEMA_ID = 'p2p_own_node.SCHEMA_ID';
 
-	/** the column name for the SHORT_NAME field */
-	const SHORT_NAME = 'p2p_own_node.SHORT_NAME';
+	/** the column name for the NAME field */
+	const NAME = 'p2p_own_node.NAME';
 
 	/** the column name for the CONNECTION_ID field */
 	const CONNECTION_ID = 'p2p_own_node.CONNECTION_ID';
@@ -68,11 +68,11 @@ abstract class BaseP2POwnNodePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'SchemaId', 'ShortName', 'ConnectionId', 'IsEnabled', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'schemaId', 'shortName', 'connectionId', 'isEnabled', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::SCHEMA_ID, self::SHORT_NAME, self::CONNECTION_ID, self::IS_ENABLED, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SCHEMA_ID', 'SHORT_NAME', 'CONNECTION_ID', 'IS_ENABLED', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'schema_id', 'short_name', 'connection_id', 'is_enabled', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'SchemaId', 'Name', 'ConnectionId', 'IsEnabled', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'schemaId', 'name', 'connectionId', 'isEnabled', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::SCHEMA_ID, self::NAME, self::CONNECTION_ID, self::IS_ENABLED, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SCHEMA_ID', 'NAME', 'CONNECTION_ID', 'IS_ENABLED', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'schema_id', 'name', 'connection_id', 'is_enabled', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -83,11 +83,11 @@ abstract class BaseP2POwnNodePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'SchemaId' => 1, 'ShortName' => 2, 'ConnectionId' => 3, 'IsEnabled' => 4, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'schemaId' => 1, 'shortName' => 2, 'connectionId' => 3, 'isEnabled' => 4, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SCHEMA_ID => 1, self::SHORT_NAME => 2, self::CONNECTION_ID => 3, self::IS_ENABLED => 4, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SCHEMA_ID' => 1, 'SHORT_NAME' => 2, 'CONNECTION_ID' => 3, 'IS_ENABLED' => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'schema_id' => 1, 'short_name' => 2, 'connection_id' => 3, 'is_enabled' => 4, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'SchemaId' => 1, 'Name' => 2, 'ConnectionId' => 3, 'IsEnabled' => 4, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'schemaId' => 1, 'name' => 2, 'connectionId' => 3, 'isEnabled' => 4, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SCHEMA_ID => 1, self::NAME => 2, self::CONNECTION_ID => 3, self::IS_ENABLED => 4, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SCHEMA_ID' => 1, 'NAME' => 2, 'CONNECTION_ID' => 3, 'IS_ENABLED' => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'schema_id' => 1, 'name' => 2, 'connection_id' => 3, 'is_enabled' => 4, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -162,13 +162,13 @@ abstract class BaseP2POwnNodePeer {
 		if (null === $alias) {
 			$criteria->addSelectColumn(P2POwnNodePeer::ID);
 			$criteria->addSelectColumn(P2POwnNodePeer::SCHEMA_ID);
-			$criteria->addSelectColumn(P2POwnNodePeer::SHORT_NAME);
+			$criteria->addSelectColumn(P2POwnNodePeer::NAME);
 			$criteria->addSelectColumn(P2POwnNodePeer::CONNECTION_ID);
 			$criteria->addSelectColumn(P2POwnNodePeer::IS_ENABLED);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
 			$criteria->addSelectColumn($alias . '.SCHEMA_ID');
-			$criteria->addSelectColumn($alias . '.SHORT_NAME');
+			$criteria->addSelectColumn($alias . '.NAME');
 			$criteria->addSelectColumn($alias . '.CONNECTION_ID');
 			$criteria->addSelectColumn($alias . '.IS_ENABLED');
 		}

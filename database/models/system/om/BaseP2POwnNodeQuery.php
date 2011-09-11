@@ -8,13 +8,13 @@
  *
  * @method     P2POwnNodeQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     P2POwnNodeQuery orderBySchemaId($order = Criteria::ASC) Order by the schema_id column
- * @method     P2POwnNodeQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
+ * @method     P2POwnNodeQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method     P2POwnNodeQuery orderByConnectionId($order = Criteria::ASC) Order by the connection_id column
  * @method     P2POwnNodeQuery orderByIsEnabled($order = Criteria::ASC) Order by the is_enabled column
  *
  * @method     P2POwnNodeQuery groupById() Group by the id column
  * @method     P2POwnNodeQuery groupBySchemaId() Group by the schema_id column
- * @method     P2POwnNodeQuery groupByShortName() Group by the short_name column
+ * @method     P2POwnNodeQuery groupByName() Group by the name column
  * @method     P2POwnNodeQuery groupByConnectionId() Group by the connection_id column
  * @method     P2POwnNodeQuery groupByIsEnabled() Group by the is_enabled column
  *
@@ -35,13 +35,13 @@
  *
  * @method     P2POwnNode findOneById(int $id) Return the first P2POwnNode filtered by the id column
  * @method     P2POwnNode findOneBySchemaId(int $schema_id) Return the first P2POwnNode filtered by the schema_id column
- * @method     P2POwnNode findOneByShortName(string $short_name) Return the first P2POwnNode filtered by the short_name column
+ * @method     P2POwnNode findOneByName(string $name) Return the first P2POwnNode filtered by the name column
  * @method     P2POwnNode findOneByConnectionId(int $connection_id) Return the first P2POwnNode filtered by the connection_id column
  * @method     P2POwnNode findOneByIsEnabled(boolean $is_enabled) Return the first P2POwnNode filtered by the is_enabled column
  *
  * @method     array findById(int $id) Return P2POwnNode objects filtered by the id column
  * @method     array findBySchemaId(int $schema_id) Return P2POwnNode objects filtered by the schema_id column
- * @method     array findByShortName(string $short_name) Return P2POwnNode objects filtered by the short_name column
+ * @method     array findByName(string $name) Return P2POwnNode objects filtered by the name column
  * @method     array findByConnectionId(int $connection_id) Return P2POwnNode objects filtered by the connection_id column
  * @method     array findByIsEnabled(boolean $is_enabled) Return P2POwnNode objects filtered by the is_enabled column
  *
@@ -222,31 +222,31 @@ abstract class BaseP2POwnNodeQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the short_name column
+	 * Filter the query on the name column
 	 * 
 	 * Example usage:
 	 * <code>
-	 * $query->filterByShortName('fooValue');   // WHERE short_name = 'fooValue'
-	 * $query->filterByShortName('%fooValue%'); // WHERE short_name LIKE '%fooValue%'
+	 * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+	 * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
 	 * </code>
 	 *
-	 * @param     string $shortName The value to use as filter.
+	 * @param     string $name The value to use as filter.
 	 *              Accepts wildcards (* and % trigger a LIKE)
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
-	public function filterByShortName($shortName = null, $comparison = null)
+	public function filterByName($name = null, $comparison = null)
 	{
 		if (null === $comparison) {
-			if (is_array($shortName)) {
+			if (is_array($name)) {
 				$comparison = Criteria::IN;
-			} elseif (preg_match('/[\%\*]/', $shortName)) {
-				$shortName = str_replace('*', '%', $shortName);
+			} elseif (preg_match('/[\%\*]/', $name)) {
+				$name = str_replace('*', '%', $name);
 				$comparison = Criteria::LIKE;
 			}
 		}
-		return $this->addUsingAlias(P2POwnNodePeer::SHORT_NAME, $shortName, $comparison);
+		return $this->addUsingAlias(P2POwnNodePeer::NAME, $name, $comparison);
 	}
 
 	/**

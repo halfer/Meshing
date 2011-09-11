@@ -37,10 +37,10 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 	protected $schema_id;
 
 	/**
-	 * The value for the short_name field.
+	 * The value for the name field.
 	 * @var        string
 	 */
-	protected $short_name;
+	protected $name;
 
 	/**
 	 * The value for the connection_id field.
@@ -121,13 +121,13 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [short_name] column value.
+	 * Get the [name] column value.
 	 * 
 	 * @return     string
 	 */
-	public function getShortName()
+	public function getName()
 	{
-		return $this->short_name;
+		return $this->name;
 	}
 
 	/**
@@ -195,24 +195,24 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 	} // setSchemaId()
 
 	/**
-	 * Set the value of [short_name] column.
+	 * Set the value of [name] column.
 	 * 
 	 * @param      string $v new value
 	 * @return     P2POwnNode The current object (for fluent API support)
 	 */
-	public function setShortName($v)
+	public function setName($v)
 	{
 		if ($v !== null) {
 			$v = (string) $v;
 		}
 
-		if ($this->short_name !== $v) {
-			$this->short_name = $v;
-			$this->modifiedColumns[] = P2POwnNodePeer::SHORT_NAME;
+		if ($this->name !== $v) {
+			$this->name = $v;
+			$this->modifiedColumns[] = P2POwnNodePeer::NAME;
 		}
 
 		return $this;
-	} // setShortName()
+	} // setName()
 
 	/**
 	 * Set the value of [connection_id] column.
@@ -304,7 +304,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->schema_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->short_name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->connection_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->is_enabled = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
 			$this->resetModified();
@@ -666,7 +666,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 				return $this->getSchemaId();
 				break;
 			case 2:
-				return $this->getShortName();
+				return $this->getName();
 				break;
 			case 3:
 				return $this->getConnectionId();
@@ -705,7 +705,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getSchemaId(),
-			$keys[2] => $this->getShortName(),
+			$keys[2] => $this->getName(),
 			$keys[3] => $this->getConnectionId(),
 			$keys[4] => $this->getIsEnabled(),
 		);
@@ -754,7 +754,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 				$this->setSchemaId($value);
 				break;
 			case 2:
-				$this->setShortName($value);
+				$this->setName($value);
 				break;
 			case 3:
 				$this->setConnectionId($value);
@@ -788,7 +788,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setSchemaId($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setShortName($arr[$keys[2]]);
+		if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setConnectionId($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setIsEnabled($arr[$keys[4]]);
 	}
@@ -804,7 +804,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 
 		if ($this->isColumnModified(P2POwnNodePeer::ID)) $criteria->add(P2POwnNodePeer::ID, $this->id);
 		if ($this->isColumnModified(P2POwnNodePeer::SCHEMA_ID)) $criteria->add(P2POwnNodePeer::SCHEMA_ID, $this->schema_id);
-		if ($this->isColumnModified(P2POwnNodePeer::SHORT_NAME)) $criteria->add(P2POwnNodePeer::SHORT_NAME, $this->short_name);
+		if ($this->isColumnModified(P2POwnNodePeer::NAME)) $criteria->add(P2POwnNodePeer::NAME, $this->name);
 		if ($this->isColumnModified(P2POwnNodePeer::CONNECTION_ID)) $criteria->add(P2POwnNodePeer::CONNECTION_ID, $this->connection_id);
 		if ($this->isColumnModified(P2POwnNodePeer::IS_ENABLED)) $criteria->add(P2POwnNodePeer::IS_ENABLED, $this->is_enabled);
 
@@ -870,7 +870,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 	public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
 	{
 		$copyObj->setSchemaId($this->getSchemaId());
-		$copyObj->setShortName($this->getShortName());
+		$copyObj->setName($this->getName());
 		$copyObj->setConnectionId($this->getConnectionId());
 		$copyObj->setIsEnabled($this->getIsEnabled());
 		if ($makeNew) {
@@ -1022,7 +1022,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 	{
 		$this->id = null;
 		$this->schema_id = null;
-		$this->short_name = null;
+		$this->name = null;
 		$this->connection_id = null;
 		$this->is_enabled = null;
 		$this->alreadyInSave = false;

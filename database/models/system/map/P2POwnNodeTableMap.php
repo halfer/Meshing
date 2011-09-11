@@ -41,7 +41,7 @@ class P2POwnNodeTableMap extends TableMap
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addForeignKey('SCHEMA_ID', 'SchemaId', 'INTEGER', 'p2p_schema', 'ID', true, null, null);
-		$this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 30, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 30, null);
 		$this->addForeignKey('CONNECTION_ID', 'ConnectionId', 'INTEGER', 'p2p_connection', 'ID', true, null, null);
 		$this->addColumn('IS_ENABLED', 'IsEnabled', 'BOOLEAN', true, null, false);
 		// validators
