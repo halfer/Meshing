@@ -86,7 +86,7 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P
 	 * @param string $outputDir Path of the output directory
 	 * @param string $outputFile Base leafname of the output PHP file
 	 */
-	public function convertConf($runTime, $outputDir, $outputFile)
+	protected function convertConf($runTime, $outputDir, $outputFile)
 	{
 		$schemaDir = $this->projectRoot . '/database/system';
 		$schemas = "schema.xml";

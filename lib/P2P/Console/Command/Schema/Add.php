@@ -80,6 +80,7 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 	{
 		$this->installXml();
 		$this->writeRecord();
+		$this->createConf();
 	}
 
 	protected function installXml()
@@ -147,5 +148,34 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 		$schema->setName($this->opts->name);
 		$schema->setInstalledAt(time());
 		$schema->save();
+	}
+
+	protected function createConf()
+	{
+		$this->convertConf(
+			$this->projectRoot . '/database/system/runtime-conf.xml',
+			$this->projectRoot . '/database/connections/' . $this->opts->name,
+			'database-conf.php'
+		);
+	}
+
+	/**
+	 * @todo Merge this with Regen::convertConf, put them both in
+	 * P2P_Console_Command_Connection_Base.
+	 */
+	protected function convertConf($runTime, $outputDir, $outputFile)
+	{
+		$schemas = "schema.xml";
+		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
+
+		$task = new P2P_Propel_ConfBuilder();
+		
+		$task->addSchemas($this->schemaDir, $schemas);
+		$task->setXmlFile($runTime);
+		$task->setOutputDir($outputDir);
+		$task->setOutputFile($outputFile);
+		$task->addPropertiesFile($extraPropsFile);
+
+		$task->run();		
 	}
 }
