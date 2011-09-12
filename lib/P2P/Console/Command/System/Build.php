@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_Console_Interface
+class P2P_Console_Command_System_Build extends P2P_Console_Command_Connection_Base implements P2P_Console_Interface
 {
 	private $projectRoot;
 
@@ -96,7 +96,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 	{
 		$this->buildSql($verbose);
 		$this->runSql($verbose);
-		$this->buildConnections($verbose);
+		$this->buildConnections($sys = true, $nonSys = false, !$verbose);
 
 		// @todo More detail required here
 		if ($verbose)
@@ -150,23 +150,5 @@ class P2P_Console_Command_System_Build extends P2P_Console_Base implements P2P_C
 		$task->addPropertiesFile($extraPropsFile);
 
 		$task->run();		
-	}
-
-	/**
-	 * Converts the known connections to XML and converts to a Propel-friendly conf file
-	 * 
-	 * @param boolean $verbose 
-	 */
-	protected function buildConnections($verbose)
-	{
-		// Regen only system connections
-		$opts = array('--system-only');
-
-		if (!$verbose)
-		{
-			$opts[] = '--quiet';
-		}
-		
-		P2P_Console_Utils::runCommand('P2P_Console_Command_Connection_Regen', $opts);
 	}
 }

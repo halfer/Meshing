@@ -22,13 +22,18 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P
 	public function getOpts()
 	{
 		return array(
+			'system|s' => 'Regen the system connections config file',
+			'non-system|n' => 'Regen the user connections config file',
 			'quiet|q' => 'Suppress console output',
-			'system-only|s' => 'Only regen the system connections'
 		);
 	}
 
 	public function preRunCheck()
 	{
+		if (!$this->opts->system && !$this->opts->{'non-system'})
+		{
+			throw new Zend_Console_Getopt_Exception('Nothing to do');
+		}
 	}
 
 	public function run()
@@ -39,7 +44,7 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P
 		// If the PHP config files are missing, regen just system ones to start with
 		$conf1 = $outputDir . DIRECTORY_SEPARATOR . $outputFile;
 		$conf2 = $outputDir . DIRECTORY_SEPARATOR . 'classmap-' . $outputFile;
-		if (!is_readable($conf1) || !is_readable($conf2) || $this->opts->{'system-only'})
+		if (!is_readable($conf1) || !is_readable($conf2) || $this->opts->{'system'})
 		{
 			// Create a Propel runtime XML for just the system connection
 			$xmlFile = $this->projectRoot . '/database/system/runtime-conf.xml';
@@ -51,29 +56,27 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P
 			}
 		}
 
-		// If system only has been specified, we're done
-		if ($this->opts->{'system-only'})
+		// If non-system connections are specified, do them all
+		if ($this->opts->{'non-system'})
 		{
-			return;
-		}
-		
-		// Create a Propel runtime XML containing all connections		
-		$xmlFile = $this->projectRoot . '/database/connections/runtime-conf-regen.xml';
-		$this->createRuntimeXml(
-			$this->projectRoot . '/database/system/runtime-conf.xml',
-			$xmlFile
-		);
-		
-		// Then generate the connections file again, against the new config
-		$this->convertConf($xmlFile, $outputDir, $outputFile);
+			// Create a Propel runtime XML containing all connections		
+			$xmlFile = $this->projectRoot . '/database/connections/runtime-conf-regen.xml';
+			$this->createRuntimeXml(
+				$this->projectRoot . '/database/system/runtime-conf.xml',
+				$xmlFile
+			);
 
-		if (!$this->opts->quiet)
-		{
-			echo "Generated user connections config file.\n";
-		}
+			// Then generate the connections file again, against the new config
+			$this->convertConf($xmlFile, $outputDir, $outputFile);
 
-		// Finally delete the temp XML file
-		$this->deleteRuntimeXml($xmlFile);
+			if (!$this->opts->quiet)
+			{
+				echo "Generated user connections config file.\n";
+			}
+
+			// Finally delete the temp XML file
+			$this->deleteRuntimeXml($xmlFile);
+		}
 	}
 
 	/**

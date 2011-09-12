@@ -96,8 +96,10 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 		}
 		$connection->save();
 
+		echo "Created user connection.\n";
+
 		// Recreate the connections config files
 		// @todo Support --quiet flag in this command
-		$this->buildConnections(false);
+		$this->buildConnections($sys = false, $nonSys = true, $quiet = false);
 	}
 }
