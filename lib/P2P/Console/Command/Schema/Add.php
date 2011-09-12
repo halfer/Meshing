@@ -67,16 +67,6 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 				);
 			}
 		}
-		$this->modelDir = $this->projectRoot . '/database/models/' . $this->opts->name;
-		if (!is_dir($this->modelDir))
-		{
-			if (!@mkdir($this->modelDir))
-			{
-				throw new Zend_Console_Getopt_Exception(
-					"Error when creating the model folder '{$this->opts->name}', check permissions?"
-				);
-			}
-		}
 	}
 
 	/**
@@ -101,6 +91,7 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 		);
 
 		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
+		$modelDir = $this->projectRoot . '/database/models';
 
 		// Create task, configure, then run
 		$task = new P2P_Propel_ClassBuilder();
@@ -108,12 +99,12 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 		$task->addPropertiesFile($extraPropsFile);
 		$task->setSchemaDir($this->schemaDir);
 		$task->setSchemas($schemaProc);
-		$task->setOutputDir($this->modelDir);
+		$task->setOutputDir($modelDir);
 
 		$task->run();
 		
 		echo "Schemas: " . $this->schemaDir . "\n";
-		echo "Output: " . $this->modelDir . "\n";		
+		echo "Output: " . $modelDir . "\n";		
 	}
 
 	/**

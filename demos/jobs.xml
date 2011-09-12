@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="propel" defaultIdMethod="native">
+<!--
+	@todo We're specifying a package here, but in future this will be done automatically
+	using the schema name specified with schema:add.
+-->
+<database name="propel" defaultIdMethod="native" package="jobs">
 
-	<table name="role" package="jobsite">
+	<table name="role">
 		&current_header;
 
 		<!-- rows for this record -->
@@ -34,7 +38,7 @@
 		</foreign-key>
 	</table>
 
-	<table name="role_versionable" package="jobsite">
+	<table name="role_versionable">
 		&versionable_header;
 
 		<!-- rows for this record -->
@@ -67,7 +71,7 @@
 		</foreign-key>
 	</table>
 
-	<table name="location" package="jobsite">
+	<table name="location">
 		&current_header;
 
 		<!-- rows for this record -->
@@ -78,7 +82,7 @@
 		<column name="longitude" type="real" />
 	</table>
 
-	<table name="location_versionable" package="jobsite">
+	<table name="location_versionable">
 		&versionable_header;
 
 		<!-- rows for this record -->
@@ -89,7 +93,7 @@
 		<column name="longitude" type="real" />
 	</table>
 	
-	<table name="group" package="jobsite">
+	<table name="group">
 		&current_header;
 
 		<!-- rows for this record -->
@@ -100,7 +104,7 @@
 		<column name="type" type="varchar" size="1" />
 	</table>
 
-	<table name="group_versionable" package="jobsite">
+	<table name="group_versionable">
 		&versionable_header;
 
 		<!-- rows for this record -->
