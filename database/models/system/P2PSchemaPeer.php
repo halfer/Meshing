@@ -13,6 +13,16 @@
  *
  * @package    propel.generator.system
  */
-class P2PSchemaPeer extends BaseP2PSchemaPeer {
-
-} // P2PSchemaPeer
+class P2PSchemaPeer extends BaseP2PSchemaPeer
+{
+	public static function getSchemaForNode($node)
+	{
+		// Check that a node class has been passed
+		if (!method_exists($node, 'getSchemaId'))
+		{
+			throw new Exception('Object passed that is not an KnownNode');
+		}
+		
+		return self::retrieveByPK($node->getSchemaId());
+	}
+}
