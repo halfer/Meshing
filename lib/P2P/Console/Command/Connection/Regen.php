@@ -94,8 +94,7 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P
 
 		$task = new P2P_Propel_ConfBuilder();
 		
-		$task->setSchemaDir($schemaDir);
-		$task->setSchemas($schemas);
+		$task->addSchemas($schemaDir, $schemas);
 		$task->setXmlFile($runTime);
 		$task->setOutputDir($outputDir);
 		$task->setOutputFile($outputFile);

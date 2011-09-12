@@ -71,8 +71,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Command_Connection_Ba
 		$task = new P2P_Propel_ClassBuilder();
 
 		$task->addPropertiesFile($extraPropsFile);
-		$task->setSchemaDir($schemaDir);
-		$task->setSchemas($schemas);
+		$task->addSchemas($schemaDir, $schemas);
 		$task->setOutputDir($outputDir);
 
 		$task->run();
@@ -123,8 +122,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Command_Connection_Ba
 		$task = new P2P_Propel_SqlBuilder();
 
 		$task->addPropertiesFile($extraPropsFile);
-		$task->setSchemaDir($schemaDir);
-		$task->setSchemas($schemas);
+		$task->addSchemas($schemaDir, $schemas);
 		$task->setOutputDir($outputDir);
 
 		$task->run();		

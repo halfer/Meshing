@@ -97,8 +97,7 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 		$task = new P2P_Propel_ClassBuilder();
 
 		$task->addPropertiesFile($extraPropsFile);
-		$task->setSchemaDir($this->schemaDir);
-		$task->setSchemas($schemaProc);
+		$task->addSchemas($this->schemaDir, $schemaProc);
 		$task->setOutputDir($modelDir);
 
 		$task->run();

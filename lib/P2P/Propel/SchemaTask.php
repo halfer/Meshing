@@ -7,7 +7,7 @@
  */
 abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
 {
-	protected $schemaFiles;
+	protected $schemas = array();
 	
 	public function __construct()
 	{
@@ -19,14 +19,30 @@ abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
 		$this->addPropertiesFile($propertiesFile);
 	}
 
-	public function setSchemaDir($schemaDir)
+	/**
+	 * Add a schema dir/wildcarded-file pair to the task
+	 * 
+	 * @param string $schemaDir Directory specification
+	 * @param string $schemaFiles File specification (believe this can contain wildcards)
+	 */
+	public function addSchemas($schemaDir, $schemaFiles)
 	{
-		$this->inputDir = $schemaDir;
+		$this->schemas[] = array($schemaDir, $schemaFiles);
 	}
 
-	public function setSchemas($schemaFiles)
+	/**
+	 * This grabs the schemaFiles value, if only one has been provided
+	 * 
+	 * @see P2P_Propel_SqlBuilder::postRun
+	 */
+	public function getSchemaFiles()
 	{
-		$this->schemaFiles = $schemaFiles;
+		if (count($this->schemas) != 1)
+		{
+			throw new Exception('There is not exactly one schema file to return');
+		}
+
+		return $this->schemas[0][1];
 	}
 
 	public function setOutputDir($outputDir)
@@ -53,19 +69,14 @@ abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
 
 	protected function preRunCheck()
 	{
-		if (!$this->inputDir)
+		if (!$this->schemas)
 		{
-			throw new Exception('No schema directory specified');
+			throw new Exception('No schemas specified');
 		}
 		
 		if (!$this->outputDir)
 		{
 			throw new Exception('No output directory specified');
-		}
-
-		if (!$this->schemaFiles)
-		{
-			throw new Exception('No schema(s) specified');
 		}
 
 		if (!$this->propertyExists('propel.database'))
@@ -77,10 +88,13 @@ abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
 	protected function schemaConfiguration(Task $task)
 	{
 		// Adds schema(s) to task
-		$fileSet = new FileSet();
-		$fileSet->setDir($this->inputDir);
-		$fileSet->setIncludes($this->schemaFiles);
-		$task->addSchemaFileset($fileSet);
+		foreach ($this->schemas as $pair)
+		{
+			$fileSet = new FileSet();
+			$fileSet->setDir($pair[0]);
+			$fileSet->setIncludes($pair[1]);
+			$task->addSchemaFileset($fileSet);
+		}
 
 		// Sets up output dir, for class, SQL or conf output
 		$task->setOutputDirectory(new PhingFile($this->outputDir));
