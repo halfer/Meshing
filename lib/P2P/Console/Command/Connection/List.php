@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Connection_List extends P2P_Console_Stub implements P2P_Console_Interface
+class P2P_Console_Command_Connection_List extends P2P_Console_Base implements P2P_Console_Interface
 {
 	public function getDescription()
 	{
@@ -27,9 +27,9 @@ class P2P_Console_Command_Connection_List extends P2P_Console_Stub implements P2
 
 		// @todo Fix spelling of 'adaptor' to Propel 'adapter'?
 		$outFormat = '%-15s%-12s%-15s%-40s';
-		$this->ruleOff();
+		$this->ruleOff($lineLength = 15 + 12 + 15 + 40);
 		echo sprintf($outFormat, 'Name', 'Adaptor', 'User', 'Host') . "\n";
-		$this->ruleOff();
+		$this->ruleOff($lineLength);
 		
 		$connections = P2PConnectionPeer::doSelect(new Criteria());
 		/* @var $connection P2PConnection */
@@ -44,10 +44,5 @@ class P2P_Console_Command_Connection_List extends P2P_Console_Stub implements P2
 			);
 			echo "\n";
 		}
-	}
-
-	protected function ruleOff()
-	{
-		echo str_repeat('-', 15 + 15 + 40) . "\n";		
 	}
 }

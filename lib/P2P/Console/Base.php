@@ -18,4 +18,10 @@ class P2P_Console_Base
 		$this->opts = new Zend_Console_Getopt($this->getOpts(), $this->argv);
 		$this->opts->parse();		
 	}
+
+	/* Handy func to help draw a table */
+	protected function ruleOff($length)
+	{
+		echo str_repeat('-', $length) . "\n";		
+	}
 }
