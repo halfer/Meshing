@@ -54,4 +54,28 @@ class P2P_Utils
 		require_once $projectRoot . '/vendor/propel-1.6/runtime/lib/Propel.php';
 		Propel::init($projectRoot . '/database/connections/database-conf.php');
 	}
+
+	/**
+	 * Sets up autoload paths for the named schema(s)
+	 * 
+	 * @param mixed $schemas An array of schema names, or a string schema name
+	 */
+	public static function initialiseNodeDbs($schemaNames)
+	{
+		$loader = PropelAutoloader::getInstance();
+		
+		if (!is_array($schemaNames))
+		{
+			$schemaNames = array($schemaNames);
+		}
+
+		foreach ($schemaNames as $schemaName)
+		{
+			$projectRoot = self::getProjectRoot();
+			$path = $projectRoot . '/database/connections/' . $schemaName .
+				'/classmap-database-conf.php';
+			$map = include($path);
+			$loader->addClassPaths($map);
+		}
+	}
 }
