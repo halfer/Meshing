@@ -41,6 +41,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Command_Connection_Ba
 			echo "Generating... ";
 		}
 
+		// @todo Move this to a hidden developer command
 		if ($this->opts->classes)
 		{
 			$this->buildModel($verbose);
@@ -50,6 +51,9 @@ class P2P_Console_Command_System_Build extends P2P_Console_Command_Connection_Ba
 		{
 			$this->buildDatabase($verbose);
 		}
+
+		// @todo Need to build model-only for schema-node.xml
+		// @todo Move this to a hidden developer command
 	}
 
 	/**
