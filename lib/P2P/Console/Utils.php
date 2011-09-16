@@ -50,13 +50,17 @@ class P2P_Console_Utils
 					str_replace(DIRECTORY_SEPARATOR, ':', $item)
 				);
 				
-				// Classes without this method are deemed to be hidden
+				// Classes without this method are not commands at all
 				$realCommand = method_exists($className, 'getDescription');
 
-				// Push onto the array, move to next
+				// If description is offered, empty means hidden
 				if ($realCommand)
 				{
-					$commands[$className] = $item;
+					$cmdClass = new $className;
+					if ($cmdClass->getDescription() != '')
+					{
+						$commands[$className] = $item;
+					}
 				}
 				$regex->next();
 			}
