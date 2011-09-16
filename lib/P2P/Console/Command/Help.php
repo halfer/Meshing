@@ -5,15 +5,8 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Help implements P2P_Console_Interface
+class P2P_Console_Command_Help extends P2P_Console_Base implements P2P_Console_Interface
 {
-	private $argv;
-
-	public function __construct($argv = array())
-	{
-		$this->argv = $argv;
-	}
-
 	public function getDescription()
 	{
 		return 'Provides some help for console commands';
@@ -25,10 +18,6 @@ class P2P_Console_Command_Help implements P2P_Console_Interface
 	public function getOpts()
 	{
 		return array();
-	}
-
-	public function parseOpts()
-	{
 	}
 
 	public function preRunCheck()
