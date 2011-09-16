@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="p2p" defaultIdMethod="native">
+<database name="p2p" defaultIdMethod="native" package="system">
 
-	<table name="p2p_connection" phpName="P2PConnection" className="P2PConnection" package="system">
+	<table name="p2p_connection" phpName="P2PConnection" className="P2PConnection">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 		<column name="name" type="varchar" size="100" required="true" />
 		<column name="adaptor" type="varchar" size="20" required="true" />
@@ -11,7 +11,7 @@
 		<column name="password" type="varchar" size="100" />
 	</table>
 	
-	<table name="p2p_own_node" phpName="P2POwnNode" className="P2POwnNode" package="system">
+	<table name="p2p_own_node" phpName="P2POwnNode" className="P2POwnNode">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 		<column name="schema_id" type="integer" required="true" />
 		<foreign-key foreignTable="p2p_schema">
@@ -32,7 +32,7 @@
 		<column name="is_enabled" type="boolean" required="true" default="false" />
 	</table>
 
-	<table name="p2p_schema" phpName="P2PSchema" class="P2PSchema" package="system">
+	<table name="p2p_schema" phpName="P2PSchema" class="P2PSchema">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 		<column name="name" type="varchar" size="100" required="true" />
 		<!--
@@ -50,7 +50,7 @@
 		<column name="installed_at" type="timestamp" required="true" />
 	</table>
 
-	<table name="p2p_schema_table" phpName="P2PSchemaTable" class="P2PSchemaTable" package="system">
+	<table name="p2p_schema_table" phpName="P2PSchemaTable" class="P2PSchemaTable">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 		<column name="schema_id" type="integer" required="true" />
 		<column name="name" type="varchar" size="50" required="true" />
