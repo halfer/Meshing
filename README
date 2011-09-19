@@ -3,13 +3,13 @@ Meshing
 
 INTRODUCTION
 
-Purpose: An online, peer-to-peer, relational database system.
+Purpose: A decentralised, peer-to-peer layer for relational databases.
 License: Open source, specific licence to be decided.
 Language: PHP5.2
 Platform: Unix-like platforms, Linux, Mac. Probably Windows, but not tested.
 User interface: Command line for the prototype, web tools to be devised later.
 Database: Anything supported by Propel 1.6. At least MySQL, PostgreSQL, and likely others.
-Contact: http://blog.jondh.me.uk/ .
+Say hey to: Jon <projects.ws {at} jondh.me.uk>
 
 Read intro here:
 
