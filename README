@@ -1,5 +1,5 @@
-P2P Toolkit
------------
+Meshing
+-------
 
 INTRODUCTION
 
@@ -24,7 +24,7 @@ GETTING STARTED
 Here's how to run the demo. Unpack the tarball (or from git) on a server, and cd to that folder.
 You should be able to run this command to get a list of commands:
 
-	./p2p
+	./meshing
 
 If you run into trouble, make sure at least PHP5.2 or 5.3 is installed on your system, via this:
 
@@ -44,7 +44,7 @@ your connection details are set up for your platform:
 
 Then run the following command to build the system tables:
 
-	./p2p system:build --database --verbose
+	./meshing system:build --database --verbose
 
 Be careful with this command generally; the '--database' flag clears the whole of the system
 database, so don't do this on an existing installation!
@@ -52,7 +52,7 @@ database, so don't do this on an existing installation!
 OK, hopefully that went OK. Now let's create a schema definition, and for speed we'll use an
 existing example: a jobs database. Run the following:
 
-	./p2p schema:add --name jobs --name demos/jobs.xml
+	./meshing schema:add --name jobs --name demos/jobs.xml
 
 If you want to know what the & entity elements get replaced to, look in database/system/snippets/*.
 OK, that command will have added the schema to the installation folder, inside
@@ -62,7 +62,7 @@ Next, we'll need a new database connection for our node, so create one in your d
 theory you can use the same one as before, but to keep node tables separate from system tables,
 it is a good idea to have a separate one. Add that thus:
 
-	./p2p connection:add \
+	./meshing connection:add \
 		--name jobsconn --adaptor pgsql --host localhost \
 		--user jon --password mypass
 		--database mydb
@@ -71,4 +71,4 @@ Of course, change the values to fit your situation (e.g. if you're using MySQL t
 as the adaptor). There aren't any checks yet that the connection will work, so you may wish to
 test from the CLI first, using your db client.
 
-[TODO: Next steps - ./p2p node:add, ./p2p node:build]
+[TODO: Next steps - ./meshing node:add, ./meshing node:build]
