@@ -11,13 +11,9 @@ User interface: Command line for the prototype, web tools to be devised later.
 Database: Anything supported by Propel 1.6. At least MySQL, PostgreSQL, and likely others.
 Say hey to: Jon <projects.ws {at} jondh.me.uk>
 
-Read intro here:
+Learn about it here:
 
-http://blog.jondh.me.uk/2011/08/distributing-a-structured-database-over-an-ad-hoc-peer-to-peer-network/
-
-Read tech discussion here:
-
-http://blog.jondh.me.uk/2011/08/p2p-database-technical-ideas/
+http://blog.jondh.me.uk/meshing
 
 GETTING STARTED
 
