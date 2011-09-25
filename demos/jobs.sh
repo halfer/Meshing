@@ -6,6 +6,11 @@ if [ ! -f "meshing" ]; then
 	exit 1
 fi
 
+# Remove some generated stuff
+rm -rf ./database/connections/*
+rm -rf ./database/schemas/*
+# @todo Can't easily delete models/* as it will remove models/system/* - need to move to alt. loc.
+
 # Rebuild system tables on db
 ./meshing system:build --database --verbose
 
