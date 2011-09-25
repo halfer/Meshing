@@ -135,19 +135,12 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P
 		/* @var $connection P2PConnection */
 		foreach ($connections as $connection)
 		{
-			// Build DSN string
-			$dsn = $connection->getAdaptor() . ':' .
-				'host=' . $connection->getHost() . ' ' .
-				'dbname=' . $connection->getDatabase() . ' ' .
-				'user=' . $connection->getUsername() . ' ' .
-				'password=' . $connection->getPassword();
-
 			// Modify XML document
 			$element = $xml->propel->datasources->addChild('datasource');
 			$element['id'] = $connection->getName();
 			$inner1 = $element->addChild('adapter', $connection->getAdaptor());
 			$inner2 = $element->addChild('connection');
-			$inner2->addChild('dsn', $dsn);
+			$inner2->addChild('dsn', $connection->getCalculatedDsn());
 			$inner2->addChild('user', $connection->getUsername());
 			$inner2->addChild('password', $connection->getPassword());
 		}

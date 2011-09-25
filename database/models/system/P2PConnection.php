@@ -13,6 +13,15 @@
  *
  * @package    propel.generator.system
  */
-class P2PConnection extends BaseP2PConnection {
-
-} // P2PConnection
+class P2PConnection extends BaseP2PConnection
+{
+	public function getCalculatedDsn()
+	{
+		return $this->getAdaptor() . ':' .
+			'host=' . $this->getHost() . ' ' .
+			'dbname=' . $this->getDatabase() . ' ' .
+			'user=' . $this->getUsername() . ' ' .
+			'password=' . $this->getPassword();
+		;
+	}
+}

@@ -50,6 +50,11 @@ abstract class P2P_Propel_Task
 		return $filePropExists || $custPropExists;
 	}
 
+	public function addProperty($key, $value)
+	{
+		$this->customProps[$key] = $value;
+	}
+
 	protected function getProperty($property)
 	{
 		$props = array_merge($this->fileProps, $this->customProps);
