@@ -8,16 +8,28 @@
 class P2P_Node_Utils
 {
 	/**
+	 * Returns a classname for a given schema & class
+	 * 
+	 * @param string $schemaName
+	 * @param string $className
+	 * @return string
+	 */
+	public static function getNodeClassName($schemaName, $className)
+	{
+		$filter = new Zend_Filter_Word_UnderscoreToCamelCase();
+		$prefix = $filter->filter($schemaName);
+		
+		return $prefix . $className;		
+	}
+
+	/**
 	 * Derives the name of the node ID class, given a schema name
 	 * 
 	 * @param string $schemaName
 	 */
 	public static function getIdentityClassName($schemaName)
 	{
-		$filter = new Zend_Filter_Word_UnderscoreToCamelCase();
-		$prefix = $filter->filter($schemaName);
-		
-		return $prefix . 'MeshingIdentity';
+		return self::getNodeClassName($schemaName, 'MeshingIdentity');
 	}
 
 	/**

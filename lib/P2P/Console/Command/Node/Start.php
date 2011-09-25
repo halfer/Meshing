@@ -35,15 +35,20 @@ class P2P_Console_Command_Node_Start extends P2P_Console_Stub implements P2P_Con
 		
 		// Connect with this node's connection, and ensure there are rows in known_nodes
 		$conn = Propel::getConnection($node->getP2PConnection()->getName());
+		$schemaName = $node->getP2PSchema()->getName();
+		P2P_Utils::initialiseNodeDbs($schemaName);
 		
-		// @todo Obtain the name of the KnownNode class for this schema i.e.
-		// camel(schemaName + '_known_node') => 'JobsKnownNode'
-		$schema = P2PSchemaPeer::getSchemaForNode($node);
-		$underscored = $node->getName() . '_known_node';
-		$knownNodeRow = false;
+		// Obtain the number of trusted nodes
+		$class = P2P_Node_Utils::getNodeClassName($schemaName, 'KnownNodePeer');
+		$knownNodeCount = call_user_func(
+			array($class, 'doCount'),
+			new Criteria(),
+			$distinct = false,
+			$conn
+		);
 
 		// If there are no trust rows, we cannot start
-		if (!$knownNodeRow)
+		if (!$knownNodeCount)
 		{
 			throw new Zend_Console_Getopt_Exception(
 				'A node needs to trust other nodes before it can be started'

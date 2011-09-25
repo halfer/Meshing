@@ -40,3 +40,7 @@ rm -rf ./database/schemas/*
 ./meshing node:add --name node_jobs_2 --connection conn_jobs_2 --schema jobs --force || exit 2
 
 # @todo Add some trust
+
+# @todo Start the nodes
+#./meshing node:start --name node_jobs_1
+#./meshing node:start --name node_jobs_2
