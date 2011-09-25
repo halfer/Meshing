@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Set up some database details (credentials same for all dbs for the purposes of this demo)
+databaseAdaptor=pgsql
+databaseUser=jon
+
+# These need to be created manually by the user
+db1_name=meshing_jobs_1
+db2_name=meshing_jobs_2
+
 # Only run this file from the project root
 if [ ! -f "meshing" ]; then
 	echo 'Error: must be run from the Meshing root folder'
@@ -15,14 +23,16 @@ rm -rf ./database/schemas/*
 ./meshing system:build --database --verbose
 
 # Add new connections (exit if either won't connect)
-./meshing connection:add --name conn_jobs_1 --adaptor pgsql --database db_jobs_1 --host localhost --user jon --test || exit 2
-./meshing connection:add --name conn_jobs_2 --adaptor pgsql --database db_jobs_2 --host localhost --user jon --test || exit 2
+./meshing connection:add --name conn_jobs_1 --adaptor $databaseAdaptor --database $db1_name \
+	--host localhost --user $databaseUser --test || exit 2
+./meshing connection:add --name conn_jobs_2 --adaptor $databaseAdaptor --database $db2_name \
+	--host localhost --user $databaseUser --test || exit 2
 
 # Add a schema
 ./meshing schema:add --name jobs --file demos/jobs.xml
 
-# @todo Add some nodes
+# Add some nodes
 ./meshing node:add --name node_jobs_1 --connection conn_jobs_1 --schema jobs
-# ./meshing node:add --name node_jobs_2 --connection conn_jobs_2 --schema jobs
+./meshing node:add --name node_jobs_2 --connection conn_jobs_2 --schema jobs
 
 # @todo Add some trust
