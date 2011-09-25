@@ -41,4 +41,43 @@ class P2P_Schema_Element extends SimpleXMLElement
 			unset($table['package']);
 		}		
 	}
+
+	public function insertTable($xmlFile)
+	{
+		/* @var $snippet SimpleXMLElement */
+		$snippet = simplexml_load_file($xmlFile);
+		$this->copyXml($snippet, $this);
+	}
+
+	/**
+	 * Pops a new element in as a child of the root element into the "to" target
+	 * 
+	 * @param SimpleXMLElement $from
+	 * @param SimpleXMLElement $to 
+	 */
+	protected function copyXml(SimpleXMLElement $from, SimpleXMLElement $to)
+	{
+		// Create a new branch in the target, as per the source
+		$fromValue = (string) $from;
+		if ($fromValue)
+		{
+			$toChild = $to->addChild($from->getName(), (string) $from);
+		}
+		else
+		{
+			$toChild = $to->addChild($from->getName());
+		}
+
+		// Copy attributes across
+		foreach ($from->attributes() as $name => $value)
+		{
+			$toChild->addAttribute($name, $value);
+		}
+
+		// Copy any children across, recursively
+		foreach ($from->children() as $fromChild)
+		{
+			$this->copyXml($fromChild, $toChild);
+		}
+	}
 }

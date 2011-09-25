@@ -19,6 +19,11 @@ class P2P_Schema_Fixup
 
 	public function fixup($schemaName)
 	{
+		// Do this first, so it gets prefixed in the same way as other tables
+		$this->xml->insertTable(
+			P2P_Utils::getProjectRoot() . '/database/system/snippets/node_identity.xml'
+		);
+
 		$prefix = strtolower($schemaName);
 		$this->xml->prefixTablesManually($prefix . '_');
 		$this->xml->setPackageName($prefix);

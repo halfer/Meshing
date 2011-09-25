@@ -1,0 +1,7 @@
+	<!-- Identity table - joins to ownnode.id in the system database -->
+	<table name="meshing_identity">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<!-- No FK, since it's in another db. We can obtain connection and schema from there -->
+		<column name="node_id" type="integer" required="true" />
+		<column name="built_at" type="timestamp" required="true" />
+	</table>
