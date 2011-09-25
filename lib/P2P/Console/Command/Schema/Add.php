@@ -90,6 +90,10 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 			$this->opts->file,
 			$this->schemaDir . DIRECTORY_SEPARATOR . $schemaProc
 		);
+		$this->doFixups(
+			$this->schemaDir . DIRECTORY_SEPARATOR . $schemaProc,
+			$this->opts->name
+		);
 
 		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
 		$modelDir = $this->projectRoot . '/database/models';
@@ -140,6 +144,15 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 		}
 		
 		file_put_contents($outputFile, $xml);
+	}
+
+	/**
+	 * Modify the schema 
+	 */
+	protected function doFixups($schemaFile, $schemaName)
+	{
+		$fixup = new P2P_Schema_Fixup($schemaFile);
+		$fixup->fixup($schemaName);
 	}
 
 	protected function writeRecord()
