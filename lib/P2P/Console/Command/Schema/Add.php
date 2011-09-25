@@ -168,11 +168,18 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 
 	protected function createConf()
 	{
+		$configName = 'database-conf.php';
 		$this->convertConf(
 			$this->projectRoot . '/database/system/runtime-conf.xml',
 			$this->projectRoot . '/database/connections/' . $this->opts->name,
-			'database-conf.php'
+			$configName
 		);
+
+		// We only want the autoloading file, not the connections file... deleting to be tidy!
+		$configPath = $this->projectRoot .
+			'/database/connections/' .
+			$this->opts->name . '/' . $configName;
+		@unlink($configPath);
 	}
 
 	/**
