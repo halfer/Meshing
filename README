@@ -38,6 +38,9 @@ your connection details are set up for your platform:
 	propel.database.user = jon
 	propel.database.password = password
 
+** Note: some example commands to work with the system are detailed below. You can alternatively
+** run ./demos/jobs.sh which will do all of this for you.
+
 Then run the following command to build the system tables:
 
 	./meshing system:build --database --verbose
@@ -59,12 +62,20 @@ theory you can use the same one as before, but to keep node tables separate from
 it is a good idea to have a separate one. Add that thus:
 
 	./meshing connection:add \
-		--name jobsconn --adaptor pgsql --host localhost \
+		--name conn_jobs_1 --adaptor pgsql --host localhost \
 		--user jon --password mypass
 		--database mydb
 
 Of course, change the values to fit your situation (e.g. if you're using MySQL then specify 'mysql'
-as the adaptor). There aren't any checks yet that the connection will work, so you may wish to
-test from the CLI first, using your db client.
+as the adaptor). If you wish you can also supply --test to try the connection at the same time.
 
-[TODO: Next steps - ./meshing node:add, ./meshing node:build]
+Now that these basic items are set up, we can create a node:
+
+	./meshing node:add --name node_jobs_1 --connection conn_jobs_1 --schema jobs
+
+This will build an instance of the "jobs" schema in the specified database. If there is an instance
+of this schema in the database already, it will throw an error, and if you are sure you wish to
+overwrite it, you must use the --force flag.
+
+(Next steps are to run trust:add and node:start, yet to be written).
+
