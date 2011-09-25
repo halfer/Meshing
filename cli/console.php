@@ -31,8 +31,15 @@ try
 {
 	$ok = P2P_Console_Utils::runCommand($className, $argv);
 }
+// This is for parsing/preparation exceptions
 catch (Zend_Console_Getopt_Exception $e)
 {
 	echo $e->getMessage() . "\n";
 	exit(1);
+}
+// This is for execution exceptions
+catch (P2P_Console_RunException $e)
+{
+	echo $e->getMessage() . "\n";
+	exit(2);
 }

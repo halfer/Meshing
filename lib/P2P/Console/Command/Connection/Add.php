@@ -16,8 +16,6 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 
 	public function getOpts()
 	{
-		// @todo Support --test, the purpose for which is obvious!
-
 		return array(
 			'name|n=s' => 'A name to help you remember what this connection is for',
 			'adaptor|a=s' => 'The PDO adaptor to use for this connection',
@@ -26,6 +24,7 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 			'user|u=s' => 'The username for this connection',
 			'password|p=s' => 'The password for this connection',
 			'password-file|f=s' => 'A text file containing the password for this connection',
+			'test' => 'Tests the database connection',
 		);
 	}
 
@@ -60,6 +59,7 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 			throw new Zend_Console_Getopt_Exception('That name is reserved for the system; please choose another');
 		}
 
+		// @todo Option 'password-file' requires implementation
 		if ($this->opts->getOption('password-file'))
 		{
 			throw new Zend_Console_Getopt_Exception('This option is not currently implemented.');
@@ -78,6 +78,20 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 	 */
 	public function run()
 	{
+		$this->writeRecord();
+		$this->rebuildUserConnections();
+		$this->testNewConnection();
+
+		echo "Created user connection.\n";
+	}
+
+	/**
+	 * Writes the connection record
+	 * 
+	 * @todo Need to validate string lengths etc (or catch exceptions properly)
+	 */
+	protected function writeRecord()
+	{
 		$connection = new P2PConnection();
 		$connection->setName($this->opts->name);
 		$connection->setAdaptor($this->opts->adaptor);
@@ -95,11 +109,38 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 			$connection->setPassword($this->opts->password);
 		}
 		$connection->save();
+	}
 
-		echo "Created user connection.\n";
+	/**
+	 * Recreates the connections config files
+	 * 
+	 * @todo Support --quiet flag in this command
+	 */
+	protected function rebuildUserConnections()
+	{
+		$this->buildConnections($sys = false, $nonSys = true, $quiet = false);		
+	}
 
-		// Recreate the connections config files
-		// @todo Support --quiet flag in this command
-		$this->buildConnections($sys = false, $nonSys = true, $quiet = false);
+	/**
+	 * Connect to the new connection, and throw exception if it fails
+	 * 
+	 * @return boolean
+	 */
+	protected function testNewConnection()
+	{
+		if ($this->opts->test)
+		{
+			P2P_Utils::initialiseDb();
+			try
+			{
+				$conn = Propel::getConnection($this->opts->name);
+			}
+			catch (PropelException $e)
+			{
+				throw new P2P_Console_RunException($e->getMessage());
+			}
+		}
+
+		return true;
 	}
 }

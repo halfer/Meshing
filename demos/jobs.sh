@@ -14,9 +14,9 @@ rm -rf ./database/schemas/*
 # Rebuild system tables on db
 ./meshing system:build --database --verbose
 
-# Add new connections
-./meshing connection:add --name conn_jobs_1 --adaptor pgsql --database db_jobs_1 --host localhost --user jon
-./meshing connection:add --name conn_jobs_2 --adaptor pgsql --database db_jobs_2 --host localhost --user jon
+# Add new connections (exit if either won't connect)
+./meshing connection:add --name conn_jobs_1 --adaptor pgsql --database db_jobs_1 --host localhost --user jon --test || exit 2
+./meshing connection:add --name conn_jobs_2 --adaptor pgsql --database db_jobs_2 --host localhost --user jon --test || exit 2
 
 # Add a schema
 ./meshing schema:add --name jobs --file demos/jobs.xml
