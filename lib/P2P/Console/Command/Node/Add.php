@@ -18,6 +18,7 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 			'name|n=s' => 'The name of the new node',
 			'connection|c=s' => 'The name of the database connection to store this node',
 			'schema|s=s' => 'The schema to build in this node',
+			'force|f' => 'Build the db even if a node already exists on this connection',
 		);
 	}
 
@@ -63,8 +64,13 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 
 	public function run()
 	{
-		// @todo Check "identity" table on this connection to see whether a build requires --force
-		
+		// We access the node db twice, so let's init the autoloading for this schema
+		P2P_Utils::initialiseNodeDbs($this->opts->schema);
+		$conn = Propel::getConnection($this->opts->connection);
+
+		// Check "identity" table on this connection to see whether a build requires --force
+		$this->checkNodeBuildCanProceed($conn);
+
 		// Create SQL and run SQL on this connection
 		$projectRoot = P2P_Utils::getProjectRoot();
 		$this->buildSql($projectRoot);
@@ -72,7 +78,7 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 
 		// Record node details in system and system details in node
 		$ownNode = $this->writeOwnNodeRecord();
-		$this->writeNodeIdentityRecord($ownNode);
+		$this->writeNodeIdentityRecord($ownNode, $conn);
 	}
 
 	/**
@@ -144,20 +150,59 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 
 	/**
 	 * Labels the node db with a link back to the system table
+	 * 
+	 * Requires node autoloaders to be set up (P2P_Utils::initialiseNodeDbs)
 	 */
-	protected function writeNodeIdentityRecord(P2POwnNode $ownNode)
+	protected function writeNodeIdentityRecord(P2POwnNode $ownNode, PDO $conn)
 	{
-		// Look up the right connection for this op
-		$conn = Propel::getConnection($this->opts->connection);
-		P2P_Utils::initialiseNodeDbs($this->opts->schema);
-
 		// Save an ID record in the node
 		$class = P2P_Node_Utils::getIdentityClassName($this->opts->schema);
 		$node = new $class();
 		$node->setNodeId($ownNode->getId());
+		$node->setSchemaName($this->opts->schema);
 		$node->setBuiltAt(time());
 		$node->save($conn);
 		
 		return $node;
+	}
+
+	/**
+	 * If a node identity for the same schema is found, an exception is thrown
+	 * 
+	 * Requires node autoloaders to be set up (P2P_Utils::initialiseNodeDbs)
+	 * 
+	 * @param PDO $conn
+	 */
+	protected function checkNodeBuildCanProceed(PDO $conn)
+	{
+		// Don't do the checks if force is present
+		if (!$this->opts->force)
+		{
+			// NB: this will only find identities for this schema
+			$peerName = P2P_Node_Utils::getIdentityPeerClassName($this->opts->schema);
+			try
+			{
+				$identityPeer = call_user_func(
+					array($peerName, 'doSelectOne'),
+					new Criteria(),
+					$conn
+				);
+			}
+			catch (PropelException $e)
+			{
+				// Table doesn't exist - nothing to overwrite!
+				$identityPeer = null;
+			}
+
+			// If we have an identity row, we must have found a node db of the same schema
+			if ($identityPeer)
+			{
+				throw new P2P_Console_RunException(
+					'A node of the same schema exists in this database already (use --force if you are happy to overwrite).'
+				);
+			}
+		}
+
+		return true;
 	}
 }

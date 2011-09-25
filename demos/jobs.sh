@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Set up some database details (credentials same for all dbs for the purposes of this demo)
+# Set up some database details (credentials same for all dbs, for the purposes of this demo)
 databaseAdaptor=pgsql
 databaseUser=jon
 
-# These need to be created manually by the user
+# These dbs need to be created manually by the user
 db1_name=meshing_jobs_1
 db2_name=meshing_jobs_2
 
@@ -23,16 +23,20 @@ rm -rf ./database/schemas/*
 ./meshing system:build --database --verbose
 
 # Add new connections (exit if either won't connect)
-./meshing connection:add --name conn_jobs_1 --adaptor $databaseAdaptor --database $db1_name \
-	--host localhost --user $databaseUser --test || exit 2
-./meshing connection:add --name conn_jobs_2 --adaptor $databaseAdaptor --database $db2_name \
-	--host localhost --user $databaseUser --test || exit 2
+./meshing connection:add \
+	--name conn_jobs_1 \
+	--adaptor $databaseAdaptor --database $db1_name --host localhost --user $databaseUser \
+	--test || exit 2
+./meshing connection:add \
+	--name conn_jobs_2 \
+	--adaptor $databaseAdaptor --database $db2_name \ --host localhost --user $databaseUser \
+	--test || exit 2
 
 # Add a schema
 ./meshing schema:add --name jobs --file demos/jobs.xml
 
-# Add some nodes
-./meshing node:add --name node_jobs_1 --connection conn_jobs_1 --schema jobs
-./meshing node:add --name node_jobs_2 --connection conn_jobs_2 --schema jobs
+# Add some nodes, delete old nodes if present (or exit if either throws an exception)
+./meshing node:add --name node_jobs_1 --connection conn_jobs_1 --schema jobs --force || exit 2
+./meshing node:add --name node_jobs_2 --connection conn_jobs_2 --schema jobs --force || exit 2
 
 # @todo Add some trust
