@@ -7,6 +7,8 @@
  */
 class P2P_Utils
 {
+	const SYSTEM_CONNECTION = 'p2p';
+	
 	public static function getProjectRoot()
 	{
 		return realpath(

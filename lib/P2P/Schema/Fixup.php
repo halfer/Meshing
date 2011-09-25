@@ -24,9 +24,13 @@ class P2P_Schema_Fixup
 			P2P_Utils::getProjectRoot() . '/database/system/snippets/node_identity.xml'
 		);
 
+		// Use the schema name as a table prefix and as a package name
 		$prefix = strtolower($schemaName);
 		$this->xml->prefixTablesManually($prefix . '_');
 		$this->xml->setPackageName($prefix);
+
+		// Models need a real Propel conn as default (but we will always use a non-default conn)
+		$this->xml->setConnectionName(P2P_Utils::SYSTEM_CONNECTION);
 		
 		// Save the file under the same name
 		$this->xml->asXML($this->filename);

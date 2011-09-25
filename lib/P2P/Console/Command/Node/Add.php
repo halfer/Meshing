@@ -65,12 +65,14 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 	{
 		// @todo Check "identity" table on this connection to see whether a build requires --force
 		
-		// @todo Create SQL and run SQL on this connection
+		// Create SQL and run SQL on this connection
 		$projectRoot = P2P_Utils::getProjectRoot();
 		$this->buildSql($projectRoot);
 		$this->runSql($projectRoot);
-		
-		$this->writeRecord();
+
+		// Record node details in system and system details in node
+		$ownNode = $this->writeOwnNodeRecord();
+		$this->writeNodeIdentityRecord($ownNode);
 	}
 
 	/**
@@ -126,12 +128,36 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 		$task->run();
 	}
 
-	protected function writeRecord()
+	/**
+	 * Stores some node metadata in the system table
+	 */
+	protected function writeOwnNodeRecord()
 	{
-		$node = new P2POwnNode();
-		$node->setname($this->opts->name);
-		$node->setP2PConnection($this->connection);
-		$node->setP2PSchema($this->schema);
-		$node->save();		
+		$ownNode = new P2POwnNode();
+		$ownNode->setName($this->opts->name);
+		$ownNode->setP2PConnection($this->connection);
+		$ownNode->setP2PSchema($this->schema);
+		$ownNode->save();
+
+		return $ownNode;
+	}
+
+	/**
+	 * Labels the node db with a link back to the system table
+	 */
+	protected function writeNodeIdentityRecord(P2POwnNode $ownNode)
+	{
+		// Look up the right connection for this op
+		$conn = Propel::getConnection($this->opts->connection);
+		P2P_Utils::initialiseNodeDbs($this->opts->schema);
+
+		// Save an ID record in the node
+		$class = P2P_Node_Utils::getIdentityClassName($this->opts->schema);
+		$node = new $class();
+		$node->setNodeId($ownNode->getId());
+		$node->setBuiltAt(time());
+		$node->save($conn);
+		
+		return $node;
 	}
 }

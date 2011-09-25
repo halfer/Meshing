@@ -80,4 +80,21 @@ class P2P_Schema_Element extends SimpleXMLElement
 			$this->copyXml($fromChild, $toChild);
 		}
 	}
+
+	/**
+	 * Sets/unsets the name attribute in the root element
+	 * 
+	 * @param string $connName
+	 */
+	public function setConnectionName($connName = null)
+	{
+		if (is_null($connName))
+		{
+			unset($this['name']);
+		}
+		else
+		{
+			$this['name'] = $connName;
+		}
+	}
 }
