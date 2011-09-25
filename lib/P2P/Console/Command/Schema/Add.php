@@ -45,6 +45,9 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 			throw new Zend_Console_Getopt_Exception('The specified XML schema does not exist');
 		}
 
+		// @todo Test whether the input XML file already has a schema, unless --force is present
+		// ...
+
 		// @todo Do an XML validation check here
 		// ...
 
