@@ -5,13 +5,13 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P2P_Console_Interface
+class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base implements Meshing_Console_Interface
 {
 	public function __construct($argv = array())
 	{
 		parent::__construct($argv);
 		
-		$this->projectRoot = P2P_Utils::getProjectRoot();
+		$this->projectRoot = Meshing_Utils::getProjectRoot();
 	}
 
 	public function getDescription()
@@ -92,7 +92,7 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P
 		$schemas = "schema.xml";
 		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
 
-		$task = new P2P_Propel_ConfBuilder();
+		$task = new Meshing_Propel_ConfBuilder();
 		
 		$task->addSchemas($schemaDir, $schemas);
 		$task->setXmlFile($runTime);
@@ -126,7 +126,7 @@ class P2P_Console_Command_Connection_Regen extends P2P_Console_Base implements P
 		// @todo Validate XML file
 
 		// Grab the connections known to the system (@todo would we want more than 50!?)
-		P2P_Utils::initialiseDb();
+		Meshing_Utils::initialiseDb();
 		$c = new Criteria();
 		$c->setLimit(50);
 		$connections = P2PConnectionPeer::doSelect($c);

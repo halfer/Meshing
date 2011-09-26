@@ -4,7 +4,7 @@
  *
  * @author jon
  */
-interface P2P_Console_Interface {
+interface Meshing_Console_Interface {
 	public function getDescription();
 	public function getOpts();
 	public function parseOpts();

@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Connection_Base extends P2P_Console_Base
+class Meshing_Console_Command_Connection_Base extends Meshing_Console_Base
 {
 	/**
 	 * Converts the known connections to XML and converts to a Propel-friendly conf file
@@ -30,6 +30,6 @@ class P2P_Console_Command_Connection_Base extends P2P_Console_Base
 			$opts[] = '--quiet';
 		}
 		
-		P2P_Console_Utils::runCommand('P2P_Console_Command_Connection_Regen', $opts);
+		Meshing_Console_Utils::runCommand('Meshing_Console_Command_Connection_Regen', $opts);
 	}
 }

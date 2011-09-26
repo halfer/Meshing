@@ -3,7 +3,7 @@
 /**
  * Standard methods for console classes
  */
-class P2P_Console_Base
+class Meshing_Console_Base
 {
 	protected $argv;
 	protected $opts;

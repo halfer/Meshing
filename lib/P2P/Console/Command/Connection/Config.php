@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Connection_Config extends P2P_Console_Stub implements P2P_Console_Interface
+class Meshing_Console_Command_Connection_Config extends Meshing_Console_Stub implements Meshing_Console_Interface
 {
 	
 }

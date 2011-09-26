@@ -1,6 +1,6 @@
 <?php
 
-class P2P_Console_Stub extends P2P_Console_Base implements P2P_Console_Interface
+class Meshing_Console_Stub extends Meshing_Console_Base implements Meshing_Console_Interface
 {
 	public function getDescription()
 	{

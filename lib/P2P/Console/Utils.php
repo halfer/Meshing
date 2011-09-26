@@ -1,6 +1,6 @@
 <?php
 
-class P2P_Console_Utils
+class Meshing_Console_Utils
 {
 	public static function getCommands()
 	{
@@ -20,7 +20,7 @@ class P2P_Console_Utils
 		
 		if (!$commands)
 		{
-			$projectRoot = P2P_Utils::getProjectRoot();
+			$projectRoot = Meshing_Utils::getProjectRoot();
 			$consoleRoot = $projectRoot . '/lib/P2P/Console/Command';
 
 			$directory = new RecursiveDirectoryIterator($consoleRoot);
@@ -45,7 +45,7 @@ class P2P_Console_Utils
 				// Strip out the full path bit, and generally tidy
 				$item = str_replace($consoleRoot . DIRECTORY_SEPARATOR, '', $item);
 				$item = str_replace('.php', '', $item);
-				$className = 'P2P_Console_Command_' . str_replace(DIRECTORY_SEPARATOR, '_', $item);
+				$className = 'Meshing_Console_Command_' . str_replace(DIRECTORY_SEPARATOR, '_', $item);
 				$item = strtolower(
 					str_replace(DIRECTORY_SEPARATOR, ':', $item)
 				);

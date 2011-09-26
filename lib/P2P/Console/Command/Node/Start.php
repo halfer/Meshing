@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Node_Start extends P2P_Console_Stub implements P2P_Console_Interface
+class Meshing_Console_Command_Node_Start extends Meshing_Console_Stub implements Meshing_Console_Interface
 {
 	public function getDescription()
 	{
@@ -26,7 +26,7 @@ class P2P_Console_Command_Node_Start extends P2P_Console_Stub implements P2P_Con
 			throw new Zend_Console_Getopt_Exception('Which node would you like to start? (use --name)');
 		}
 
-		P2P_Utils::initialiseDb();
+		Meshing_Utils::initialiseDb();
 		$node = P2POwnNodeQuery::create()->findOneByName($this->opts->name);
 		if (!$node)
 		{
@@ -36,10 +36,10 @@ class P2P_Console_Command_Node_Start extends P2P_Console_Stub implements P2P_Con
 		// Connect with this node's connection, and ensure there are rows in known_nodes
 		$conn = Propel::getConnection($node->getP2PConnection()->getName());
 		$schemaName = $node->getP2PSchema()->getName();
-		P2P_Utils::initialiseNodeDbs($schemaName);
+		Meshing_Utils::initialiseNodeDbs($schemaName);
 		
 		// Obtain the number of trusted nodes
-		$class = P2P_Node_Utils::getNodeClassName($schemaName, 'KnownNodePeer');
+		$class = Meshing_Node_Utils::getNodeClassName($schemaName, 'KnownNodePeer');
 		$knownNodeCount = call_user_func(
 			array($class, 'doCount'),
 			new Criteria(),

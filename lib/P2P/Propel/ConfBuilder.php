@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Propel_ConfBuilder extends P2P_Propel_SchemaTask
+class Meshing_Propel_ConfBuilder extends Meshing_Propel_SchemaTask
 {
 	protected $xmlFile;
 	protected $outputFile;
@@ -40,7 +40,7 @@ class P2P_Propel_ConfBuilder extends P2P_Propel_SchemaTask
 	}
 
 	/**
-	 * Returns a task to be run by P2P_Console_Task
+	 * Returns a task to be run by Meshing_Console_Task
 	 * 
 	 * @param Project $project
 	 * @return PropelConvertConfTask 

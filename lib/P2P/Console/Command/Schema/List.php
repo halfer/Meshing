@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Schema_List extends P2P_Console_Base implements P2P_Console_Interface
+class Meshing_Console_Command_Schema_List extends Meshing_Console_Base implements Meshing_Console_Interface
 {
 	public function getDescription()
 	{
@@ -24,7 +24,7 @@ class P2P_Console_Command_Schema_List extends P2P_Console_Base implements P2P_Co
 
 	public function run()
 	{
-		P2P_Utils::initialiseDb();
+		Meshing_Utils::initialiseDb();
 
 		$outFormat = '%-15s';
 		$this->ruleOff($lineLength = 15);

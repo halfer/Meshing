@@ -1,6 +1,6 @@
 <?php
 
-abstract class P2P_Propel_Task
+abstract class Meshing_Propel_Task
 {
 	protected $fileProps = array();
 	protected $customProps = array();

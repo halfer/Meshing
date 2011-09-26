@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Schema_Element extends SimpleXMLElement
+class Meshing_Schema_Element extends SimpleXMLElement
 {
 	/**
 	 * Reprefixes the tables just in this schema (leaving other schemas in the same build untouched)

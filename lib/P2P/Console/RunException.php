@@ -5,6 +5,6 @@
  *
  * @author jon
  */
-class P2P_Console_RunException extends Exception {
+class Meshing_Console_RunException extends Exception {
 	
 }

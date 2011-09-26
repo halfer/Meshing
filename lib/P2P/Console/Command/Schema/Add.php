@@ -5,13 +5,13 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Console_Interface
+class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements Meshing_Console_Interface
 {
 	public function __construct($argv = array())
 	{
 		parent::__construct($argv);
 
-		$this->projectRoot = P2P_Utils::getProjectRoot();
+		$this->projectRoot = Meshing_Utils::getProjectRoot();
 	}
 
 	public function getDescription()
@@ -52,7 +52,7 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 		// ...
 
 		// Check that the schema name is not already taken
-		P2P_Utils::initialiseDb();
+		Meshing_Utils::initialiseDb();
 		$schema = P2PSchemaQuery::create()->findOneByName($this->opts->name);
 		if ($schema)
 		{
@@ -102,7 +102,7 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 		$modelDir = $this->projectRoot . '/database/models';
 
 		// Create task, configure, then run
-		$task = new P2P_Propel_ClassBuilder();
+		$task = new Meshing_Propel_ClassBuilder();
 
 		$task->addPropertiesFile($extraPropsFile);
 		$task->addSchemas($this->schemaDir, $schemaProc);
@@ -154,7 +154,7 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 	 */
 	protected function doFixups($schemaFile, $schemaName)
 	{
-		$fixup = new P2P_Schema_Fixup($schemaFile);
+		$fixup = new Meshing_Schema_Fixup($schemaFile);
 		$fixup->fixup($schemaName);
 	}
 
@@ -184,14 +184,14 @@ class P2P_Console_Command_Schema_Add extends P2P_Console_Base implements P2P_Con
 
 	/**
 	 * @todo Merge this with Regen::convertConf, put them both in
-	 * P2P_Console_Command_Connection_Base.
+	 * Meshing_Console_Command_Connection_Base.
 	 */
 	protected function convertConf($runTime, $outputDir, $outputFile)
 	{
 		$schemas = "schema.xml";
 		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
 
-		$task = new P2P_Propel_ConfBuilder();
+		$task = new Meshing_Propel_ConfBuilder();
 		
 		$task->addSchemas($this->schemaDir, $schemas);
 		$task->setXmlFile($runTime);

@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_Base implements P2P_Console_Interface
+class Meshing_Console_Command_Connection_Add extends Meshing_Console_Command_Connection_Base implements Meshing_Console_Interface
 {
 	public function getDescription()
 	{
@@ -34,7 +34,7 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 		}
 
 		// Check that the connection name is unique
-		P2P_Utils::initialiseDb();
+		Meshing_Utils::initialiseDb();
 		if ($this->connectionExists($this->opts->name))
 		{
 			throw new Zend_Console_Getopt_Exception('That connection name is already taken');
@@ -52,7 +52,7 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 			throw new Zend_Console_Getopt_Exception('All connections need a host (use --host <host>).');
 		}
 
-		if ($this->opts->name == P2P_Utils::SYSTEM_CONNECTION)
+		if ($this->opts->name == Meshing_Utils::SYSTEM_CONNECTION)
 		{
 			throw new Zend_Console_Getopt_Exception('That name is reserved for the system; please choose another');
 		}
@@ -128,14 +128,14 @@ class P2P_Console_Command_Connection_Add extends P2P_Console_Command_Connection_
 	{
 		if ($this->opts->test)
 		{
-			P2P_Utils::initialiseDb();
+			Meshing_Utils::initialiseDb();
 			try
 			{
 				$conn = Propel::getConnection($this->opts->name);
 			}
 			catch (PropelException $e)
 			{
-				throw new P2P_Console_RunException($e->getMessage());
+				throw new Meshing_Console_RunException($e->getMessage());
 			}
 		}
 

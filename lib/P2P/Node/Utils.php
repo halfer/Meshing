@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Node_Utils
+class Meshing_Node_Utils
 {
 	/**
 	 * Returns a classname for a given schema & class

@@ -5,7 +5,7 @@ $projectPath = realpath(
 	dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '..'
 );
 require_once $projectPath . '/lib/P2P/Utils.php';
-P2P_Utils::initialise();
+Meshing_Utils::initialise();
 
 // Pop off the script name, grab the command, pop again
 array_shift($argv);
@@ -14,7 +14,7 @@ array_shift($argv);
 
 if ($command)
 {
-	$className = P2P_Console_Utils::getCommandClass($command);
+	$className = Meshing_Console_Utils::getCommandClass($command);
 	if ($className === false)
 	{
 		echo "Unrecognised command.\n";
@@ -23,13 +23,13 @@ if ($command)
 }
 else
 {
-	$className = 'P2P_Console_Command_Help';
+	$className = 'Meshing_Console_Command_Help';
 }
 
 // Run the implementation
 try
 {
-	$ok = P2P_Console_Utils::runCommand($className, $argv);
+	$ok = Meshing_Console_Utils::runCommand($className, $argv);
 }
 // This is for parsing/preparation exceptions
 catch (Zend_Console_Getopt_Exception $e)
@@ -38,7 +38,7 @@ catch (Zend_Console_Getopt_Exception $e)
 	exit(1);
 }
 // This is for execution exceptions
-catch (P2P_Console_RunException $e)
+catch (Meshing_Console_RunException $e)
 {
 	echo $e->getMessage() . "\n";
 	exit(2);

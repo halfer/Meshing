@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Help extends P2P_Console_Base implements P2P_Console_Interface
+class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshing_Console_Interface
 {
 	public function getDescription()
 	{
@@ -32,7 +32,7 @@ class P2P_Console_Command_Help extends P2P_Console_Base implements P2P_Console_I
 	public function run()
 	{
 		// Reads the commands dynamically from the file system
-		$commands = P2P_Console_Utils::getCommands();
+		$commands = Meshing_Console_Utils::getCommands();
 
 		if (array_key_exists(0, $this->argv))
 		{

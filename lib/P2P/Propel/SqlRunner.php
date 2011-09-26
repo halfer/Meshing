@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Propel_SqlRunner extends P2P_Propel_Task
+class Meshing_Propel_SqlRunner extends Meshing_Propel_Task
 {
 	protected $mapFile;
 	protected $url, $userid, $password;

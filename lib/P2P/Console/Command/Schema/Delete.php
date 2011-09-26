@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Schema_Delete extends P2P_Console_Base implements P2P_Console_Interface
+class Meshing_Console_Command_Schema_Delete extends Meshing_Console_Base implements Meshing_Console_Interface
 {
 	public function getDescription()
 	{
@@ -27,7 +27,7 @@ class P2P_Console_Command_Schema_Delete extends P2P_Console_Base implements P2P_
 		}
 
 		// Check that the schema exists
-		P2P_Utils::initialiseDb();
+		Meshing_Utils::initialiseDb();
 		$this->schema = P2PSchemaQuery::create()->findOneByName($this->opts->name);
 		if (!$this->schema)
 		{
@@ -51,7 +51,7 @@ class P2P_Console_Command_Schema_Delete extends P2P_Console_Base implements P2P_
 
 	protected function deleteDirectories()
 	{
-		$projectRoot = P2P_Utils::getProjectRoot();
+		$projectRoot = Meshing_Utils::getProjectRoot();
 		$schemaDir = $projectRoot . '/database/schemas/' . $this->opts->name;
 		$modelDir = $projectRoot . '/database/models/' . $this->opts->name;
 		

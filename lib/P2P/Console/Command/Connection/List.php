@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Connection_List extends P2P_Console_Base implements P2P_Console_Interface
+class Meshing_Console_Command_Connection_List extends Meshing_Console_Base implements Meshing_Console_Interface
 {
 	public function getDescription()
 	{
@@ -23,7 +23,7 @@ class P2P_Console_Command_Connection_List extends P2P_Console_Base implements P2
 
 	public function run()
 	{
-		P2P_Utils::initialiseDb();
+		Meshing_Utils::initialiseDb();
 
 		// @todo Fix spelling of 'adaptor' to Propel 'adapter'?
 		$outFormat = '%-15s%-12s%-15s%-40s';

@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Console_Interface
+class Meshing_Console_Command_Node_Add extends Meshing_Console_Base implements Meshing_Console_Interface
 {
 	public function getDescription()
 	{
@@ -40,7 +40,7 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 		}
 
 		// Check that the name supplied is unique
-		P2P_Utils::initialiseDb();
+		Meshing_Utils::initialiseDb();
 		$node = P2POwnNodeQuery::create()->findOneByName($this->opts->name);
 		if ($node)
 		{
@@ -65,14 +65,14 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 	public function run()
 	{
 		// We access the node db twice, so let's init the autoloading for this schema
-		P2P_Utils::initialiseNodeDbs($this->opts->schema);
+		Meshing_Utils::initialiseNodeDbs($this->opts->schema);
 		$conn = Propel::getConnection($this->opts->connection);
 
 		// Check "identity" table on this connection to see whether a build requires --force
 		$this->checkNodeBuildCanProceed($conn);
 
 		// Create SQL and run SQL on this connection
-		$projectRoot = P2P_Utils::getProjectRoot();
+		$projectRoot = Meshing_Utils::getProjectRoot();
 		$this->buildSql($projectRoot);
 		$this->runSql($projectRoot);
 
@@ -100,7 +100,7 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 		$extraPropsFile = $projectRoot . '/database/system/build.properties';
 
 		// Create task, configure, then run
-		$task = new P2P_Propel_SqlBuilder();
+		$task = new Meshing_Propel_SqlBuilder();
 
 		$task->addPropertiesFile($extraPropsFile);
 		$task->addSchemas($schemaDir, $schemas);
@@ -121,7 +121,7 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 		$sqlDir = $projectRoot . '/database/sql/' . $this->opts->name;
 		$mapFile = $projectRoot . '/database/system/sqldb.map';
 
-		$task = new P2P_Propel_SqlRunner();
+		$task = new Meshing_Propel_SqlRunner();
 		$task->setSqlDir($sqlDir);
 		$task->setMapFile($mapFile);
 
@@ -151,12 +151,12 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 	/**
 	 * Labels the node db with a link back to the system table
 	 * 
-	 * Requires node autoloaders to be set up (P2P_Utils::initialiseNodeDbs)
+	 * Requires node autoloaders to be set up (Meshing_Utils::initialiseNodeDbs)
 	 */
 	protected function writeNodeIdentityRecord(P2POwnNode $ownNode, PDO $conn)
 	{
 		// Save an ID record in the node
-		$class = P2P_Node_Utils::getIdentityClassName($this->opts->schema);
+		$class = Meshing_Node_Utils::getIdentityClassName($this->opts->schema);
 		$node = new $class();
 		$node->setNodeId($ownNode->getId());
 		$node->setSchemaName($this->opts->schema);
@@ -169,7 +169,7 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 	/**
 	 * If a node identity for the same schema is found, an exception is thrown
 	 * 
-	 * Requires node autoloaders to be set up (P2P_Utils::initialiseNodeDbs)
+	 * Requires node autoloaders to be set up (Meshing_Utils::initialiseNodeDbs)
 	 * 
 	 * @param PDO $conn
 	 */
@@ -179,7 +179,7 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 		if (!$this->opts->force)
 		{
 			// NB: this will only find identities for this schema
-			$peerName = P2P_Node_Utils::getIdentityPeerClassName($this->opts->schema);
+			$peerName = Meshing_Node_Utils::getIdentityPeerClassName($this->opts->schema);
 			try
 			{
 				$identityPeer = call_user_func(
@@ -197,7 +197,7 @@ class P2P_Console_Command_Node_Add extends P2P_Console_Base implements P2P_Conso
 			// If we have an identity row, we must have found a node db of the same schema
 			if ($identityPeer)
 			{
-				throw new P2P_Console_RunException(
+				throw new Meshing_Console_RunException(
 					'A node of the same schema exists in this database already (use --force if you are happy to overwrite).'
 				);
 			}

@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_System_Build extends P2P_Console_Command_Connection_Base implements P2P_Console_Interface
+class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Connection_Base implements Meshing_Console_Interface
 {
 	private $projectRoot;
 
@@ -33,7 +33,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Command_Connection_Ba
 
 	public function run()
 	{
-		$this->projectRoot = P2P_Utils::getProjectRoot();
+		$this->projectRoot = Meshing_Utils::getProjectRoot();
 
 		$verbose = $this->opts->verbose;
 		if ($verbose)
@@ -72,7 +72,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Command_Connection_Ba
 		$outputDir = $this->projectRoot . "/database/models";
 
 		// Create task, configure, then run
-		$task = new P2P_Propel_ClassBuilder();
+		$task = new Meshing_Propel_ClassBuilder();
 
 		$task->addPropertiesFile($extraPropsFile);
 		$task->addSchemas($schemaDir, $schemas);
@@ -123,7 +123,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Command_Connection_Ba
 		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
 
 		// Create task, configure, then run
-		$task = new P2P_Propel_SqlBuilder();
+		$task = new Meshing_Propel_SqlBuilder();
 
 		$task->addPropertiesFile($extraPropsFile);
 		$task->addSchemas($schemaDir, $schemas);
@@ -145,7 +145,7 @@ class P2P_Console_Command_System_Build extends P2P_Console_Command_Connection_Ba
 		$mapFile = $this->projectRoot . '/database/system/sqldb.map';
 		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
 
-		$task = new P2P_Propel_SqlRunner();
+		$task = new Meshing_Propel_SqlRunner();
 
 		$task->setSqlDir($sqlDir);
 		$task->setMapFile($mapFile);

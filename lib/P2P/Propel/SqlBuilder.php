@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Propel_SqlBuilder extends P2P_Propel_SchemaTask
+class Meshing_Propel_SqlBuilder extends Meshing_Propel_SchemaTask
 {
 	protected function createTask(Project $project)
 	{
@@ -29,7 +29,7 @@ class P2P_Propel_SqlBuilder extends P2P_Propel_SchemaTask
 	/**
 	 * Renames the output file (*.xml) to a more sensible name (*.sql)
 	 * 
-	 * Note: this is used by child class P2P_Propel_SqlBuilder to
+	 * Note: this is used by child class Meshing_Propel_SqlBuilder to
 	 * work out the output SQL file's name. Perhaps there is a better
 	 * mechanism in Propel to determine what the output file is going to
 	 * be. What would it be if two schemas were to be added, since it

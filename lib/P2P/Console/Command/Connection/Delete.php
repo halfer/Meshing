@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Console_Command_Connection_Delete extends P2P_Console_Command_Connection_Base implements P2P_Console_Interface
+class Meshing_Console_Command_Connection_Delete extends Meshing_Console_Command_Connection_Base implements Meshing_Console_Interface
 {
 	private $connection;
 
@@ -31,7 +31,7 @@ class P2P_Console_Command_Connection_Delete extends P2P_Console_Command_Connecti
 
 		// @todo Check that this connection isn't in use
 
-		P2P_Utils::initialiseDb();
+		Meshing_Utils::initialiseDb();
 
 		$this->connection = P2PConnectionQuery::create()->findOneByName($name);
 		if (!$this->connection)

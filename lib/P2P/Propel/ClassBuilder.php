@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Propel_ClassBuilder extends P2P_Propel_SchemaTask
+class Meshing_Propel_ClassBuilder extends Meshing_Propel_SchemaTask
 {
 	protected function createTask(Project $project)
 	{

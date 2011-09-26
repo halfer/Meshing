@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
+abstract class Meshing_Propel_SchemaTask extends Meshing_Propel_Task
 {
 	protected $schemas = array();
 	
@@ -14,7 +14,7 @@ abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
 		parent::__construct();
 
 		// Sets up default Propel build properties
-		$projectPath = P2P_Utils::getProjectRoot();
+		$projectPath = Meshing_Utils::getProjectRoot();
 		$propertiesFile = $projectPath . '/vendor/propel-1.6/generator/default.properties';
 		$this->addPropertiesFile($propertiesFile);
 	}
@@ -33,7 +33,7 @@ abstract class P2P_Propel_SchemaTask extends P2P_Propel_Task
 	/**
 	 * This grabs the schemaFiles value, if only one has been provided
 	 * 
-	 * @see P2P_Propel_SqlBuilder::postRun
+	 * @see Meshing_Propel_SqlBuilder::postRun
 	 */
 	public function getSchemaFiles()
 	{

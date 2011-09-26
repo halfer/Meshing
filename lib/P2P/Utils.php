@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class P2P_Utils
+class Meshing_Utils
 {
 	const SYSTEM_CONNECTION = 'p2p';
 	
@@ -34,7 +34,7 @@ class P2P_Utils
 		$loader = Zend_Loader_Autoloader::getInstance();
 
 		// Autoload our own classes
-		$loader->registerNamespace('P2P_');
+		$loader->registerNamespace('Meshing_');
 	}
 
 	/**
