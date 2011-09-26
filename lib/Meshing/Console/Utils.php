@@ -21,7 +21,7 @@ class Meshing_Console_Utils
 		if (!$commands)
 		{
 			$projectRoot = Meshing_Utils::getProjectRoot();
-			$consoleRoot = $projectRoot . '/lib/P2P/Console/Command';
+			$consoleRoot = $projectRoot . '/lib/Meshing/Console/Command';
 
 			$directory = new RecursiveDirectoryIterator($consoleRoot);
 			$iterator = new RecursiveIteratorIterator($directory);

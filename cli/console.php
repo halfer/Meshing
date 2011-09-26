@@ -4,7 +4,7 @@
 $projectPath = realpath(
 	dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '..'
 );
-require_once $projectPath . '/lib/P2P/Utils.php';
+require_once $projectPath . '/lib/Meshing/Utils.php';
 Meshing_Utils::initialise();
 
 // Pop off the script name, grab the command, pop again
