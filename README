@@ -63,7 +63,7 @@ it is a good idea to have a separate one. Add that thus:
 
 	./meshing connection:add \
 		--name conn_jobs_1 --adaptor pgsql --host localhost \
-		--user jon --password mypass
+		--user jon --password mypass \
 		--database mydb
 
 Of course, change the values to fit your situation (e.g. if you're using MySQL then specify 'mysql'
