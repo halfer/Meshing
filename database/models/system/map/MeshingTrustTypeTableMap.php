@@ -51,7 +51,7 @@ class MeshingTrustTypeTableMap extends TableMap
 	public function buildRelations()
 	{
 		$this->addRelation('MeshingTrustLocal', 'MeshingTrustLocal', RelationMap::ONE_TO_MANY, array('id' => 'type', ), null, null);
-		$this->addRelation('MeshingTrustRemote', 'MeshingTrustRemote', RelationMap::ONE_TO_MANY, array('id' => 'type', ), null, null);
+		$this->addRelation('MeshingTrustRemote', 'MeshingTrustRemote', RelationMap::ONE_TO_MANY, array('id' => 'trust_type_id', ), null, null);
 	} // buildRelations()
 
 } // MeshingTrustTypeTableMap

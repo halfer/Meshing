@@ -42,7 +42,7 @@ class MeshingTrustRemoteTableMap extends TableMap
 		$this->addForeignPrimaryKey('IN_OWN_NODE_ID', 'InOwnNodeId', 'INTEGER' , 'p2p_own_node', 'ID', true, null, null);
 		$this->addPrimaryKey('KNOWN_NODE_ID', 'KnownNodeId', 'INTEGER', true, null, null);
 		$this->addColumn('DIRECTION', 'Direction', 'VARCHAR', true, 1, null);
-		$this->addForeignKey('TYPE', 'Type', 'INTEGER', 'meshing_trust_type', 'ID', true, null, null);
+		$this->addForeignKey('TRUST_TYPE_ID', 'TrustTypeId', 'INTEGER', 'meshing_trust_type', 'ID', true, null, null);
 		// validators
 	} // initialize()
 
@@ -53,7 +53,7 @@ class MeshingTrustRemoteTableMap extends TableMap
 	{
 		$this->addRelation('FromOwnNode', 'P2POwnNode', RelationMap::MANY_TO_ONE, array('from_own_node_id' => 'id', ), null, null);
 		$this->addRelation('P2POwnNodeRelatedByInOwnNodeId', 'P2POwnNode', RelationMap::MANY_TO_ONE, array('in_own_node_id' => 'id', ), null, null);
-		$this->addRelation('MeshingTrustType', 'MeshingTrustType', RelationMap::MANY_TO_ONE, array('type' => 'id', ), null, null);
+		$this->addRelation('MeshingTrustType', 'MeshingTrustType', RelationMap::MANY_TO_ONE, array('trust_type_id' => 'id', ), null, null);
 	} // buildRelations()
 
 } // MeshingTrustRemoteTableMap

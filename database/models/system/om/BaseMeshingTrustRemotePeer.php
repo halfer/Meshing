@@ -46,8 +46,8 @@ abstract class BaseMeshingTrustRemotePeer {
 	/** the column name for the DIRECTION field */
 	const DIRECTION = 'meshing_trust_remote.DIRECTION';
 
-	/** the column name for the TYPE field */
-	const TYPE = 'meshing_trust_remote.TYPE';
+	/** the column name for the TRUST_TYPE_ID field */
+	const TRUST_TYPE_ID = 'meshing_trust_remote.TRUST_TYPE_ID';
 
 	/** The default string format for model objects of the related table **/
 	const DEFAULT_STRING_FORMAT = 'YAML';
@@ -68,11 +68,11 @@ abstract class BaseMeshingTrustRemotePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('FromOwnNodeId', 'InOwnNodeId', 'KnownNodeId', 'Direction', 'Type', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('fromOwnNodeId', 'inOwnNodeId', 'knownNodeId', 'direction', 'type', ),
-		BasePeer::TYPE_COLNAME => array (self::FROM_OWN_NODE_ID, self::IN_OWN_NODE_ID, self::KNOWN_NODE_ID, self::DIRECTION, self::TYPE, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('FROM_OWN_NODE_ID', 'IN_OWN_NODE_ID', 'KNOWN_NODE_ID', 'DIRECTION', 'TYPE', ),
-		BasePeer::TYPE_FIELDNAME => array ('from_own_node_id', 'in_own_node_id', 'known_node_id', 'direction', 'type', ),
+		BasePeer::TYPE_PHPNAME => array ('FromOwnNodeId', 'InOwnNodeId', 'KnownNodeId', 'Direction', 'TrustTypeId', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('fromOwnNodeId', 'inOwnNodeId', 'knownNodeId', 'direction', 'trustTypeId', ),
+		BasePeer::TYPE_COLNAME => array (self::FROM_OWN_NODE_ID, self::IN_OWN_NODE_ID, self::KNOWN_NODE_ID, self::DIRECTION, self::TRUST_TYPE_ID, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('FROM_OWN_NODE_ID', 'IN_OWN_NODE_ID', 'KNOWN_NODE_ID', 'DIRECTION', 'TRUST_TYPE_ID', ),
+		BasePeer::TYPE_FIELDNAME => array ('from_own_node_id', 'in_own_node_id', 'known_node_id', 'direction', 'trust_type_id', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -83,11 +83,11 @@ abstract class BaseMeshingTrustRemotePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('FromOwnNodeId' => 0, 'InOwnNodeId' => 1, 'KnownNodeId' => 2, 'Direction' => 3, 'Type' => 4, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('fromOwnNodeId' => 0, 'inOwnNodeId' => 1, 'knownNodeId' => 2, 'direction' => 3, 'type' => 4, ),
-		BasePeer::TYPE_COLNAME => array (self::FROM_OWN_NODE_ID => 0, self::IN_OWN_NODE_ID => 1, self::KNOWN_NODE_ID => 2, self::DIRECTION => 3, self::TYPE => 4, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('FROM_OWN_NODE_ID' => 0, 'IN_OWN_NODE_ID' => 1, 'KNOWN_NODE_ID' => 2, 'DIRECTION' => 3, 'TYPE' => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('from_own_node_id' => 0, 'in_own_node_id' => 1, 'known_node_id' => 2, 'direction' => 3, 'type' => 4, ),
+		BasePeer::TYPE_PHPNAME => array ('FromOwnNodeId' => 0, 'InOwnNodeId' => 1, 'KnownNodeId' => 2, 'Direction' => 3, 'TrustTypeId' => 4, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('fromOwnNodeId' => 0, 'inOwnNodeId' => 1, 'knownNodeId' => 2, 'direction' => 3, 'trustTypeId' => 4, ),
+		BasePeer::TYPE_COLNAME => array (self::FROM_OWN_NODE_ID => 0, self::IN_OWN_NODE_ID => 1, self::KNOWN_NODE_ID => 2, self::DIRECTION => 3, self::TRUST_TYPE_ID => 4, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('FROM_OWN_NODE_ID' => 0, 'IN_OWN_NODE_ID' => 1, 'KNOWN_NODE_ID' => 2, 'DIRECTION' => 3, 'TRUST_TYPE_ID' => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('from_own_node_id' => 0, 'in_own_node_id' => 1, 'known_node_id' => 2, 'direction' => 3, 'trust_type_id' => 4, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -164,13 +164,13 @@ abstract class BaseMeshingTrustRemotePeer {
 			$criteria->addSelectColumn(MeshingTrustRemotePeer::IN_OWN_NODE_ID);
 			$criteria->addSelectColumn(MeshingTrustRemotePeer::KNOWN_NODE_ID);
 			$criteria->addSelectColumn(MeshingTrustRemotePeer::DIRECTION);
-			$criteria->addSelectColumn(MeshingTrustRemotePeer::TYPE);
+			$criteria->addSelectColumn(MeshingTrustRemotePeer::TRUST_TYPE_ID);
 		} else {
 			$criteria->addSelectColumn($alias . '.FROM_OWN_NODE_ID');
 			$criteria->addSelectColumn($alias . '.IN_OWN_NODE_ID');
 			$criteria->addSelectColumn($alias . '.KNOWN_NODE_ID');
 			$criteria->addSelectColumn($alias . '.DIRECTION');
-			$criteria->addSelectColumn($alias . '.TYPE');
+			$criteria->addSelectColumn($alias . '.TRUST_TYPE_ID');
 		}
 	}
 
@@ -593,7 +593,7 @@ abstract class BaseMeshingTrustRemotePeer {
 			$con = Propel::getConnection(MeshingTrustRemotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(MeshingTrustRemotePeer::TYPE, MeshingTrustTypePeer::ID, $join_behavior);
+		$criteria->addJoin(MeshingTrustRemotePeer::TRUST_TYPE_ID, MeshingTrustTypePeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -761,7 +761,7 @@ abstract class BaseMeshingTrustRemotePeer {
 		$startcol = MeshingTrustRemotePeer::NUM_HYDRATE_COLUMNS;
 		MeshingTrustTypePeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(MeshingTrustRemotePeer::TYPE, MeshingTrustTypePeer::ID, $join_behavior);
+		$criteria->addJoin(MeshingTrustRemotePeer::TRUST_TYPE_ID, MeshingTrustTypePeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -845,7 +845,7 @@ abstract class BaseMeshingTrustRemotePeer {
 
 		$criteria->addJoin(MeshingTrustRemotePeer::IN_OWN_NODE_ID, P2POwnNodePeer::ID, $join_behavior);
 
-		$criteria->addJoin(MeshingTrustRemotePeer::TYPE, MeshingTrustTypePeer::ID, $join_behavior);
+		$criteria->addJoin(MeshingTrustRemotePeer::TRUST_TYPE_ID, MeshingTrustTypePeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -893,7 +893,7 @@ abstract class BaseMeshingTrustRemotePeer {
 
 		$criteria->addJoin(MeshingTrustRemotePeer::IN_OWN_NODE_ID, P2POwnNodePeer::ID, $join_behavior);
 
-		$criteria->addJoin(MeshingTrustRemotePeer::TYPE, MeshingTrustTypePeer::ID, $join_behavior);
+		$criteria->addJoin(MeshingTrustRemotePeer::TRUST_TYPE_ID, MeshingTrustTypePeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -1009,7 +1009,7 @@ abstract class BaseMeshingTrustRemotePeer {
 			$con = Propel::getConnection(MeshingTrustRemotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(MeshingTrustRemotePeer::TYPE, MeshingTrustTypePeer::ID, $join_behavior);
+		$criteria->addJoin(MeshingTrustRemotePeer::TRUST_TYPE_ID, MeshingTrustTypePeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -1059,7 +1059,7 @@ abstract class BaseMeshingTrustRemotePeer {
 			$con = Propel::getConnection(MeshingTrustRemotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(MeshingTrustRemotePeer::TYPE, MeshingTrustTypePeer::ID, $join_behavior);
+		$criteria->addJoin(MeshingTrustRemotePeer::TRUST_TYPE_ID, MeshingTrustTypePeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -1152,7 +1152,7 @@ abstract class BaseMeshingTrustRemotePeer {
 		MeshingTrustTypePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + MeshingTrustTypePeer::NUM_HYDRATE_COLUMNS;
 
-		$criteria->addJoin(MeshingTrustRemotePeer::TYPE, MeshingTrustTypePeer::ID, $join_behavior);
+		$criteria->addJoin(MeshingTrustRemotePeer::TRUST_TYPE_ID, MeshingTrustTypePeer::ID, $join_behavior);
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1225,7 +1225,7 @@ abstract class BaseMeshingTrustRemotePeer {
 		MeshingTrustTypePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + MeshingTrustTypePeer::NUM_HYDRATE_COLUMNS;
 
-		$criteria->addJoin(MeshingTrustRemotePeer::TYPE, MeshingTrustTypePeer::ID, $join_behavior);
+		$criteria->addJoin(MeshingTrustRemotePeer::TRUST_TYPE_ID, MeshingTrustTypePeer::ID, $join_behavior);
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);

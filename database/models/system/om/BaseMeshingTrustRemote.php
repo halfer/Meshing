@@ -49,10 +49,10 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 	protected $direction;
 
 	/**
-	 * The value for the type field.
+	 * The value for the trust_type_id field.
 	 * @var        int
 	 */
-	protected $type;
+	protected $trust_type_id;
 
 	/**
 	 * @var        P2POwnNode
@@ -124,13 +124,13 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [type] column value.
+	 * Get the [trust_type_id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getType()
+	public function getTrustTypeId()
 	{
-		return $this->type;
+		return $this->trust_type_id;
 	}
 
 	/**
@@ -222,20 +222,20 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 	} // setDirection()
 
 	/**
-	 * Set the value of [type] column.
+	 * Set the value of [trust_type_id] column.
 	 * 
 	 * @param      int $v new value
 	 * @return     MeshingTrustRemote The current object (for fluent API support)
 	 */
-	public function setType($v)
+	public function setTrustTypeId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->type !== $v) {
-			$this->type = $v;
-			$this->modifiedColumns[] = MeshingTrustRemotePeer::TYPE;
+		if ($this->trust_type_id !== $v) {
+			$this->trust_type_id = $v;
+			$this->modifiedColumns[] = MeshingTrustRemotePeer::TRUST_TYPE_ID;
 		}
 
 		if ($this->aMeshingTrustType !== null && $this->aMeshingTrustType->getId() !== $v) {
@@ -243,7 +243,7 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 		}
 
 		return $this;
-	} // setType()
+	} // setTrustTypeId()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -281,7 +281,7 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 			$this->in_own_node_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->known_node_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->direction = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-			$this->type = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->trust_type_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -319,7 +319,7 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 		if ($this->aP2POwnNodeRelatedByInOwnNodeId !== null && $this->in_own_node_id !== $this->aP2POwnNodeRelatedByInOwnNodeId->getId()) {
 			$this->aP2POwnNodeRelatedByInOwnNodeId = null;
 		}
-		if ($this->aMeshingTrustType !== null && $this->type !== $this->aMeshingTrustType->getId()) {
+		if ($this->aMeshingTrustType !== null && $this->trust_type_id !== $this->aMeshingTrustType->getId()) {
 			$this->aMeshingTrustType = null;
 		}
 	} // ensureConsistency
@@ -656,7 +656,7 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 				return $this->getDirection();
 				break;
 			case 4:
-				return $this->getType();
+				return $this->getTrustTypeId();
 				break;
 			default:
 				return null;
@@ -691,7 +691,7 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 			$keys[1] => $this->getInOwnNodeId(),
 			$keys[2] => $this->getKnownNodeId(),
 			$keys[3] => $this->getDirection(),
-			$keys[4] => $this->getType(),
+			$keys[4] => $this->getTrustTypeId(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aFromOwnNode) {
@@ -747,7 +747,7 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 				$this->setDirection($value);
 				break;
 			case 4:
-				$this->setType($value);
+				$this->setTrustTypeId($value);
 				break;
 		} // switch()
 	}
@@ -777,7 +777,7 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 		if (array_key_exists($keys[1], $arr)) $this->setInOwnNodeId($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setKnownNodeId($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setDirection($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setType($arr[$keys[4]]);
+		if (array_key_exists($keys[4], $arr)) $this->setTrustTypeId($arr[$keys[4]]);
 	}
 
 	/**
@@ -793,7 +793,7 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 		if ($this->isColumnModified(MeshingTrustRemotePeer::IN_OWN_NODE_ID)) $criteria->add(MeshingTrustRemotePeer::IN_OWN_NODE_ID, $this->in_own_node_id);
 		if ($this->isColumnModified(MeshingTrustRemotePeer::KNOWN_NODE_ID)) $criteria->add(MeshingTrustRemotePeer::KNOWN_NODE_ID, $this->known_node_id);
 		if ($this->isColumnModified(MeshingTrustRemotePeer::DIRECTION)) $criteria->add(MeshingTrustRemotePeer::DIRECTION, $this->direction);
-		if ($this->isColumnModified(MeshingTrustRemotePeer::TYPE)) $criteria->add(MeshingTrustRemotePeer::TYPE, $this->type);
+		if ($this->isColumnModified(MeshingTrustRemotePeer::TRUST_TYPE_ID)) $criteria->add(MeshingTrustRemotePeer::TRUST_TYPE_ID, $this->trust_type_id);
 
 		return $criteria;
 	}
@@ -870,7 +870,7 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 		$copyObj->setInOwnNodeId($this->getInOwnNodeId());
 		$copyObj->setKnownNodeId($this->getKnownNodeId());
 		$copyObj->setDirection($this->getDirection());
-		$copyObj->setType($this->getType());
+		$copyObj->setTrustTypeId($this->getTrustTypeId());
 		if ($makeNew) {
 			$copyObj->setNew(true);
 		}
@@ -1022,9 +1022,9 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 	public function setMeshingTrustType(MeshingTrustType $v = null)
 	{
 		if ($v === null) {
-			$this->setType(NULL);
+			$this->setTrustTypeId(NULL);
 		} else {
-			$this->setType($v->getId());
+			$this->setTrustTypeId($v->getId());
 		}
 
 		$this->aMeshingTrustType = $v;
@@ -1048,8 +1048,8 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 	 */
 	public function getMeshingTrustType(PropelPDO $con = null)
 	{
-		if ($this->aMeshingTrustType === null && ($this->type !== null)) {
-			$this->aMeshingTrustType = MeshingTrustTypeQuery::create()->findPk($this->type, $con);
+		if ($this->aMeshingTrustType === null && ($this->trust_type_id !== null)) {
+			$this->aMeshingTrustType = MeshingTrustTypeQuery::create()->findPk($this->trust_type_id, $con);
 			/* The following can be used additionally to
 				guarantee the related object contains a reference
 				to this object.  This level of coupling may, however, be
@@ -1070,7 +1070,7 @@ abstract class BaseMeshingTrustRemote extends BaseObject  implements Persistent
 		$this->in_own_node_id = null;
 		$this->known_node_id = null;
 		$this->direction = null;
-		$this->type = null;
+		$this->trust_type_id = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();

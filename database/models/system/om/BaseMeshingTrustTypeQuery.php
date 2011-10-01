@@ -312,7 +312,7 @@ abstract class BaseMeshingTrustTypeQuery extends ModelCriteria
 	{
 		if ($meshingTrustRemote instanceof MeshingTrustRemote) {
 			return $this
-				->addUsingAlias(MeshingTrustTypePeer::ID, $meshingTrustRemote->getType(), $comparison);
+				->addUsingAlias(MeshingTrustTypePeer::ID, $meshingTrustRemote->getTrustTypeId(), $comparison);
 		} elseif ($meshingTrustRemote instanceof PropelCollection) {
 			return $this
 				->useMeshingTrustRemoteQuery()

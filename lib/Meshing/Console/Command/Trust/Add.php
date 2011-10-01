@@ -104,11 +104,22 @@ class Meshing_Console_Command_Trust_Add extends Meshing_Console_Base implements 
 	 */
 	protected function runLocal(P2POwnNode $from, P2POwnNode $to)
 	{
+		// Look up the trust type, using default if necessary
+		$typeName = $this->opts->{'trust-type'};
+		$typeName = $typeName ? $typeName : MeshingTrustLocalPeer::TYPE_DEFAULT;
+		$trustType = MeshingTrustTypeQuery::create()->findOneByName(strtolower($typeName));
+		if (!$trustType)
+		{
+			throw new Meshing_Console_RunException(
+				'The specified trust type is not found'
+			);
+		}
+		
 		$trust = new MeshingTrustLocal();
 		$trust->setFromOwnNode($from);
 		$trust->setToOwnNode($to);
 		$trust->setDirection(MeshingTrustLocalPeer::DIRECTION_DEFAULT);
-		$trust->setType(MeshingTrustLocalPeer::TYPE_DEFAULT);
+		$trust->setMeshingTrustType($trustType);
 		$trust->save();
 	}
 

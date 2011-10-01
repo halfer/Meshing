@@ -10,13 +10,13 @@
  * @method     MeshingTrustRemoteQuery orderByInOwnNodeId($order = Criteria::ASC) Order by the in_own_node_id column
  * @method     MeshingTrustRemoteQuery orderByKnownNodeId($order = Criteria::ASC) Order by the known_node_id column
  * @method     MeshingTrustRemoteQuery orderByDirection($order = Criteria::ASC) Order by the direction column
- * @method     MeshingTrustRemoteQuery orderByType($order = Criteria::ASC) Order by the type column
+ * @method     MeshingTrustRemoteQuery orderByTrustTypeId($order = Criteria::ASC) Order by the trust_type_id column
  *
  * @method     MeshingTrustRemoteQuery groupByFromOwnNodeId() Group by the from_own_node_id column
  * @method     MeshingTrustRemoteQuery groupByInOwnNodeId() Group by the in_own_node_id column
  * @method     MeshingTrustRemoteQuery groupByKnownNodeId() Group by the known_node_id column
  * @method     MeshingTrustRemoteQuery groupByDirection() Group by the direction column
- * @method     MeshingTrustRemoteQuery groupByType() Group by the type column
+ * @method     MeshingTrustRemoteQuery groupByTrustTypeId() Group by the trust_type_id column
  *
  * @method     MeshingTrustRemoteQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     MeshingTrustRemoteQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -41,13 +41,13 @@
  * @method     MeshingTrustRemote findOneByInOwnNodeId(int $in_own_node_id) Return the first MeshingTrustRemote filtered by the in_own_node_id column
  * @method     MeshingTrustRemote findOneByKnownNodeId(int $known_node_id) Return the first MeshingTrustRemote filtered by the known_node_id column
  * @method     MeshingTrustRemote findOneByDirection(string $direction) Return the first MeshingTrustRemote filtered by the direction column
- * @method     MeshingTrustRemote findOneByType(int $type) Return the first MeshingTrustRemote filtered by the type column
+ * @method     MeshingTrustRemote findOneByTrustTypeId(int $trust_type_id) Return the first MeshingTrustRemote filtered by the trust_type_id column
  *
  * @method     array findByFromOwnNodeId(int $from_own_node_id) Return MeshingTrustRemote objects filtered by the from_own_node_id column
  * @method     array findByInOwnNodeId(int $in_own_node_id) Return MeshingTrustRemote objects filtered by the in_own_node_id column
  * @method     array findByKnownNodeId(int $known_node_id) Return MeshingTrustRemote objects filtered by the known_node_id column
  * @method     array findByDirection(string $direction) Return MeshingTrustRemote objects filtered by the direction column
- * @method     array findByType(int $type) Return MeshingTrustRemote objects filtered by the type column
+ * @method     array findByTrustTypeId(int $trust_type_id) Return MeshingTrustRemote objects filtered by the trust_type_id column
  *
  * @package    propel.generator.system.om
  */
@@ -283,18 +283,18 @@ abstract class BaseMeshingTrustRemoteQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query on the type column
+	 * Filter the query on the trust_type_id column
 	 * 
 	 * Example usage:
 	 * <code>
-	 * $query->filterByType(1234); // WHERE type = 1234
-	 * $query->filterByType(array(12, 34)); // WHERE type IN (12, 34)
-	 * $query->filterByType(array('min' => 12)); // WHERE type > 12
+	 * $query->filterByTrustTypeId(1234); // WHERE trust_type_id = 1234
+	 * $query->filterByTrustTypeId(array(12, 34)); // WHERE trust_type_id IN (12, 34)
+	 * $query->filterByTrustTypeId(array('min' => 12)); // WHERE trust_type_id > 12
 	 * </code>
 	 *
 	 * @see       filterByMeshingTrustType()
 	 *
-	 * @param     mixed $type The value to use as filter.
+	 * @param     mixed $trustTypeId The value to use as filter.
 	 *              Use scalar values for equality.
 	 *              Use array values for in_array() equivalent.
 	 *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -302,16 +302,16 @@ abstract class BaseMeshingTrustRemoteQuery extends ModelCriteria
 	 *
 	 * @return    MeshingTrustRemoteQuery The current query, for fluid interface
 	 */
-	public function filterByType($type = null, $comparison = null)
+	public function filterByTrustTypeId($trustTypeId = null, $comparison = null)
 	{
-		if (is_array($type)) {
+		if (is_array($trustTypeId)) {
 			$useMinMax = false;
-			if (isset($type['min'])) {
-				$this->addUsingAlias(MeshingTrustRemotePeer::TYPE, $type['min'], Criteria::GREATER_EQUAL);
+			if (isset($trustTypeId['min'])) {
+				$this->addUsingAlias(MeshingTrustRemotePeer::TRUST_TYPE_ID, $trustTypeId['min'], Criteria::GREATER_EQUAL);
 				$useMinMax = true;
 			}
-			if (isset($type['max'])) {
-				$this->addUsingAlias(MeshingTrustRemotePeer::TYPE, $type['max'], Criteria::LESS_EQUAL);
+			if (isset($trustTypeId['max'])) {
+				$this->addUsingAlias(MeshingTrustRemotePeer::TRUST_TYPE_ID, $trustTypeId['max'], Criteria::LESS_EQUAL);
 				$useMinMax = true;
 			}
 			if ($useMinMax) {
@@ -321,7 +321,7 @@ abstract class BaseMeshingTrustRemoteQuery extends ModelCriteria
 				$comparison = Criteria::IN;
 			}
 		}
-		return $this->addUsingAlias(MeshingTrustRemotePeer::TYPE, $type, $comparison);
+		return $this->addUsingAlias(MeshingTrustRemotePeer::TRUST_TYPE_ID, $trustTypeId, $comparison);
 	}
 
 	/**
@@ -484,13 +484,13 @@ abstract class BaseMeshingTrustRemoteQuery extends ModelCriteria
 	{
 		if ($meshingTrustType instanceof MeshingTrustType) {
 			return $this
-				->addUsingAlias(MeshingTrustRemotePeer::TYPE, $meshingTrustType->getId(), $comparison);
+				->addUsingAlias(MeshingTrustRemotePeer::TRUST_TYPE_ID, $meshingTrustType->getId(), $comparison);
 		} elseif ($meshingTrustType instanceof PropelCollection) {
 			if (null === $comparison) {
 				$comparison = Criteria::IN;
 			}
 			return $this
-				->addUsingAlias(MeshingTrustRemotePeer::TYPE, $meshingTrustType->toKeyValue('PrimaryKey', 'Id'), $comparison);
+				->addUsingAlias(MeshingTrustRemotePeer::TRUST_TYPE_ID, $meshingTrustType->toKeyValue('PrimaryKey', 'Id'), $comparison);
 		} else {
 			throw new PropelException('filterByMeshingTrustType() only accepts arguments of type MeshingTrustType or PropelCollection');
 		}
