@@ -15,14 +15,23 @@ class Meshing_Console_Command_Trust_Add extends Meshing_Console_Base implements 
 		return 'Sets up trust between two specified nodes';
 	}
 
+	/**
+	 * Set up the Zend Console options array
+	 * 
+	 * When force|f was added, the local-from alias of 'f' was removed; and once this went,
+	 * having aliases for local-to and remote-to seemed inconsistent, so I've removed them too.
+	 * 
+	 * @return type 
+	 */
 	public function getOpts()
 	{
 		return array(
-			'local-from|f=s' => 'The name of the local node',
-			'local-to|o=s' => 'The name of the local to node',
-			'remote-to|r=s' => 'The internet address of the remote node',
-			'trust-type|t=s' => 'The type of trust, READ|WRITE_AUDIT|WRITE_DELAY|WRITE_FULL (defaults to READ)',
-			'auth-types|a=s' => 'The types of authentication as a csv list (full list would be "openssl,gpg,ip,none")',
+			'local-from=s' => 'The name of the local node',
+			'local-to=s' => 'The name of the local to node',
+			'remote-to=s' => 'The internet address of the remote node',
+			'trust-type|t=s' => 'The type of trust (one of: read, write_audit, write_delay, write_full; defaults to read)',
+			'auth-types|a=s' => 'The types of authentication as a csv list (a full list would be "openssl,gpg,ip,none")',
+			'force|f' => 'Overwrite if the (from,to) pair already exists',
 		);
 	}
 
@@ -113,6 +122,22 @@ class Meshing_Console_Command_Trust_Add extends Meshing_Console_Base implements 
 			throw new Meshing_Console_RunException(
 				'The specified trust type is not found'
 			);
+		}
+
+		// If a trust already exists, require force else an exception is thrown
+		$trust = MeshingTrustLocalPeer::retrieveByPK($from->getId(), $to->getId());
+		if ($trust)
+		{
+			if ($this->opts->force)
+			{
+				$trust->delete();
+			}
+			else
+			{
+				throw new Meshing_Console_RunException(
+					'A trust relationship already exists between this node pair (use --force to overwrite)'
+				);
+			}
 		}
 		
 		$trust = new MeshingTrustLocal();
