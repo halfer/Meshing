@@ -66,6 +66,26 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 	protected $aP2PConnection;
 
 	/**
+	 * @var        array MeshingTrustLocal[] Collection to store aggregation of MeshingTrustLocal objects.
+	 */
+	protected $collMeshingTrustLocalsRelatedByFromOwnNodeId;
+
+	/**
+	 * @var        array MeshingTrustLocal[] Collection to store aggregation of MeshingTrustLocal objects.
+	 */
+	protected $collMeshingTrustLocalsRelatedByToOwnNodeId;
+
+	/**
+	 * @var        array MeshingTrustRemote[] Collection to store aggregation of MeshingTrustRemote objects.
+	 */
+	protected $collMeshingTrustRemotesRelatedByFromOwnNodeId;
+
+	/**
+	 * @var        array MeshingTrustRemote[] Collection to store aggregation of MeshingTrustRemote objects.
+	 */
+	protected $collMeshingTrustRemotesRelatedByInOwnNodeId;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -385,6 +405,14 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 
 			$this->aP2PSchema = null;
 			$this->aP2PConnection = null;
+			$this->collMeshingTrustLocalsRelatedByFromOwnNodeId = null;
+
+			$this->collMeshingTrustLocalsRelatedByToOwnNodeId = null;
+
+			$this->collMeshingTrustRemotesRelatedByFromOwnNodeId = null;
+
+			$this->collMeshingTrustRemotesRelatedByInOwnNodeId = null;
+
 		} // if (deep)
 	}
 
@@ -537,6 +565,38 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
+			if ($this->collMeshingTrustLocalsRelatedByFromOwnNodeId !== null) {
+				foreach ($this->collMeshingTrustLocalsRelatedByFromOwnNodeId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collMeshingTrustLocalsRelatedByToOwnNodeId !== null) {
+				foreach ($this->collMeshingTrustLocalsRelatedByToOwnNodeId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collMeshingTrustRemotesRelatedByFromOwnNodeId !== null) {
+				foreach ($this->collMeshingTrustRemotesRelatedByFromOwnNodeId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collMeshingTrustRemotesRelatedByInOwnNodeId !== null) {
+				foreach ($this->collMeshingTrustRemotesRelatedByInOwnNodeId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 
 		}
@@ -625,6 +685,38 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->collMeshingTrustLocalsRelatedByFromOwnNodeId !== null) {
+					foreach ($this->collMeshingTrustLocalsRelatedByFromOwnNodeId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collMeshingTrustLocalsRelatedByToOwnNodeId !== null) {
+					foreach ($this->collMeshingTrustLocalsRelatedByToOwnNodeId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collMeshingTrustRemotesRelatedByFromOwnNodeId !== null) {
+					foreach ($this->collMeshingTrustRemotesRelatedByFromOwnNodeId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collMeshingTrustRemotesRelatedByInOwnNodeId !== null) {
+					foreach ($this->collMeshingTrustRemotesRelatedByInOwnNodeId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
 
 
 			$this->alreadyInValidation = false;
@@ -715,6 +807,18 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 			}
 			if (null !== $this->aP2PConnection) {
 				$result['P2PConnection'] = $this->aP2PConnection->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+			}
+			if (null !== $this->collMeshingTrustLocalsRelatedByFromOwnNodeId) {
+				$result['MeshingTrustLocalsRelatedByFromOwnNodeId'] = $this->collMeshingTrustLocalsRelatedByFromOwnNodeId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collMeshingTrustLocalsRelatedByToOwnNodeId) {
+				$result['MeshingTrustLocalsRelatedByToOwnNodeId'] = $this->collMeshingTrustLocalsRelatedByToOwnNodeId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collMeshingTrustRemotesRelatedByFromOwnNodeId) {
+				$result['MeshingTrustRemotesRelatedByFromOwnNodeId'] = $this->collMeshingTrustRemotesRelatedByFromOwnNodeId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+			}
+			if (null !== $this->collMeshingTrustRemotesRelatedByInOwnNodeId) {
+				$result['MeshingTrustRemotesRelatedByInOwnNodeId'] = $this->collMeshingTrustRemotesRelatedByInOwnNodeId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
 			}
 		}
 		return $result;
@@ -873,6 +977,38 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 		$copyObj->setName($this->getName());
 		$copyObj->setConnectionId($this->getConnectionId());
 		$copyObj->setIsEnabled($this->getIsEnabled());
+
+		if ($deepCopy) {
+			// important: temporarily setNew(false) because this affects the behavior of
+			// the getter/setter methods for fkey referrer objects.
+			$copyObj->setNew(false);
+
+			foreach ($this->getMeshingTrustLocalsRelatedByFromOwnNodeId() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addMeshingTrustLocalRelatedByFromOwnNodeId($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getMeshingTrustLocalsRelatedByToOwnNodeId() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addMeshingTrustLocalRelatedByToOwnNodeId($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getMeshingTrustRemotesRelatedByFromOwnNodeId() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addMeshingTrustRemoteRelatedByFromOwnNodeId($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getMeshingTrustRemotesRelatedByInOwnNodeId() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addMeshingTrustRemoteRelatedByInOwnNodeId($relObj->copy($deepCopy));
+				}
+			}
+
+		} // if ($deepCopy)
+
 		if ($makeNew) {
 			$copyObj->setNew(true);
 			$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1015,6 +1151,591 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 		return $this->aP2PConnection;
 	}
 
+
+	/**
+	 * Initializes a collection based on the name of a relation.
+	 * Avoids crafting an 'init[$relationName]s' method name 
+	 * that wouldn't work when StandardEnglishPluralizer is used.
+	 *
+	 * @param      string $relationName The name of the relation to initialize
+	 * @return     void
+	 */
+	public function initRelation($relationName)
+	{
+		if ('MeshingTrustLocalRelatedByFromOwnNodeId' == $relationName) {
+			return $this->initMeshingTrustLocalsRelatedByFromOwnNodeId();
+		}
+		if ('MeshingTrustLocalRelatedByToOwnNodeId' == $relationName) {
+			return $this->initMeshingTrustLocalsRelatedByToOwnNodeId();
+		}
+		if ('MeshingTrustRemoteRelatedByFromOwnNodeId' == $relationName) {
+			return $this->initMeshingTrustRemotesRelatedByFromOwnNodeId();
+		}
+		if ('MeshingTrustRemoteRelatedByInOwnNodeId' == $relationName) {
+			return $this->initMeshingTrustRemotesRelatedByInOwnNodeId();
+		}
+	}
+
+	/**
+	 * Clears out the collMeshingTrustLocalsRelatedByFromOwnNodeId collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addMeshingTrustLocalsRelatedByFromOwnNodeId()
+	 */
+	public function clearMeshingTrustLocalsRelatedByFromOwnNodeId()
+	{
+		$this->collMeshingTrustLocalsRelatedByFromOwnNodeId = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collMeshingTrustLocalsRelatedByFromOwnNodeId collection.
+	 *
+	 * By default this just sets the collMeshingTrustLocalsRelatedByFromOwnNodeId collection to an empty array (like clearcollMeshingTrustLocalsRelatedByFromOwnNodeId());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
+	 * @return     void
+	 */
+	public function initMeshingTrustLocalsRelatedByFromOwnNodeId($overrideExisting = true)
+	{
+		if (null !== $this->collMeshingTrustLocalsRelatedByFromOwnNodeId && !$overrideExisting) {
+			return;
+		}
+		$this->collMeshingTrustLocalsRelatedByFromOwnNodeId = new PropelObjectCollection();
+		$this->collMeshingTrustLocalsRelatedByFromOwnNodeId->setModel('MeshingTrustLocal');
+	}
+
+	/**
+	 * Gets an array of MeshingTrustLocal objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this P2POwnNode is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array MeshingTrustLocal[] List of MeshingTrustLocal objects
+	 * @throws     PropelException
+	 */
+	public function getMeshingTrustLocalsRelatedByFromOwnNodeId($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collMeshingTrustLocalsRelatedByFromOwnNodeId || null !== $criteria) {
+			if ($this->isNew() && null === $this->collMeshingTrustLocalsRelatedByFromOwnNodeId) {
+				// return empty collection
+				$this->initMeshingTrustLocalsRelatedByFromOwnNodeId();
+			} else {
+				$collMeshingTrustLocalsRelatedByFromOwnNodeId = MeshingTrustLocalQuery::create(null, $criteria)
+					->filterByP2POwnNodeRelatedByFromOwnNodeId($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collMeshingTrustLocalsRelatedByFromOwnNodeId;
+				}
+				$this->collMeshingTrustLocalsRelatedByFromOwnNodeId = $collMeshingTrustLocalsRelatedByFromOwnNodeId;
+			}
+		}
+		return $this->collMeshingTrustLocalsRelatedByFromOwnNodeId;
+	}
+
+	/**
+	 * Returns the number of related MeshingTrustLocal objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related MeshingTrustLocal objects.
+	 * @throws     PropelException
+	 */
+	public function countMeshingTrustLocalsRelatedByFromOwnNodeId(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collMeshingTrustLocalsRelatedByFromOwnNodeId || null !== $criteria) {
+			if ($this->isNew() && null === $this->collMeshingTrustLocalsRelatedByFromOwnNodeId) {
+				return 0;
+			} else {
+				$query = MeshingTrustLocalQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByP2POwnNodeRelatedByFromOwnNodeId($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collMeshingTrustLocalsRelatedByFromOwnNodeId);
+		}
+	}
+
+	/**
+	 * Method called to associate a MeshingTrustLocal object to this object
+	 * through the MeshingTrustLocal foreign key attribute.
+	 *
+	 * @param      MeshingTrustLocal $l MeshingTrustLocal
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addMeshingTrustLocalRelatedByFromOwnNodeId(MeshingTrustLocal $l)
+	{
+		if ($this->collMeshingTrustLocalsRelatedByFromOwnNodeId === null) {
+			$this->initMeshingTrustLocalsRelatedByFromOwnNodeId();
+		}
+		if (!$this->collMeshingTrustLocalsRelatedByFromOwnNodeId->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collMeshingTrustLocalsRelatedByFromOwnNodeId[]= $l;
+			$l->setP2POwnNodeRelatedByFromOwnNodeId($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this P2POwnNode is new, it will return
+	 * an empty collection; or if this P2POwnNode has previously
+	 * been saved, it will retrieve related MeshingTrustLocalsRelatedByFromOwnNodeId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in P2POwnNode.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array MeshingTrustLocal[] List of MeshingTrustLocal objects
+	 */
+	public function getMeshingTrustLocalsRelatedByFromOwnNodeIdJoinMeshingTrustType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = MeshingTrustLocalQuery::create(null, $criteria);
+		$query->joinWith('MeshingTrustType', $join_behavior);
+
+		return $this->getMeshingTrustLocalsRelatedByFromOwnNodeId($query, $con);
+	}
+
+	/**
+	 * Clears out the collMeshingTrustLocalsRelatedByToOwnNodeId collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addMeshingTrustLocalsRelatedByToOwnNodeId()
+	 */
+	public function clearMeshingTrustLocalsRelatedByToOwnNodeId()
+	{
+		$this->collMeshingTrustLocalsRelatedByToOwnNodeId = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collMeshingTrustLocalsRelatedByToOwnNodeId collection.
+	 *
+	 * By default this just sets the collMeshingTrustLocalsRelatedByToOwnNodeId collection to an empty array (like clearcollMeshingTrustLocalsRelatedByToOwnNodeId());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
+	 * @return     void
+	 */
+	public function initMeshingTrustLocalsRelatedByToOwnNodeId($overrideExisting = true)
+	{
+		if (null !== $this->collMeshingTrustLocalsRelatedByToOwnNodeId && !$overrideExisting) {
+			return;
+		}
+		$this->collMeshingTrustLocalsRelatedByToOwnNodeId = new PropelObjectCollection();
+		$this->collMeshingTrustLocalsRelatedByToOwnNodeId->setModel('MeshingTrustLocal');
+	}
+
+	/**
+	 * Gets an array of MeshingTrustLocal objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this P2POwnNode is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array MeshingTrustLocal[] List of MeshingTrustLocal objects
+	 * @throws     PropelException
+	 */
+	public function getMeshingTrustLocalsRelatedByToOwnNodeId($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collMeshingTrustLocalsRelatedByToOwnNodeId || null !== $criteria) {
+			if ($this->isNew() && null === $this->collMeshingTrustLocalsRelatedByToOwnNodeId) {
+				// return empty collection
+				$this->initMeshingTrustLocalsRelatedByToOwnNodeId();
+			} else {
+				$collMeshingTrustLocalsRelatedByToOwnNodeId = MeshingTrustLocalQuery::create(null, $criteria)
+					->filterByP2POwnNodeRelatedByToOwnNodeId($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collMeshingTrustLocalsRelatedByToOwnNodeId;
+				}
+				$this->collMeshingTrustLocalsRelatedByToOwnNodeId = $collMeshingTrustLocalsRelatedByToOwnNodeId;
+			}
+		}
+		return $this->collMeshingTrustLocalsRelatedByToOwnNodeId;
+	}
+
+	/**
+	 * Returns the number of related MeshingTrustLocal objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related MeshingTrustLocal objects.
+	 * @throws     PropelException
+	 */
+	public function countMeshingTrustLocalsRelatedByToOwnNodeId(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collMeshingTrustLocalsRelatedByToOwnNodeId || null !== $criteria) {
+			if ($this->isNew() && null === $this->collMeshingTrustLocalsRelatedByToOwnNodeId) {
+				return 0;
+			} else {
+				$query = MeshingTrustLocalQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByP2POwnNodeRelatedByToOwnNodeId($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collMeshingTrustLocalsRelatedByToOwnNodeId);
+		}
+	}
+
+	/**
+	 * Method called to associate a MeshingTrustLocal object to this object
+	 * through the MeshingTrustLocal foreign key attribute.
+	 *
+	 * @param      MeshingTrustLocal $l MeshingTrustLocal
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addMeshingTrustLocalRelatedByToOwnNodeId(MeshingTrustLocal $l)
+	{
+		if ($this->collMeshingTrustLocalsRelatedByToOwnNodeId === null) {
+			$this->initMeshingTrustLocalsRelatedByToOwnNodeId();
+		}
+		if (!$this->collMeshingTrustLocalsRelatedByToOwnNodeId->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collMeshingTrustLocalsRelatedByToOwnNodeId[]= $l;
+			$l->setP2POwnNodeRelatedByToOwnNodeId($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this P2POwnNode is new, it will return
+	 * an empty collection; or if this P2POwnNode has previously
+	 * been saved, it will retrieve related MeshingTrustLocalsRelatedByToOwnNodeId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in P2POwnNode.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array MeshingTrustLocal[] List of MeshingTrustLocal objects
+	 */
+	public function getMeshingTrustLocalsRelatedByToOwnNodeIdJoinMeshingTrustType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = MeshingTrustLocalQuery::create(null, $criteria);
+		$query->joinWith('MeshingTrustType', $join_behavior);
+
+		return $this->getMeshingTrustLocalsRelatedByToOwnNodeId($query, $con);
+	}
+
+	/**
+	 * Clears out the collMeshingTrustRemotesRelatedByFromOwnNodeId collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addMeshingTrustRemotesRelatedByFromOwnNodeId()
+	 */
+	public function clearMeshingTrustRemotesRelatedByFromOwnNodeId()
+	{
+		$this->collMeshingTrustRemotesRelatedByFromOwnNodeId = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collMeshingTrustRemotesRelatedByFromOwnNodeId collection.
+	 *
+	 * By default this just sets the collMeshingTrustRemotesRelatedByFromOwnNodeId collection to an empty array (like clearcollMeshingTrustRemotesRelatedByFromOwnNodeId());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
+	 * @return     void
+	 */
+	public function initMeshingTrustRemotesRelatedByFromOwnNodeId($overrideExisting = true)
+	{
+		if (null !== $this->collMeshingTrustRemotesRelatedByFromOwnNodeId && !$overrideExisting) {
+			return;
+		}
+		$this->collMeshingTrustRemotesRelatedByFromOwnNodeId = new PropelObjectCollection();
+		$this->collMeshingTrustRemotesRelatedByFromOwnNodeId->setModel('MeshingTrustRemote');
+	}
+
+	/**
+	 * Gets an array of MeshingTrustRemote objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this P2POwnNode is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array MeshingTrustRemote[] List of MeshingTrustRemote objects
+	 * @throws     PropelException
+	 */
+	public function getMeshingTrustRemotesRelatedByFromOwnNodeId($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collMeshingTrustRemotesRelatedByFromOwnNodeId || null !== $criteria) {
+			if ($this->isNew() && null === $this->collMeshingTrustRemotesRelatedByFromOwnNodeId) {
+				// return empty collection
+				$this->initMeshingTrustRemotesRelatedByFromOwnNodeId();
+			} else {
+				$collMeshingTrustRemotesRelatedByFromOwnNodeId = MeshingTrustRemoteQuery::create(null, $criteria)
+					->filterByFromOwnNode($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collMeshingTrustRemotesRelatedByFromOwnNodeId;
+				}
+				$this->collMeshingTrustRemotesRelatedByFromOwnNodeId = $collMeshingTrustRemotesRelatedByFromOwnNodeId;
+			}
+		}
+		return $this->collMeshingTrustRemotesRelatedByFromOwnNodeId;
+	}
+
+	/**
+	 * Returns the number of related MeshingTrustRemote objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related MeshingTrustRemote objects.
+	 * @throws     PropelException
+	 */
+	public function countMeshingTrustRemotesRelatedByFromOwnNodeId(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collMeshingTrustRemotesRelatedByFromOwnNodeId || null !== $criteria) {
+			if ($this->isNew() && null === $this->collMeshingTrustRemotesRelatedByFromOwnNodeId) {
+				return 0;
+			} else {
+				$query = MeshingTrustRemoteQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByFromOwnNode($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collMeshingTrustRemotesRelatedByFromOwnNodeId);
+		}
+	}
+
+	/**
+	 * Method called to associate a MeshingTrustRemote object to this object
+	 * through the MeshingTrustRemote foreign key attribute.
+	 *
+	 * @param      MeshingTrustRemote $l MeshingTrustRemote
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addMeshingTrustRemoteRelatedByFromOwnNodeId(MeshingTrustRemote $l)
+	{
+		if ($this->collMeshingTrustRemotesRelatedByFromOwnNodeId === null) {
+			$this->initMeshingTrustRemotesRelatedByFromOwnNodeId();
+		}
+		if (!$this->collMeshingTrustRemotesRelatedByFromOwnNodeId->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collMeshingTrustRemotesRelatedByFromOwnNodeId[]= $l;
+			$l->setFromOwnNode($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this P2POwnNode is new, it will return
+	 * an empty collection; or if this P2POwnNode has previously
+	 * been saved, it will retrieve related MeshingTrustRemotesRelatedByFromOwnNodeId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in P2POwnNode.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array MeshingTrustRemote[] List of MeshingTrustRemote objects
+	 */
+	public function getMeshingTrustRemotesRelatedByFromOwnNodeIdJoinMeshingTrustType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = MeshingTrustRemoteQuery::create(null, $criteria);
+		$query->joinWith('MeshingTrustType', $join_behavior);
+
+		return $this->getMeshingTrustRemotesRelatedByFromOwnNodeId($query, $con);
+	}
+
+	/**
+	 * Clears out the collMeshingTrustRemotesRelatedByInOwnNodeId collection
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addMeshingTrustRemotesRelatedByInOwnNodeId()
+	 */
+	public function clearMeshingTrustRemotesRelatedByInOwnNodeId()
+	{
+		$this->collMeshingTrustRemotesRelatedByInOwnNodeId = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collMeshingTrustRemotesRelatedByInOwnNodeId collection.
+	 *
+	 * By default this just sets the collMeshingTrustRemotesRelatedByInOwnNodeId collection to an empty array (like clearcollMeshingTrustRemotesRelatedByInOwnNodeId());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @param      boolean $overrideExisting If set to true, the method call initializes
+	 *                                        the collection even if it is not empty
+	 *
+	 * @return     void
+	 */
+	public function initMeshingTrustRemotesRelatedByInOwnNodeId($overrideExisting = true)
+	{
+		if (null !== $this->collMeshingTrustRemotesRelatedByInOwnNodeId && !$overrideExisting) {
+			return;
+		}
+		$this->collMeshingTrustRemotesRelatedByInOwnNodeId = new PropelObjectCollection();
+		$this->collMeshingTrustRemotesRelatedByInOwnNodeId->setModel('MeshingTrustRemote');
+	}
+
+	/**
+	 * Gets an array of MeshingTrustRemote objects which contain a foreign key that references this object.
+	 *
+	 * If the $criteria is not null, it is used to always fetch the results from the database.
+	 * Otherwise the results are fetched from the database the first time, then cached.
+	 * Next time the same method is called without $criteria, the cached collection is returned.
+	 * If this P2POwnNode is new, it will return
+	 * an empty collection or the current collection; the criteria is ignored on a new object.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @return     PropelCollection|array MeshingTrustRemote[] List of MeshingTrustRemote objects
+	 * @throws     PropelException
+	 */
+	public function getMeshingTrustRemotesRelatedByInOwnNodeId($criteria = null, PropelPDO $con = null)
+	{
+		if(null === $this->collMeshingTrustRemotesRelatedByInOwnNodeId || null !== $criteria) {
+			if ($this->isNew() && null === $this->collMeshingTrustRemotesRelatedByInOwnNodeId) {
+				// return empty collection
+				$this->initMeshingTrustRemotesRelatedByInOwnNodeId();
+			} else {
+				$collMeshingTrustRemotesRelatedByInOwnNodeId = MeshingTrustRemoteQuery::create(null, $criteria)
+					->filterByP2POwnNodeRelatedByInOwnNodeId($this)
+					->find($con);
+				if (null !== $criteria) {
+					return $collMeshingTrustRemotesRelatedByInOwnNodeId;
+				}
+				$this->collMeshingTrustRemotesRelatedByInOwnNodeId = $collMeshingTrustRemotesRelatedByInOwnNodeId;
+			}
+		}
+		return $this->collMeshingTrustRemotesRelatedByInOwnNodeId;
+	}
+
+	/**
+	 * Returns the number of related MeshingTrustRemote objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related MeshingTrustRemote objects.
+	 * @throws     PropelException
+	 */
+	public function countMeshingTrustRemotesRelatedByInOwnNodeId(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if(null === $this->collMeshingTrustRemotesRelatedByInOwnNodeId || null !== $criteria) {
+			if ($this->isNew() && null === $this->collMeshingTrustRemotesRelatedByInOwnNodeId) {
+				return 0;
+			} else {
+				$query = MeshingTrustRemoteQuery::create(null, $criteria);
+				if($distinct) {
+					$query->distinct();
+				}
+				return $query
+					->filterByP2POwnNodeRelatedByInOwnNodeId($this)
+					->count($con);
+			}
+		} else {
+			return count($this->collMeshingTrustRemotesRelatedByInOwnNodeId);
+		}
+	}
+
+	/**
+	 * Method called to associate a MeshingTrustRemote object to this object
+	 * through the MeshingTrustRemote foreign key attribute.
+	 *
+	 * @param      MeshingTrustRemote $l MeshingTrustRemote
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addMeshingTrustRemoteRelatedByInOwnNodeId(MeshingTrustRemote $l)
+	{
+		if ($this->collMeshingTrustRemotesRelatedByInOwnNodeId === null) {
+			$this->initMeshingTrustRemotesRelatedByInOwnNodeId();
+		}
+		if (!$this->collMeshingTrustRemotesRelatedByInOwnNodeId->contains($l)) { // only add it if the **same** object is not already associated
+			$this->collMeshingTrustRemotesRelatedByInOwnNodeId[]= $l;
+			$l->setP2POwnNodeRelatedByInOwnNodeId($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this P2POwnNode is new, it will return
+	 * an empty collection; or if this P2POwnNode has previously
+	 * been saved, it will retrieve related MeshingTrustRemotesRelatedByInOwnNodeId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in P2POwnNode.
+	 *
+	 * @param      Criteria $criteria optional Criteria object to narrow the query
+	 * @param      PropelPDO $con optional connection object
+	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+	 * @return     PropelCollection|array MeshingTrustRemote[] List of MeshingTrustRemote objects
+	 */
+	public function getMeshingTrustRemotesRelatedByInOwnNodeIdJoinMeshingTrustType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$query = MeshingTrustRemoteQuery::create(null, $criteria);
+		$query->joinWith('MeshingTrustType', $join_behavior);
+
+		return $this->getMeshingTrustRemotesRelatedByInOwnNodeId($query, $con);
+	}
+
 	/**
 	 * Clears the current object and sets all attributes to their default values
 	 */
@@ -1046,8 +1767,44 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
+			if ($this->collMeshingTrustLocalsRelatedByFromOwnNodeId) {
+				foreach ($this->collMeshingTrustLocalsRelatedByFromOwnNodeId as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collMeshingTrustLocalsRelatedByToOwnNodeId) {
+				foreach ($this->collMeshingTrustLocalsRelatedByToOwnNodeId as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collMeshingTrustRemotesRelatedByFromOwnNodeId) {
+				foreach ($this->collMeshingTrustRemotesRelatedByFromOwnNodeId as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
+			if ($this->collMeshingTrustRemotesRelatedByInOwnNodeId) {
+				foreach ($this->collMeshingTrustRemotesRelatedByInOwnNodeId as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
+		if ($this->collMeshingTrustLocalsRelatedByFromOwnNodeId instanceof PropelCollection) {
+			$this->collMeshingTrustLocalsRelatedByFromOwnNodeId->clearIterator();
+		}
+		$this->collMeshingTrustLocalsRelatedByFromOwnNodeId = null;
+		if ($this->collMeshingTrustLocalsRelatedByToOwnNodeId instanceof PropelCollection) {
+			$this->collMeshingTrustLocalsRelatedByToOwnNodeId->clearIterator();
+		}
+		$this->collMeshingTrustLocalsRelatedByToOwnNodeId = null;
+		if ($this->collMeshingTrustRemotesRelatedByFromOwnNodeId instanceof PropelCollection) {
+			$this->collMeshingTrustRemotesRelatedByFromOwnNodeId->clearIterator();
+		}
+		$this->collMeshingTrustRemotesRelatedByFromOwnNodeId = null;
+		if ($this->collMeshingTrustRemotesRelatedByInOwnNodeId instanceof PropelCollection) {
+			$this->collMeshingTrustRemotesRelatedByInOwnNodeId->clearIterator();
+		}
+		$this->collMeshingTrustRemotesRelatedByInOwnNodeId = null;
 		$this->aP2PSchema = null;
 		$this->aP2PConnection = null;
 	}

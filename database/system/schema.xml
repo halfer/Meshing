@@ -60,4 +60,51 @@
 		</foreign-key>
 	</table>
 
+	<!-- This table is for local->local trusts -->
+	<table name="meshing_trust_local">
+		<!-- Maybe add a single pk? -->
+		<column name="from_own_node_id" type="integer" required="true" primaryKey="true" />
+		<foreign-key foreignTable="p2p_own_node">
+			<reference local="from_own_node_id" foreign="id" />
+		</foreign-key>
+		<column name="to_own_node_id" type="integer" required="true" primaryKey="true" />
+		<foreign-key foreignTable="p2p_own_node">
+			<reference local="to_own_node_id" foreign="id" />
+		</foreign-key>
+		
+		<!-- (f)orward for (from->to), (r)erverse for (to->from) -->
+		<column name="direction" type="varchar" size="1" required="true" />
+		<column name="type" type="integer" required="true" />
+		<foreign-key foreignTable="meshing_trust_type">
+			<reference local="type" foreign="id" />
+		</foreign-key>
+	</table>
+
+	<!-- This table is for local->remote trusts -->
+	<table name="meshing_trust_remote">
+		<column name="from_own_node_id" type="integer" required="true" primaryKey="true" />
+		<foreign-key foreignTable="p2p_own_node" phpName="FromOwnNode">
+			<reference local="from_own_node_id" foreign="id" />
+		</foreign-key>
+		<column name="in_own_node_id" type="integer" required="true" primaryKey="true" />
+		<foreign-key foreignTable="p2p_own_node">
+			<reference local="in_own_node_id" foreign="id" />
+		</foreign-key>
+		<!-- No fk for this one, it's in a foreign db and so can't be joined -->
+		<column name="known_node_id" type="integer" required="true" primaryKey="true" />
+
+		<!-- (f)orward for (from->to), (r)erverse for (to->from) -->
+		<column name="direction" type="varchar" size="1" required="true" />
+		<column name="type" type="integer" required="true" />
+		<foreign-key foreignTable="meshing_trust_type">
+			<reference local="type" foreign="id" />
+		</foreign-key>
+	</table>
+	
+	<table name="meshing_trust_type">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="name" type="varchar" size="20" required="true" />
+		<column name="preferred_auth" type="varchar" size="100" required="true" default="openssl,gpg,ip" />
+	</table>
+
 </database>

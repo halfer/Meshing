@@ -54,6 +54,10 @@ class P2POwnNodeTableMap extends TableMap
 	{
 		$this->addRelation('P2PSchema', 'P2PSchema', RelationMap::MANY_TO_ONE, array('schema_id' => 'id', ), null, null);
 		$this->addRelation('P2PConnection', 'P2PConnection', RelationMap::MANY_TO_ONE, array('connection_id' => 'id', ), null, null);
+		$this->addRelation('MeshingTrustLocalRelatedByFromOwnNodeId', 'MeshingTrustLocal', RelationMap::ONE_TO_MANY, array('id' => 'from_own_node_id', ), null, null);
+		$this->addRelation('MeshingTrustLocalRelatedByToOwnNodeId', 'MeshingTrustLocal', RelationMap::ONE_TO_MANY, array('id' => 'to_own_node_id', ), null, null);
+		$this->addRelation('MeshingTrustRemoteRelatedByFromOwnNodeId', 'MeshingTrustRemote', RelationMap::ONE_TO_MANY, array('id' => 'from_own_node_id', ), null, null);
+		$this->addRelation('MeshingTrustRemoteRelatedByInOwnNodeId', 'MeshingTrustRemote', RelationMap::ONE_TO_MANY, array('id' => 'in_own_node_id', ), null, null);
 	} // buildRelations()
 
 } // P2POwnNodeTableMap
