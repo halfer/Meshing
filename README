@@ -34,7 +34,7 @@ your connection details are set up for your platform:
 	propel.database = pgsql
 
 	# Connection details
-	propel.database.url = pgsql:host=localhost dbname=p2p2 user=jon password=
+	propel.database.url = pgsql:host=localhost dbname=meshing_system user=jon password=
 	propel.database.user = jon
 	propel.database.password = password
 
