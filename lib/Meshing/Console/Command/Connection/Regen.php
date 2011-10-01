@@ -21,11 +21,12 @@ class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base impl
 
 	public function getOpts()
 	{
-		return array(
-			'system|s' => 'Regen the system connections config file',
-			'non-system|n' => 'Regen the user connections config file',
-			'quiet|q' => 'Suppress console output',
-		);
+		return
+			array(
+				'system|s' => 'Regen the system connections config file',
+				'non-system|n' => 'Regen the user connections config file',
+			) +
+			$this->optQuiet();
 	}
 
 	public function preRunCheck()

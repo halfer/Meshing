@@ -24,4 +24,12 @@ class Meshing_Console_Base
 	{
 		echo str_repeat('-', $length) . "\n";		
 	}
+
+	/**
+	 * Returns the config for the commonly-used quiet option
+	 */
+	protected function optQuiet()
+	{
+		return array('quiet|q' => 'Suppress console output');
+	}
 }
