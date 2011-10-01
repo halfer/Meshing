@@ -50,6 +50,7 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 		if ($this->opts->database)
 		{
 			$this->buildDatabase($verbose);
+			$this->runFixtures($verbose);
 		}
 
 		// @todo Need to build model-only for schema-node.xml
@@ -152,5 +153,15 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 		$task->addPropertiesFile($extraPropsFile);
 
 		$task->run();		
+	}
+
+	protected function runFixtures($verbose)
+	{
+		$fixturesFile = $this->projectRoot . '/database/system/fixtures.php';
+		if (file_exists($fixturesFile))
+		{
+			$runner = new Meshing_Propel_FixturesRunner($fixturesFile);
+			$runner->run();
+		}
 	}
 }
