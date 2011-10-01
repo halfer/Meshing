@@ -26,14 +26,16 @@ class Meshing_Console_Command_Trust_Add extends Meshing_Console_Base implements 
 	 */
 	public function getOpts()
 	{
-		return array(
-			'local-from|x=s' => 'The name of the local node',
-			'local-to|y=s' => 'The name of the local to node',
-			'remote-to|r=s' => 'The internet address of the remote node',
-			'trust-type|t=s' => 'The type of trust (one of: read, write_audit, write_delay, write_full; defaults to read)',
-			'auth-types|a=s' => 'The types of authentication as a csv list (a full list would be "openssl,gpg,ip,none")',
-			'force|f' => 'Overwrite if the (from,to) pair already exists',
-		);
+		return
+			array(
+				'local-from|x=s' => 'The name of the local node',
+				'local-to|y=s' => 'The name of the local to node',
+				'remote-to|r=s' => 'The internet address of the remote node',
+				'trust-type|t=s' => 'The type of trust (one of: read, write_audit, write_delay, write_full; defaults to read)',
+				'auth-types|a=s' => 'The types of authentication as a csv list (a full list would be "openssl,gpg,ip,none")',
+				'force|f' => 'Overwrite if the (from,to) pair already exists',
+			) +
+			$this->optQuiet();
 	}
 
 	public function preRunCheck()
@@ -147,6 +149,11 @@ class Meshing_Console_Command_Trust_Add extends Meshing_Console_Base implements 
 		$trust->setDirection(MeshingTrustLocalPeer::DIRECTION_DEFAULT);
 		$trust->setMeshingTrustType($trustType);
 		$trust->save();
+
+		if (!$this->opts->quiet)
+		{
+			echo "trust:add -> set up trust '{$typeName}' by node '{$from->getName()}' to '{$to->getName()}'.\n";
+		}
 	}
 
 	/**
