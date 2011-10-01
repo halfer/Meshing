@@ -18,17 +18,18 @@ class Meshing_Console_Command_Trust_Add extends Meshing_Console_Base implements 
 	/**
 	 * Set up the Zend Console options array
 	 * 
-	 * When force|f was added, the local-from alias of 'f' was removed; and once this went,
-	 * having aliases for local-to and remote-to seemed inconsistent, so I've removed them too.
+	 * @todo When force|f was added, the local-from alias of 'f' needed to be changed. So for
+	 * local-from and local-to, I've just used 'x' and 'y'. I will probably remove them
+	 * totally later on, but at the time of writing removing the pipe upsets the help parser :(
 	 * 
 	 * @return type 
 	 */
 	public function getOpts()
 	{
 		return array(
-			'local-from=s' => 'The name of the local node',
-			'local-to=s' => 'The name of the local to node',
-			'remote-to=s' => 'The internet address of the remote node',
+			'local-from|x=s' => 'The name of the local node',
+			'local-to|y=s' => 'The name of the local to node',
+			'remote-to|r=s' => 'The internet address of the remote node',
 			'trust-type|t=s' => 'The type of trust (one of: read, write_audit, write_delay, write_full; defaults to read)',
 			'auth-types|a=s' => 'The types of authentication as a csv list (a full list would be "openssl,gpg,ip,none")',
 			'force|f' => 'Overwrite if the (from,to) pair already exists',
