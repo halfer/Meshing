@@ -71,8 +71,8 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 						echo $optional ? '[' : '';
 						echo '--' . $longForm;
 						echo $type ? '=' . $type : '';
-						echo ' ';
 						echo $optional ? ']' : '';
+						echo ' ';
 					}
 					echo "\nwhere:\n";
 
