@@ -50,22 +50,9 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 					// The key is in the form --name|n=s (mandatory param) or --name|n-s (optional)
 					foreach ($opts as $key => $help)
 					{
-						$parts = explode('|', $key);
-						$longForm = $parts[0];
-						$optional = $type = false;
+						list($names, $optional, $type) = $this->splitDefinition($key);
+						$longForm = $names[0];
 						$syntax[$longForm] = $help;
-						if (array_key_exists(1, $parts))
-						{
-							$optional = substr($parts[1], 1, 1) == '-';
-							$type = $this->convertType(
-								substr($parts[1], 2, 1)
-							);
-							$type = $type ? '<' . $type . '>' : '';
-						}
-						else
-						{
-							$optional = true;
-						}
 
 						// Add a --flag=<type> line
 						echo $optional ? '[' : '';
@@ -98,6 +85,45 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 		{
 			$this->listCommands($commands);
 		}
+	}
+
+	/**
+	 * Splits a command definition (e.g. "--name|n=s") into name/optional/type parts
+	 * 
+	 * Strategy:
+	 * 
+	 * If the parameter requires a value, it will end with "=x" (where x is i/s)
+	 * If the parameter may take a value, it will end with "-x" (ditto)
+	 * If the ending has none of these, then it doesn't accept a value
+	 * Note that the name part may contain alternates e.g. "adaptor|adapter|a"
+	 * Some commands may only have a long form i.e. no bar symbol
+	 * Some commands may contain a dash e.g. "local-from"
+	 * Hence we may NOT have a command called "add-s" with no values (not that we would...)
+	 * 
+	 * @param string $definition 
+	 */
+	protected function splitDefinition($definition)
+	{
+		// Default values
+		$isOptional = $type = null;
+
+		// Get optional/mandatory indicator
+		$optionalChar = substr($definition, -2, 1);
+		if (($optionalChar == '-') || ($optionalChar == '='))
+		{
+			$isOptional = ($optionalChar == '-');
+			
+			// Get the type of the command
+			$type = $this->convertType(substr($definition, -1, 1));
+			
+			// Trim the final characters off
+			$definition = substr($definition, 0, strlen($definition) - 2);
+		}
+
+		// Now we just have the pipes to deal with
+		$names = explode('|', $definition);
+
+		return array($names, $isOptional, $type);
 	}
 
 	protected function convertType($typeCode)
