@@ -16,7 +16,7 @@ class Meshing_Console_Command_Connection_Add extends Meshing_Console_Command_Con
 	{
 		return array(
 			'name|n=s' => 'A name to help you remember what this connection is for',
-			'adaptor|a=s' => 'The PDO adaptor to use for this connection',
+			'adaptor|adapter|a=s' => 'The PDO adaptor to use for this connection',
 			'host|h=s' => 'The database host for this connection',
 			'database|d=s' => 'The name of the database you wish to connect to',
 			'user|u=s' => 'The username for this connection',
