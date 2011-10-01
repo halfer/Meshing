@@ -453,7 +453,7 @@ abstract class BaseMeshingTrustLocalPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related P2POwnNodeRelatedByFromOwnNodeId table
+	 * Returns the number of rows matching criteria, joining the related FromOwnNode table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -461,7 +461,7 @@ abstract class BaseMeshingTrustLocalPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinP2POwnNodeRelatedByFromOwnNodeId(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinFromOwnNode(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -503,7 +503,7 @@ abstract class BaseMeshingTrustLocalPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related P2POwnNodeRelatedByToOwnNodeId table
+	 * Returns the number of rows matching criteria, joining the related ToOwnNode table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -511,7 +511,7 @@ abstract class BaseMeshingTrustLocalPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinP2POwnNodeRelatedByToOwnNodeId(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinToOwnNode(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -611,7 +611,7 @@ abstract class BaseMeshingTrustLocalPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinP2POwnNodeRelatedByFromOwnNodeId(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinFromOwnNode(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -677,7 +677,7 @@ abstract class BaseMeshingTrustLocalPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinP2POwnNodeRelatedByToOwnNodeId(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinToOwnNode(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -969,7 +969,7 @@ abstract class BaseMeshingTrustLocalPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related P2POwnNodeRelatedByFromOwnNodeId table
+	 * Returns the number of rows matching criteria, joining the related FromOwnNode table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -977,7 +977,7 @@ abstract class BaseMeshingTrustLocalPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptP2POwnNodeRelatedByFromOwnNodeId(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptFromOwnNode(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -1019,7 +1019,7 @@ abstract class BaseMeshingTrustLocalPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related P2POwnNodeRelatedByToOwnNodeId table
+	 * Returns the number of rows matching criteria, joining the related ToOwnNode table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1027,7 +1027,7 @@ abstract class BaseMeshingTrustLocalPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptP2POwnNodeRelatedByToOwnNodeId(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptToOwnNode(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -1121,7 +1121,7 @@ abstract class BaseMeshingTrustLocalPeer {
 
 
 	/**
-	 * Selects a collection of MeshingTrustLocal objects pre-filled with all related objects except P2POwnNodeRelatedByFromOwnNodeId.
+	 * Selects a collection of MeshingTrustLocal objects pre-filled with all related objects except FromOwnNode.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -1130,7 +1130,7 @@ abstract class BaseMeshingTrustLocalPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptP2POwnNodeRelatedByFromOwnNodeId(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptFromOwnNode(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -1194,7 +1194,7 @@ abstract class BaseMeshingTrustLocalPeer {
 
 
 	/**
-	 * Selects a collection of MeshingTrustLocal objects pre-filled with all related objects except P2POwnNodeRelatedByToOwnNodeId.
+	 * Selects a collection of MeshingTrustLocal objects pre-filled with all related objects except ToOwnNode.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -1203,7 +1203,7 @@ abstract class BaseMeshingTrustLocalPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptP2POwnNodeRelatedByToOwnNodeId(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptToOwnNode(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 

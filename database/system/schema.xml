@@ -64,11 +64,11 @@
 	<table name="meshing_trust_local">
 		<!-- Maybe add a single pk? -->
 		<column name="from_own_node_id" type="integer" required="true" primaryKey="true" />
-		<foreign-key foreignTable="p2p_own_node">
+		<foreign-key foreignTable="p2p_own_node" phpName="FromOwnNode">
 			<reference local="from_own_node_id" foreign="id" />
 		</foreign-key>
 		<column name="to_own_node_id" type="integer" required="true" primaryKey="true" />
-		<foreign-key foreignTable="p2p_own_node">
+		<foreign-key foreignTable="p2p_own_node" phpName="ToOwnNode">
 			<reference local="to_own_node_id" foreign="id" />
 		</foreign-key>
 		

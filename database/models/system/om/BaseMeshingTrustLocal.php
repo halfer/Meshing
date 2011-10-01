@@ -51,12 +51,12 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	/**
 	 * @var        P2POwnNode
 	 */
-	protected $aP2POwnNodeRelatedByFromOwnNodeId;
+	protected $aFromOwnNode;
 
 	/**
 	 * @var        P2POwnNode
 	 */
-	protected $aP2POwnNodeRelatedByToOwnNodeId;
+	protected $aToOwnNode;
 
 	/**
 	 * @var        MeshingTrustType
@@ -134,8 +134,8 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 			$this->modifiedColumns[] = MeshingTrustLocalPeer::FROM_OWN_NODE_ID;
 		}
 
-		if ($this->aP2POwnNodeRelatedByFromOwnNodeId !== null && $this->aP2POwnNodeRelatedByFromOwnNodeId->getId() !== $v) {
-			$this->aP2POwnNodeRelatedByFromOwnNodeId = null;
+		if ($this->aFromOwnNode !== null && $this->aFromOwnNode->getId() !== $v) {
+			$this->aFromOwnNode = null;
 		}
 
 		return $this;
@@ -158,8 +158,8 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 			$this->modifiedColumns[] = MeshingTrustLocalPeer::TO_OWN_NODE_ID;
 		}
 
-		if ($this->aP2POwnNodeRelatedByToOwnNodeId !== null && $this->aP2POwnNodeRelatedByToOwnNodeId->getId() !== $v) {
-			$this->aP2POwnNodeRelatedByToOwnNodeId = null;
+		if ($this->aToOwnNode !== null && $this->aToOwnNode->getId() !== $v) {
+			$this->aToOwnNode = null;
 		}
 
 		return $this;
@@ -276,11 +276,11 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	public function ensureConsistency()
 	{
 
-		if ($this->aP2POwnNodeRelatedByFromOwnNodeId !== null && $this->from_own_node_id !== $this->aP2POwnNodeRelatedByFromOwnNodeId->getId()) {
-			$this->aP2POwnNodeRelatedByFromOwnNodeId = null;
+		if ($this->aFromOwnNode !== null && $this->from_own_node_id !== $this->aFromOwnNode->getId()) {
+			$this->aFromOwnNode = null;
 		}
-		if ($this->aP2POwnNodeRelatedByToOwnNodeId !== null && $this->to_own_node_id !== $this->aP2POwnNodeRelatedByToOwnNodeId->getId()) {
-			$this->aP2POwnNodeRelatedByToOwnNodeId = null;
+		if ($this->aToOwnNode !== null && $this->to_own_node_id !== $this->aToOwnNode->getId()) {
+			$this->aToOwnNode = null;
 		}
 		if ($this->aMeshingTrustType !== null && $this->type !== $this->aMeshingTrustType->getId()) {
 			$this->aMeshingTrustType = null;
@@ -324,8 +324,8 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aP2POwnNodeRelatedByFromOwnNodeId = null;
-			$this->aP2POwnNodeRelatedByToOwnNodeId = null;
+			$this->aFromOwnNode = null;
+			$this->aToOwnNode = null;
 			$this->aMeshingTrustType = null;
 		} // if (deep)
 	}
@@ -442,18 +442,18 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aP2POwnNodeRelatedByFromOwnNodeId !== null) {
-				if ($this->aP2POwnNodeRelatedByFromOwnNodeId->isModified() || $this->aP2POwnNodeRelatedByFromOwnNodeId->isNew()) {
-					$affectedRows += $this->aP2POwnNodeRelatedByFromOwnNodeId->save($con);
+			if ($this->aFromOwnNode !== null) {
+				if ($this->aFromOwnNode->isModified() || $this->aFromOwnNode->isNew()) {
+					$affectedRows += $this->aFromOwnNode->save($con);
 				}
-				$this->setP2POwnNodeRelatedByFromOwnNodeId($this->aP2POwnNodeRelatedByFromOwnNodeId);
+				$this->setFromOwnNode($this->aFromOwnNode);
 			}
 
-			if ($this->aP2POwnNodeRelatedByToOwnNodeId !== null) {
-				if ($this->aP2POwnNodeRelatedByToOwnNodeId->isModified() || $this->aP2POwnNodeRelatedByToOwnNodeId->isNew()) {
-					$affectedRows += $this->aP2POwnNodeRelatedByToOwnNodeId->save($con);
+			if ($this->aToOwnNode !== null) {
+				if ($this->aToOwnNode->isModified() || $this->aToOwnNode->isNew()) {
+					$affectedRows += $this->aToOwnNode->save($con);
 				}
-				$this->setP2POwnNodeRelatedByToOwnNodeId($this->aP2POwnNodeRelatedByToOwnNodeId);
+				$this->setToOwnNode($this->aToOwnNode);
 			}
 
 			if ($this->aMeshingTrustType !== null) {
@@ -549,15 +549,15 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aP2POwnNodeRelatedByFromOwnNodeId !== null) {
-				if (!$this->aP2POwnNodeRelatedByFromOwnNodeId->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aP2POwnNodeRelatedByFromOwnNodeId->getValidationFailures());
+			if ($this->aFromOwnNode !== null) {
+				if (!$this->aFromOwnNode->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aFromOwnNode->getValidationFailures());
 				}
 			}
 
-			if ($this->aP2POwnNodeRelatedByToOwnNodeId !== null) {
-				if (!$this->aP2POwnNodeRelatedByToOwnNodeId->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aP2POwnNodeRelatedByToOwnNodeId->getValidationFailures());
+			if ($this->aToOwnNode !== null) {
+				if (!$this->aToOwnNode->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aToOwnNode->getValidationFailures());
 				}
 			}
 
@@ -653,11 +653,11 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 			$keys[3] => $this->getType(),
 		);
 		if ($includeForeignObjects) {
-			if (null !== $this->aP2POwnNodeRelatedByFromOwnNodeId) {
-				$result['P2POwnNodeRelatedByFromOwnNodeId'] = $this->aP2POwnNodeRelatedByFromOwnNodeId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+			if (null !== $this->aFromOwnNode) {
+				$result['FromOwnNode'] = $this->aFromOwnNode->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
-			if (null !== $this->aP2POwnNodeRelatedByToOwnNodeId) {
-				$result['P2POwnNodeRelatedByToOwnNodeId'] = $this->aP2POwnNodeRelatedByToOwnNodeId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+			if (null !== $this->aToOwnNode) {
+				$result['ToOwnNode'] = $this->aToOwnNode->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aMeshingTrustType) {
 				$result['MeshingTrustType'] = $this->aMeshingTrustType->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -871,7 +871,7 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	 * @return     MeshingTrustLocal The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setP2POwnNodeRelatedByFromOwnNodeId(P2POwnNode $v = null)
+	public function setFromOwnNode(P2POwnNode $v = null)
 	{
 		if ($v === null) {
 			$this->setFromOwnNodeId(NULL);
@@ -879,7 +879,7 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 			$this->setFromOwnNodeId($v->getId());
 		}
 
-		$this->aP2POwnNodeRelatedByFromOwnNodeId = $v;
+		$this->aFromOwnNode = $v;
 
 		// Add binding for other direction of this n:n relationship.
 		// If this object has already been added to the P2POwnNode object, it will not be re-added.
@@ -898,19 +898,19 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	 * @return     P2POwnNode The associated P2POwnNode object.
 	 * @throws     PropelException
 	 */
-	public function getP2POwnNodeRelatedByFromOwnNodeId(PropelPDO $con = null)
+	public function getFromOwnNode(PropelPDO $con = null)
 	{
-		if ($this->aP2POwnNodeRelatedByFromOwnNodeId === null && ($this->from_own_node_id !== null)) {
-			$this->aP2POwnNodeRelatedByFromOwnNodeId = P2POwnNodeQuery::create()->findPk($this->from_own_node_id, $con);
+		if ($this->aFromOwnNode === null && ($this->from_own_node_id !== null)) {
+			$this->aFromOwnNode = P2POwnNodeQuery::create()->findPk($this->from_own_node_id, $con);
 			/* The following can be used additionally to
 				guarantee the related object contains a reference
 				to this object.  This level of coupling may, however, be
 				undesirable since it could result in an only partially populated collection
 				in the referenced object.
-				$this->aP2POwnNodeRelatedByFromOwnNodeId->addMeshingTrustLocalsRelatedByFromOwnNodeId($this);
+				$this->aFromOwnNode->addMeshingTrustLocalsRelatedByFromOwnNodeId($this);
 			 */
 		}
-		return $this->aP2POwnNodeRelatedByFromOwnNodeId;
+		return $this->aFromOwnNode;
 	}
 
 	/**
@@ -920,7 +920,7 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	 * @return     MeshingTrustLocal The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setP2POwnNodeRelatedByToOwnNodeId(P2POwnNode $v = null)
+	public function setToOwnNode(P2POwnNode $v = null)
 	{
 		if ($v === null) {
 			$this->setToOwnNodeId(NULL);
@@ -928,7 +928,7 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 			$this->setToOwnNodeId($v->getId());
 		}
 
-		$this->aP2POwnNodeRelatedByToOwnNodeId = $v;
+		$this->aToOwnNode = $v;
 
 		// Add binding for other direction of this n:n relationship.
 		// If this object has already been added to the P2POwnNode object, it will not be re-added.
@@ -947,19 +947,19 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	 * @return     P2POwnNode The associated P2POwnNode object.
 	 * @throws     PropelException
 	 */
-	public function getP2POwnNodeRelatedByToOwnNodeId(PropelPDO $con = null)
+	public function getToOwnNode(PropelPDO $con = null)
 	{
-		if ($this->aP2POwnNodeRelatedByToOwnNodeId === null && ($this->to_own_node_id !== null)) {
-			$this->aP2POwnNodeRelatedByToOwnNodeId = P2POwnNodeQuery::create()->findPk($this->to_own_node_id, $con);
+		if ($this->aToOwnNode === null && ($this->to_own_node_id !== null)) {
+			$this->aToOwnNode = P2POwnNodeQuery::create()->findPk($this->to_own_node_id, $con);
 			/* The following can be used additionally to
 				guarantee the related object contains a reference
 				to this object.  This level of coupling may, however, be
 				undesirable since it could result in an only partially populated collection
 				in the referenced object.
-				$this->aP2POwnNodeRelatedByToOwnNodeId->addMeshingTrustLocalsRelatedByToOwnNodeId($this);
+				$this->aToOwnNode->addMeshingTrustLocalsRelatedByToOwnNodeId($this);
 			 */
 		}
-		return $this->aP2POwnNodeRelatedByToOwnNodeId;
+		return $this->aToOwnNode;
 	}
 
 	/**
@@ -1042,8 +1042,8 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 		if ($deep) {
 		} // if ($deep)
 
-		$this->aP2POwnNodeRelatedByFromOwnNodeId = null;
-		$this->aP2POwnNodeRelatedByToOwnNodeId = null;
+		$this->aFromOwnNode = null;
+		$this->aToOwnNode = null;
 		$this->aMeshingTrustType = null;
 	}
 

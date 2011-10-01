@@ -13,6 +13,15 @@
  *
  * @package    propel.generator.system
  */
-class MeshingTrustLocalPeer extends BaseMeshingTrustLocalPeer {
+class MeshingTrustLocalPeer extends BaseMeshingTrustLocalPeer
+{
+	const DIRECTION_FORWARD = 'f';
+	const DIRECTION_REVERSE = 'r';
+	const DIRECTION_DEFAULT = self::DIRECTION_FORWARD;
 
-} // MeshingTrustLocalPeer
+	const TYPE_READ = 'read';
+	const TYPE_WRITE_AUDIT = 'write_audit';
+	const TYPE_WRITE_DELAY = 'write_delay';
+	const TYPE_WRITE_FULL = 'write_full';
+	const TYPE_DEFAULT = self::TYPE_READ;
+}

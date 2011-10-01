@@ -104,8 +104,12 @@ class Meshing_Console_Command_Trust_Add extends Meshing_Console_Base implements 
 	 */
 	protected function runLocal(P2POwnNode $from, P2POwnNode $to)
 	{
-		// @todo Save trust here
 		$trust = new MeshingTrustLocal();
+		$trust->setFromOwnNode($from);
+		$trust->setToOwnNode($to);
+		$trust->setDirection(MeshingTrustLocalPeer::DIRECTION_DEFAULT);
+		$trust->setType(MeshingTrustLocalPeer::TYPE_DEFAULT);
+		$trust->save();
 	}
 
 	/**

@@ -1233,7 +1233,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 				$this->initMeshingTrustLocalsRelatedByFromOwnNodeId();
 			} else {
 				$collMeshingTrustLocalsRelatedByFromOwnNodeId = MeshingTrustLocalQuery::create(null, $criteria)
-					->filterByP2POwnNodeRelatedByFromOwnNodeId($this)
+					->filterByFromOwnNode($this)
 					->find($con);
 				if (null !== $criteria) {
 					return $collMeshingTrustLocalsRelatedByFromOwnNodeId;
@@ -1264,7 +1264,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 					$query->distinct();
 				}
 				return $query
-					->filterByP2POwnNodeRelatedByFromOwnNodeId($this)
+					->filterByFromOwnNode($this)
 					->count($con);
 			}
 		} else {
@@ -1287,7 +1287,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 		}
 		if (!$this->collMeshingTrustLocalsRelatedByFromOwnNodeId->contains($l)) { // only add it if the **same** object is not already associated
 			$this->collMeshingTrustLocalsRelatedByFromOwnNodeId[]= $l;
-			$l->setP2POwnNodeRelatedByFromOwnNodeId($this);
+			$l->setFromOwnNode($this);
 		}
 	}
 
@@ -1373,7 +1373,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 				$this->initMeshingTrustLocalsRelatedByToOwnNodeId();
 			} else {
 				$collMeshingTrustLocalsRelatedByToOwnNodeId = MeshingTrustLocalQuery::create(null, $criteria)
-					->filterByP2POwnNodeRelatedByToOwnNodeId($this)
+					->filterByToOwnNode($this)
 					->find($con);
 				if (null !== $criteria) {
 					return $collMeshingTrustLocalsRelatedByToOwnNodeId;
@@ -1404,7 +1404,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 					$query->distinct();
 				}
 				return $query
-					->filterByP2POwnNodeRelatedByToOwnNodeId($this)
+					->filterByToOwnNode($this)
 					->count($con);
 			}
 		} else {
@@ -1427,7 +1427,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 		}
 		if (!$this->collMeshingTrustLocalsRelatedByToOwnNodeId->contains($l)) { // only add it if the **same** object is not already associated
 			$this->collMeshingTrustLocalsRelatedByToOwnNodeId[]= $l;
-			$l->setP2POwnNodeRelatedByToOwnNodeId($this);
+			$l->setToOwnNode($this);
 		}
 	}
 

@@ -969,10 +969,10 @@ abstract class BaseMeshingTrustType extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array MeshingTrustLocal[] List of MeshingTrustLocal objects
 	 */
-	public function getMeshingTrustLocalsJoinP2POwnNodeRelatedByFromOwnNodeId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getMeshingTrustLocalsJoinFromOwnNode($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = MeshingTrustLocalQuery::create(null, $criteria);
-		$query->joinWith('P2POwnNodeRelatedByFromOwnNodeId', $join_behavior);
+		$query->joinWith('FromOwnNode', $join_behavior);
 
 		return $this->getMeshingTrustLocals($query, $con);
 	}
@@ -994,10 +994,10 @@ abstract class BaseMeshingTrustType extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array MeshingTrustLocal[] List of MeshingTrustLocal objects
 	 */
-	public function getMeshingTrustLocalsJoinP2POwnNodeRelatedByToOwnNodeId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getMeshingTrustLocalsJoinToOwnNode($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = MeshingTrustLocalQuery::create(null, $criteria);
-		$query->joinWith('P2POwnNodeRelatedByToOwnNodeId', $join_behavior);
+		$query->joinWith('ToOwnNode', $join_behavior);
 
 		return $this->getMeshingTrustLocals($query, $con);
 	}

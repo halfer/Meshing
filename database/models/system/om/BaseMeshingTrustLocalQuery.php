@@ -20,13 +20,13 @@
  * @method     MeshingTrustLocalQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     MeshingTrustLocalQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     MeshingTrustLocalQuery leftJoinP2POwnNodeRelatedByFromOwnNodeId($relationAlias = null) Adds a LEFT JOIN clause to the query using the P2POwnNodeRelatedByFromOwnNodeId relation
- * @method     MeshingTrustLocalQuery rightJoinP2POwnNodeRelatedByFromOwnNodeId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the P2POwnNodeRelatedByFromOwnNodeId relation
- * @method     MeshingTrustLocalQuery innerJoinP2POwnNodeRelatedByFromOwnNodeId($relationAlias = null) Adds a INNER JOIN clause to the query using the P2POwnNodeRelatedByFromOwnNodeId relation
+ * @method     MeshingTrustLocalQuery leftJoinFromOwnNode($relationAlias = null) Adds a LEFT JOIN clause to the query using the FromOwnNode relation
+ * @method     MeshingTrustLocalQuery rightJoinFromOwnNode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FromOwnNode relation
+ * @method     MeshingTrustLocalQuery innerJoinFromOwnNode($relationAlias = null) Adds a INNER JOIN clause to the query using the FromOwnNode relation
  *
- * @method     MeshingTrustLocalQuery leftJoinP2POwnNodeRelatedByToOwnNodeId($relationAlias = null) Adds a LEFT JOIN clause to the query using the P2POwnNodeRelatedByToOwnNodeId relation
- * @method     MeshingTrustLocalQuery rightJoinP2POwnNodeRelatedByToOwnNodeId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the P2POwnNodeRelatedByToOwnNodeId relation
- * @method     MeshingTrustLocalQuery innerJoinP2POwnNodeRelatedByToOwnNodeId($relationAlias = null) Adds a INNER JOIN clause to the query using the P2POwnNodeRelatedByToOwnNodeId relation
+ * @method     MeshingTrustLocalQuery leftJoinToOwnNode($relationAlias = null) Adds a LEFT JOIN clause to the query using the ToOwnNode relation
+ * @method     MeshingTrustLocalQuery rightJoinToOwnNode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ToOwnNode relation
+ * @method     MeshingTrustLocalQuery innerJoinToOwnNode($relationAlias = null) Adds a INNER JOIN clause to the query using the ToOwnNode relation
  *
  * @method     MeshingTrustLocalQuery leftJoinMeshingTrustType($relationAlias = null) Adds a LEFT JOIN clause to the query using the MeshingTrustType relation
  * @method     MeshingTrustLocalQuery rightJoinMeshingTrustType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the MeshingTrustType relation
@@ -175,7 +175,7 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 	 * $query->filterByFromOwnNodeId(array('min' => 12)); // WHERE from_own_node_id > 12
 	 * </code>
 	 *
-	 * @see       filterByP2POwnNodeRelatedByFromOwnNodeId()
+	 * @see       filterByFromOwnNode()
 	 *
 	 * @param     mixed $fromOwnNodeId The value to use as filter.
 	 *              Use scalar values for equality.
@@ -203,7 +203,7 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 	 * $query->filterByToOwnNodeId(array('min' => 12)); // WHERE to_own_node_id > 12
 	 * </code>
 	 *
-	 * @see       filterByP2POwnNodeRelatedByToOwnNodeId()
+	 * @see       filterByToOwnNode()
 	 *
 	 * @param     mixed $toOwnNodeId The value to use as filter.
 	 *              Use scalar values for equality.
@@ -299,7 +299,7 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 	 *
 	 * @return    MeshingTrustLocalQuery The current query, for fluid interface
 	 */
-	public function filterByP2POwnNodeRelatedByFromOwnNodeId($p2POwnNode, $comparison = null)
+	public function filterByFromOwnNode($p2POwnNode, $comparison = null)
 	{
 		if ($p2POwnNode instanceof P2POwnNode) {
 			return $this
@@ -311,22 +311,22 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 			return $this
 				->addUsingAlias(MeshingTrustLocalPeer::FROM_OWN_NODE_ID, $p2POwnNode->toKeyValue('PrimaryKey', 'Id'), $comparison);
 		} else {
-			throw new PropelException('filterByP2POwnNodeRelatedByFromOwnNodeId() only accepts arguments of type P2POwnNode or PropelCollection');
+			throw new PropelException('filterByFromOwnNode() only accepts arguments of type P2POwnNode or PropelCollection');
 		}
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the P2POwnNodeRelatedByFromOwnNodeId relation
+	 * Adds a JOIN clause to the query using the FromOwnNode relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
 	 * @return    MeshingTrustLocalQuery The current query, for fluid interface
 	 */
-	public function joinP2POwnNodeRelatedByFromOwnNodeId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinFromOwnNode($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('P2POwnNodeRelatedByFromOwnNodeId');
+		$relationMap = $tableMap->getRelation('FromOwnNode');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -341,14 +341,14 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'P2POwnNodeRelatedByFromOwnNodeId');
+			$this->addJoinObject($join, 'FromOwnNode');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the P2POwnNodeRelatedByFromOwnNodeId relation P2POwnNode object
+	 * Use the FromOwnNode relation P2POwnNode object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -358,11 +358,11 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 	 *
 	 * @return    P2POwnNodeQuery A secondary query class using the current class as primary query
 	 */
-	public function useP2POwnNodeRelatedByFromOwnNodeIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useFromOwnNodeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		return $this
-			->joinP2POwnNodeRelatedByFromOwnNodeId($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'P2POwnNodeRelatedByFromOwnNodeId', 'P2POwnNodeQuery');
+			->joinFromOwnNode($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'FromOwnNode', 'P2POwnNodeQuery');
 	}
 
 	/**
@@ -373,7 +373,7 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 	 *
 	 * @return    MeshingTrustLocalQuery The current query, for fluid interface
 	 */
-	public function filterByP2POwnNodeRelatedByToOwnNodeId($p2POwnNode, $comparison = null)
+	public function filterByToOwnNode($p2POwnNode, $comparison = null)
 	{
 		if ($p2POwnNode instanceof P2POwnNode) {
 			return $this
@@ -385,22 +385,22 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 			return $this
 				->addUsingAlias(MeshingTrustLocalPeer::TO_OWN_NODE_ID, $p2POwnNode->toKeyValue('PrimaryKey', 'Id'), $comparison);
 		} else {
-			throw new PropelException('filterByP2POwnNodeRelatedByToOwnNodeId() only accepts arguments of type P2POwnNode or PropelCollection');
+			throw new PropelException('filterByToOwnNode() only accepts arguments of type P2POwnNode or PropelCollection');
 		}
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the P2POwnNodeRelatedByToOwnNodeId relation
+	 * Adds a JOIN clause to the query using the ToOwnNode relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
 	 * @return    MeshingTrustLocalQuery The current query, for fluid interface
 	 */
-	public function joinP2POwnNodeRelatedByToOwnNodeId($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinToOwnNode($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('P2POwnNodeRelatedByToOwnNodeId');
+		$relationMap = $tableMap->getRelation('ToOwnNode');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -415,14 +415,14 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'P2POwnNodeRelatedByToOwnNodeId');
+			$this->addJoinObject($join, 'ToOwnNode');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the P2POwnNodeRelatedByToOwnNodeId relation P2POwnNode object
+	 * Use the ToOwnNode relation P2POwnNode object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -432,11 +432,11 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 	 *
 	 * @return    P2POwnNodeQuery A secondary query class using the current class as primary query
 	 */
-	public function useP2POwnNodeRelatedByToOwnNodeIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useToOwnNodeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		return $this
-			->joinP2POwnNodeRelatedByToOwnNodeId($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'P2POwnNodeRelatedByToOwnNodeId', 'P2POwnNodeQuery');
+			->joinToOwnNode($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'ToOwnNode', 'P2POwnNodeQuery');
 	}
 
 	/**

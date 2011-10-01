@@ -50,8 +50,8 @@ class MeshingTrustLocalTableMap extends TableMap
 	 */
 	public function buildRelations()
 	{
-		$this->addRelation('P2POwnNodeRelatedByFromOwnNodeId', 'P2POwnNode', RelationMap::MANY_TO_ONE, array('from_own_node_id' => 'id', ), null, null);
-		$this->addRelation('P2POwnNodeRelatedByToOwnNodeId', 'P2POwnNode', RelationMap::MANY_TO_ONE, array('to_own_node_id' => 'id', ), null, null);
+		$this->addRelation('FromOwnNode', 'P2POwnNode', RelationMap::MANY_TO_ONE, array('from_own_node_id' => 'id', ), null, null);
+		$this->addRelation('ToOwnNode', 'P2POwnNode', RelationMap::MANY_TO_ONE, array('to_own_node_id' => 'id', ), null, null);
 		$this->addRelation('MeshingTrustType', 'MeshingTrustType', RelationMap::MANY_TO_ONE, array('type' => 'id', ), null, null);
 	} // buildRelations()
 
