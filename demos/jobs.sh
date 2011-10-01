@@ -39,7 +39,11 @@ rm -rf ./database/schemas/*
 ./meshing node:add --name node_jobs_1 --connection conn_jobs_1 --schema jobs --force || exit 2
 ./meshing node:add --name node_jobs_2 --connection conn_jobs_2 --schema jobs --force || exit 2
 
-# @todo Add some trust
+# Add some trust (poss types are: read, write_audit, write_delay, write_full)
+./meshing trust:add \
+	--local-from=node_jobs_1 --local-to=node_jobs_2 --trust-type=write_full
+./meshing trust:add \
+	--local-from=node_jobs_2 --local-to=node_jobs_1 --trust-type=write_full
 
 # @todo Start the nodes
 #./meshing node:start --name node_jobs_1
