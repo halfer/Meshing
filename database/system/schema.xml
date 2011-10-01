@@ -72,8 +72,6 @@
 			<reference local="to_own_node_id" foreign="id" />
 		</foreign-key>
 		
-		<!-- (f)orward for (from->to), (r)erverse for (to->from) -->
-		<column name="direction" type="varchar" size="1" required="true" />
 		<column name="type" type="integer" required="true" />
 		<foreign-key foreignTable="meshing_trust_type">
 			<reference local="type" foreign="id" />

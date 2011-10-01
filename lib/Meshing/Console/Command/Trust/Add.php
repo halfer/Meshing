@@ -146,7 +146,6 @@ class Meshing_Console_Command_Trust_Add extends Meshing_Console_Base implements 
 		$trust = new MeshingTrustLocal();
 		$trust->setFromOwnNode($from);
 		$trust->setToOwnNode($to);
-		$trust->setDirection(MeshingTrustLocalPeer::DIRECTION_DEFAULT);
 		$trust->setMeshingTrustType($trustType);
 		$trust->save();
 

@@ -13,6 +13,9 @@
  *
  * @package    propel.generator.system
  */
-class MeshingTrustRemotePeer extends BaseMeshingTrustRemotePeer {
-
-} // MeshingTrustRemotePeer
+class MeshingTrustRemotePeer extends BaseMeshingTrustRemotePeer
+{
+	const DIRECTION_FORWARD = 'f';
+	const DIRECTION_REVERSE = 'r';
+	const DIRECTION_DEFAULT = self::DIRECTION_FORWARD;
+}

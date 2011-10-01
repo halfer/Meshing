@@ -8,12 +8,10 @@
  *
  * @method     MeshingTrustLocalQuery orderByFromOwnNodeId($order = Criteria::ASC) Order by the from_own_node_id column
  * @method     MeshingTrustLocalQuery orderByToOwnNodeId($order = Criteria::ASC) Order by the to_own_node_id column
- * @method     MeshingTrustLocalQuery orderByDirection($order = Criteria::ASC) Order by the direction column
  * @method     MeshingTrustLocalQuery orderByType($order = Criteria::ASC) Order by the type column
  *
  * @method     MeshingTrustLocalQuery groupByFromOwnNodeId() Group by the from_own_node_id column
  * @method     MeshingTrustLocalQuery groupByToOwnNodeId() Group by the to_own_node_id column
- * @method     MeshingTrustLocalQuery groupByDirection() Group by the direction column
  * @method     MeshingTrustLocalQuery groupByType() Group by the type column
  *
  * @method     MeshingTrustLocalQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -37,12 +35,10 @@
  *
  * @method     MeshingTrustLocal findOneByFromOwnNodeId(int $from_own_node_id) Return the first MeshingTrustLocal filtered by the from_own_node_id column
  * @method     MeshingTrustLocal findOneByToOwnNodeId(int $to_own_node_id) Return the first MeshingTrustLocal filtered by the to_own_node_id column
- * @method     MeshingTrustLocal findOneByDirection(string $direction) Return the first MeshingTrustLocal filtered by the direction column
  * @method     MeshingTrustLocal findOneByType(int $type) Return the first MeshingTrustLocal filtered by the type column
  *
  * @method     array findByFromOwnNodeId(int $from_own_node_id) Return MeshingTrustLocal objects filtered by the from_own_node_id column
  * @method     array findByToOwnNodeId(int $to_own_node_id) Return MeshingTrustLocal objects filtered by the to_own_node_id column
- * @method     array findByDirection(string $direction) Return MeshingTrustLocal objects filtered by the direction column
  * @method     array findByType(int $type) Return MeshingTrustLocal objects filtered by the type column
  *
  * @package    propel.generator.system.om
@@ -219,34 +215,6 @@ abstract class BaseMeshingTrustLocalQuery extends ModelCriteria
 			$comparison = Criteria::IN;
 		}
 		return $this->addUsingAlias(MeshingTrustLocalPeer::TO_OWN_NODE_ID, $toOwnNodeId, $comparison);
-	}
-
-	/**
-	 * Filter the query on the direction column
-	 * 
-	 * Example usage:
-	 * <code>
-	 * $query->filterByDirection('fooValue');   // WHERE direction = 'fooValue'
-	 * $query->filterByDirection('%fooValue%'); // WHERE direction LIKE '%fooValue%'
-	 * </code>
-	 *
-	 * @param     string $direction The value to use as filter.
-	 *              Accepts wildcards (* and % trigger a LIKE)
-	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-	 *
-	 * @return    MeshingTrustLocalQuery The current query, for fluid interface
-	 */
-	public function filterByDirection($direction = null, $comparison = null)
-	{
-		if (null === $comparison) {
-			if (is_array($direction)) {
-				$comparison = Criteria::IN;
-			} elseif (preg_match('/[\%\*]/', $direction)) {
-				$direction = str_replace('*', '%', $direction);
-				$comparison = Criteria::LIKE;
-			}
-		}
-		return $this->addUsingAlias(MeshingTrustLocalPeer::DIRECTION, $direction, $comparison);
 	}
 
 	/**

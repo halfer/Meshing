@@ -37,12 +37,6 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	protected $to_own_node_id;
 
 	/**
-	 * The value for the direction field.
-	 * @var        string
-	 */
-	protected $direction;
-
-	/**
 	 * The value for the type field.
 	 * @var        int
 	 */
@@ -95,16 +89,6 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	public function getToOwnNodeId()
 	{
 		return $this->to_own_node_id;
-	}
-
-	/**
-	 * Get the [direction] column value.
-	 * 
-	 * @return     string
-	 */
-	public function getDirection()
-	{
-		return $this->direction;
 	}
 
 	/**
@@ -166,26 +150,6 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	} // setToOwnNodeId()
 
 	/**
-	 * Set the value of [direction] column.
-	 * 
-	 * @param      string $v new value
-	 * @return     MeshingTrustLocal The current object (for fluent API support)
-	 */
-	public function setDirection($v)
-	{
-		if ($v !== null) {
-			$v = (string) $v;
-		}
-
-		if ($this->direction !== $v) {
-			$this->direction = $v;
-			$this->modifiedColumns[] = MeshingTrustLocalPeer::DIRECTION;
-		}
-
-		return $this;
-	} // setDirection()
-
-	/**
 	 * Set the value of [type] column.
 	 * 
 	 * @param      int $v new value
@@ -243,8 +207,7 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 
 			$this->from_own_node_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->to_own_node_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->direction = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->type = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->type = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -253,7 +216,7 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 4; // 4 = MeshingTrustLocalPeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 3; // 3 = MeshingTrustLocalPeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating MeshingTrustLocal object", $e);
@@ -613,9 +576,6 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 				return $this->getToOwnNodeId();
 				break;
 			case 2:
-				return $this->getDirection();
-				break;
-			case 3:
 				return $this->getType();
 				break;
 			default:
@@ -649,8 +609,7 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 		$result = array(
 			$keys[0] => $this->getFromOwnNodeId(),
 			$keys[1] => $this->getToOwnNodeId(),
-			$keys[2] => $this->getDirection(),
-			$keys[3] => $this->getType(),
+			$keys[2] => $this->getType(),
 		);
 		if ($includeForeignObjects) {
 			if (null !== $this->aFromOwnNode) {
@@ -700,9 +659,6 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 				$this->setToOwnNodeId($value);
 				break;
 			case 2:
-				$this->setDirection($value);
-				break;
-			case 3:
 				$this->setType($value);
 				break;
 		} // switch()
@@ -731,8 +687,7 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 
 		if (array_key_exists($keys[0], $arr)) $this->setFromOwnNodeId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setToOwnNodeId($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setDirection($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setType($arr[$keys[3]]);
+		if (array_key_exists($keys[2], $arr)) $this->setType($arr[$keys[2]]);
 	}
 
 	/**
@@ -746,7 +701,6 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 
 		if ($this->isColumnModified(MeshingTrustLocalPeer::FROM_OWN_NODE_ID)) $criteria->add(MeshingTrustLocalPeer::FROM_OWN_NODE_ID, $this->from_own_node_id);
 		if ($this->isColumnModified(MeshingTrustLocalPeer::TO_OWN_NODE_ID)) $criteria->add(MeshingTrustLocalPeer::TO_OWN_NODE_ID, $this->to_own_node_id);
-		if ($this->isColumnModified(MeshingTrustLocalPeer::DIRECTION)) $criteria->add(MeshingTrustLocalPeer::DIRECTION, $this->direction);
 		if ($this->isColumnModified(MeshingTrustLocalPeer::TYPE)) $criteria->add(MeshingTrustLocalPeer::TYPE, $this->type);
 
 		return $criteria;
@@ -819,7 +773,6 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	{
 		$copyObj->setFromOwnNodeId($this->getFromOwnNodeId());
 		$copyObj->setToOwnNodeId($this->getToOwnNodeId());
-		$copyObj->setDirection($this->getDirection());
 		$copyObj->setType($this->getType());
 		if ($makeNew) {
 			$copyObj->setNew(true);
@@ -1018,7 +971,6 @@ abstract class BaseMeshingTrustLocal extends BaseObject  implements Persistent
 	{
 		$this->from_own_node_id = null;
 		$this->to_own_node_id = null;
-		$this->direction = null;
 		$this->type = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;

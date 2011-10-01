@@ -26,22 +26,19 @@ abstract class BaseMeshingTrustLocalPeer {
 	const TM_CLASS = 'MeshingTrustLocalTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 3;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 4;
+	const NUM_HYDRATE_COLUMNS = 3;
 
 	/** the column name for the FROM_OWN_NODE_ID field */
 	const FROM_OWN_NODE_ID = 'meshing_trust_local.FROM_OWN_NODE_ID';
 
 	/** the column name for the TO_OWN_NODE_ID field */
 	const TO_OWN_NODE_ID = 'meshing_trust_local.TO_OWN_NODE_ID';
-
-	/** the column name for the DIRECTION field */
-	const DIRECTION = 'meshing_trust_local.DIRECTION';
 
 	/** the column name for the TYPE field */
 	const TYPE = 'meshing_trust_local.TYPE';
@@ -65,12 +62,12 @@ abstract class BaseMeshingTrustLocalPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('FromOwnNodeId', 'ToOwnNodeId', 'Direction', 'Type', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('fromOwnNodeId', 'toOwnNodeId', 'direction', 'type', ),
-		BasePeer::TYPE_COLNAME => array (self::FROM_OWN_NODE_ID, self::TO_OWN_NODE_ID, self::DIRECTION, self::TYPE, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('FROM_OWN_NODE_ID', 'TO_OWN_NODE_ID', 'DIRECTION', 'TYPE', ),
-		BasePeer::TYPE_FIELDNAME => array ('from_own_node_id', 'to_own_node_id', 'direction', 'type', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('FromOwnNodeId', 'ToOwnNodeId', 'Type', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('fromOwnNodeId', 'toOwnNodeId', 'type', ),
+		BasePeer::TYPE_COLNAME => array (self::FROM_OWN_NODE_ID, self::TO_OWN_NODE_ID, self::TYPE, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('FROM_OWN_NODE_ID', 'TO_OWN_NODE_ID', 'TYPE', ),
+		BasePeer::TYPE_FIELDNAME => array ('from_own_node_id', 'to_own_node_id', 'type', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	/**
@@ -80,12 +77,12 @@ abstract class BaseMeshingTrustLocalPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('FromOwnNodeId' => 0, 'ToOwnNodeId' => 1, 'Direction' => 2, 'Type' => 3, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('fromOwnNodeId' => 0, 'toOwnNodeId' => 1, 'direction' => 2, 'type' => 3, ),
-		BasePeer::TYPE_COLNAME => array (self::FROM_OWN_NODE_ID => 0, self::TO_OWN_NODE_ID => 1, self::DIRECTION => 2, self::TYPE => 3, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('FROM_OWN_NODE_ID' => 0, 'TO_OWN_NODE_ID' => 1, 'DIRECTION' => 2, 'TYPE' => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('from_own_node_id' => 0, 'to_own_node_id' => 1, 'direction' => 2, 'type' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('FromOwnNodeId' => 0, 'ToOwnNodeId' => 1, 'Type' => 2, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('fromOwnNodeId' => 0, 'toOwnNodeId' => 1, 'type' => 2, ),
+		BasePeer::TYPE_COLNAME => array (self::FROM_OWN_NODE_ID => 0, self::TO_OWN_NODE_ID => 1, self::TYPE => 2, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('FROM_OWN_NODE_ID' => 0, 'TO_OWN_NODE_ID' => 1, 'TYPE' => 2, ),
+		BasePeer::TYPE_FIELDNAME => array ('from_own_node_id' => 0, 'to_own_node_id' => 1, 'type' => 2, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	/**
@@ -159,12 +156,10 @@ abstract class BaseMeshingTrustLocalPeer {
 		if (null === $alias) {
 			$criteria->addSelectColumn(MeshingTrustLocalPeer::FROM_OWN_NODE_ID);
 			$criteria->addSelectColumn(MeshingTrustLocalPeer::TO_OWN_NODE_ID);
-			$criteria->addSelectColumn(MeshingTrustLocalPeer::DIRECTION);
 			$criteria->addSelectColumn(MeshingTrustLocalPeer::TYPE);
 		} else {
 			$criteria->addSelectColumn($alias . '.FROM_OWN_NODE_ID');
 			$criteria->addSelectColumn($alias . '.TO_OWN_NODE_ID');
-			$criteria->addSelectColumn($alias . '.DIRECTION');
 			$criteria->addSelectColumn($alias . '.TYPE');
 		}
 	}

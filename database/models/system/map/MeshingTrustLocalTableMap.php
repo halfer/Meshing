@@ -40,7 +40,6 @@ class MeshingTrustLocalTableMap extends TableMap
 		// columns
 		$this->addForeignPrimaryKey('FROM_OWN_NODE_ID', 'FromOwnNodeId', 'INTEGER' , 'p2p_own_node', 'ID', true, null, null);
 		$this->addForeignPrimaryKey('TO_OWN_NODE_ID', 'ToOwnNodeId', 'INTEGER' , 'p2p_own_node', 'ID', true, null, null);
-		$this->addColumn('DIRECTION', 'Direction', 'VARCHAR', true, 1, null);
 		$this->addForeignKey('TYPE', 'Type', 'INTEGER', 'meshing_trust_type', 'ID', true, null, null);
 		// validators
 	} // initialize()
