@@ -37,42 +37,9 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 		if (array_key_exists(0, $this->argv))
 		{
 			$command = $this->argv[0];
-			$className = array_search($command, $commands);
-			if ($className)
+			if ($className = array_search($command, $commands))
 			{
-				$class = new $className;
-				$opts = $class->getOpts();
-				echo "Syntax: ./meshing $command ";
-				if ($opts)
-				{
-					$syntax = array();
-
-					// The key is in the form --name|n=s (mandatory param) or --name|n-s (optional)
-					foreach ($opts as $key => $help)
-					{
-						list($names, $optional, $type) = $this->splitDefinition($key);
-						$longForm = $names[0];
-						$syntax[$longForm] = $help;
-
-						// Add a --flag=<type> line
-						echo $optional ? '[' : '';
-						echo '--' . $longForm;
-						echo $type ? '=' . $type : '';
-						echo $optional ? ']' : '';
-						echo ' ';
-					}
-					echo "\nwhere:\n";
-
-					// Print detailed help, line by line
-					foreach ($syntax as $switch => $help)
-					{
-						echo "  --" . $switch . str_repeat(' ', 16 - strlen($switch)) . $help . "\n";
-					}
-				}
-				else
-				{
-					echo "\n";
-				}
+				$this->commandHelp($command);
 			}
 			else
 			{
@@ -84,6 +51,43 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 		else
 		{
 			$this->listCommands($commands);
+		}
+	}
+
+	protected function commandHelp($className)
+	{
+		$class = new $className;
+		$opts = $class->getOpts();
+		echo "Syntax: ./meshing $command ";
+		if ($opts)
+		{
+			$syntax = array();
+
+			// The key is in the form --name|n=s (mandatory param) or --name|n-s (optional)
+			foreach ($opts as $key => $help)
+			{
+				list($names, $optional, $type) = $this->splitDefinition($key);
+				$longForm = $names[0];
+				$syntax[$longForm] = $help;
+
+				// Add a --flag=<type> line
+				echo $optional ? '[' : '';
+				echo '--' . $longForm;
+				echo $type ? '=' . $type : '';
+				echo $optional ? ']' : '';
+				echo ' ';
+			}
+			echo "\nwhere:\n";
+
+			// Print detailed help, line by line
+			foreach ($syntax as $switch => $help)
+			{
+				echo "  --" . $switch . str_repeat(' ', 16 - strlen($switch)) . $help . "\n";
+			}
+		}
+		else
+		{
+			echo "\n";
 		}
 	}
 
