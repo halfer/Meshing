@@ -32,14 +32,14 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 	public function run()
 	{
 		// Reads the commands dynamically from the file system
-		$commands = Meshing_Console_Utils::getCommands();
+		$commands = Meshing_Console_Utils::getCommands(true);
 
 		if (array_key_exists(0, $this->argv))
 		{
 			$command = $this->argv[0];
 			if ($className = array_search($command, $commands))
 			{
-				$this->commandHelp($command);
+				$this->commandHelp($className);
 			}
 			else
 			{
@@ -50,7 +50,7 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 		}
 		else
 		{
-			$this->listCommands($commands);
+			$this->generalHelp();
 		}
 	}
 
@@ -141,17 +141,19 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 		return null;
 	}
 
-	protected function listCommands($commands)
+	/**
+	 * Prints out the general help message
+	 */
+	protected function generalHelp()
 	{
-		// Print a hint for all commands
-		foreach ($commands as $className => $command)
-		{
-			$class = new $className();
-			$desc = $class->getDescription();
+		echo <<<GENERAL_HELP
+Meshing is Free software designed to share structured databases over the
+internet in a decentralised way. Consult http://blog.jondh.me.uk/meshing
+for more details.
 
-			$count = 20 - strlen($command);
-			$count = $count > 0 ? $count : 1;
-			echo $command . str_repeat(' ', $count) . $desc . "\n";
-		}
+Type `meshing commands` to see a command list.
+
+GENERAL_HELP;
+		// ^ A blank line is required to add a CR at the end
 	}
 }

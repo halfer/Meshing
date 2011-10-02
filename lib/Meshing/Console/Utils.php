@@ -9,14 +9,15 @@ class Meshing_Console_Utils
 
 	public static function getCommandClass($command)
 	{
-		$commands = self::readCommands();
+		$commands = self::readCommands(true);
 		
 		return array_search($command, $commands);
 	}
 
-	protected static function readCommands()
+	protected static function readCommands($incHidden = false)
 	{
 		static $commands = array();
+		static $hidden = array();
 		
 		if (!$commands)
 		{
@@ -57,17 +58,27 @@ class Meshing_Console_Utils
 				if ($realCommand)
 				{
 					$cmdClass = new $className;
-					if ($cmdClass->getDescription() != '')
+					$commands[$className] = $item;
+					if ($cmdClass->getDescription() == '')
 					{
-						$commands[$className] = $item;
+						$hidden[] = $className;
 					}
 				}
 				$regex->next();
 			}
+
+			// Preserve the keys when sorting
+			asort($commands);
 		}
-		
-		// Preserve the keys when sorting
-		asort($commands);
+
+		// Strip out hidden commands
+		if (!$incHidden)
+		{
+			foreach ($hidden as $removeClass)
+			{
+				unset($commands[$removeClass]);
+			}
+		}
 		
 		return $commands;
 	}
