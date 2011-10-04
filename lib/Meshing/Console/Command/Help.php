@@ -62,6 +62,9 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 		if ($opts)
 		{
 			$syntax = array();
+			
+			// Get the longest command name
+			$maxLen = 0;
 
 			// The key is in the form --name|n=s (mandatory param) or --name|n-s (optional)
 			foreach ($opts as $key => $help)
@@ -69,6 +72,11 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 				list($names, $optional, $type) = $this->splitDefinition($key);
 				$longForm = $names[0];
 				$syntax[$longForm] = $help;
+				
+				if (strlen($longForm) > $max)
+				{
+					$max = strlen($longForm);
+				}
 
 				// Add a --flag=<type> line
 				echo $optional ? '[' : '';
@@ -82,7 +90,7 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 			// Print detailed help, line by line
 			foreach ($syntax as $switch => $help)
 			{
-				echo "  --" . $switch . str_repeat(' ', 16 - strlen($switch)) . $help . "\n";
+				echo "  --" . $switch . str_repeat(' ', ($max + 5) - strlen($switch)) . $help . "\n";
 			}
 		}
 		else
