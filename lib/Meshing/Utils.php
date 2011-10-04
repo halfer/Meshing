@@ -71,13 +71,19 @@ class Meshing_Utils
 			$schemaNames = array($schemaNames);
 		}
 
+		$projectRoot = self::getProjectRoot();
 		foreach ($schemaNames as $schemaName)
 		{
-			$projectRoot = self::getProjectRoot();
 			$path = $projectRoot . '/database/connections/' . $schemaName .
 				'/classmap-database-conf.php';
 			$map = include($path);
 			$loader->addClassPaths($map);
 		}
+		
+		// Propel needs to autoload our custom base classes too
+		$loader->addClassPath(
+			'MeshingBaseObject',
+			$projectRoot . '/database/system/models/customisations/MeshingBaseObject.php'
+		);
 	}
 }

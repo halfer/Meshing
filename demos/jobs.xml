@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="propel" defaultIdMethod="native">
+<database name="propel" defaultIdMethod="native" baseClass="MeshingBaseObject">
 
 	<table name="role">
 		&current_header;
