@@ -20,12 +20,15 @@ class Meshing_Utils
 	{
 		$projectRoot = self::getProjectRoot();
 
+		// Hardwired, as need this to look up paths to set up autoloader ;)
+		require_once $projectRoot . '/lib/Meshing/Paths.php';
+
 		// Set up model & class search paths
 		set_include_path(
-			$projectRoot . '/vendor/zend-1.11' . PATH_SEPARATOR .
-			$projectRoot . '/vendor/propel-1.6/generator/lib' . PATH_SEPARATOR .
-			$projectRoot . '/vendor/phing-2.4/classes' . PATH_SEPARATOR .
-			$projectRoot . '/lib' . PATH_SEPARATOR .
+			$projectRoot . Meshing_Paths::PATH_ZEND . PATH_SEPARATOR .
+			$projectRoot . Meshing_Paths::PATH_PROPEL_GENERATOR . PATH_SEPARATOR .
+			$projectRoot . Meshing_Paths::PATH_PHING . PATH_SEPARATOR .
+			$projectRoot . Meshing_Paths::PATH_MESHING . PATH_SEPARATOR .
 			get_include_path()
 		);
 		
@@ -53,7 +56,7 @@ class Meshing_Utils
 			get_include_path()
 		);
 
-		require_once $projectRoot . '/vendor/propel-1.6/runtime/lib/Propel.php';
+		require_once $projectRoot . Meshing_Paths::INC_PROPEL_RUNTIME;
 		Propel::init($projectRoot . '/database/connections/database-conf.php');
 	}
 
