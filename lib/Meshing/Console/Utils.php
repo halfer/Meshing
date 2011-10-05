@@ -22,7 +22,7 @@ class Meshing_Console_Utils
 		if (!$commands)
 		{
 			$projectRoot = Meshing_Utils::getProjectRoot();
-			$consoleRoot = $projectRoot . '/lib/Meshing/Console/Command';
+			$consoleRoot = $projectRoot . Meshing_Paths::PATH_MESHING_COMMANDS;
 
 			$directory = new RecursiveDirectoryIterator($consoleRoot);
 			$iterator = new RecursiveIteratorIterator($directory);

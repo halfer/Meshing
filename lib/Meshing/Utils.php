@@ -52,12 +52,12 @@ class Meshing_Utils
 		
 		// Include system models
 		set_include_path(
-			$projectRoot . '/database/models' . PATH_SEPARATOR .
+			$projectRoot . Meshing_Paths::PATH_MODELS_SYSTEM . PATH_SEPARATOR .
 			get_include_path()
 		);
 
 		require_once $projectRoot . Meshing_Paths::INC_PROPEL_RUNTIME;
-		Propel::init($projectRoot . '/database/connections/database-conf.php');
+		Propel::init($projectRoot . Meshing_Paths::PATH_CONNS_SYSTEM . '/database-conf.php');
 	}
 
 	/**
@@ -77,8 +77,8 @@ class Meshing_Utils
 		$projectRoot = self::getProjectRoot();
 		foreach ($schemaNames as $schemaName)
 		{
-			$path = $projectRoot . '/database/connections/' . $schemaName .
-				'/classmap-database-conf.php';
+			$path = $projectRoot . Meshing_Paths::PATH_CONNS_NODES . '/' .
+				$schemaName . '/classmap-database-conf.php';
 			$map = include($path);
 			$loader->addClassPaths($map);
 		}
@@ -86,7 +86,7 @@ class Meshing_Utils
 		// Propel needs to autoload our custom base classes too
 		$loader->addClassPath(
 			'MeshingBaseObject',
-			$projectRoot . '/database/system/models/customisations/MeshingBaseObject.php'
+			$projectRoot . Meshing_Paths::PATH_CUSTOM_BASES . '/MeshingBaseObject.php'
 		);
 	}
 }
