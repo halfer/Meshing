@@ -67,10 +67,11 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 	protected function buildModel($verbose)
 	{
 		// Set db type, schema and output folder here
-		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
-		$schemaDir = $this->projectRoot . '/database/system';
+		$extraPropsFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG .
+			'/build.properties';
+		$schemaDir = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG;
 		$schemas = 'schema.xml';
-		$outputDir = $this->projectRoot . "/database/models";
+		$outputDir = $this->projectRoot . Meshing_Paths::PATH_MODELS_SYSTEM;
 
 		// Create task, configure, then run
 		$task = new Meshing_Propel_ClassBuilder();
@@ -118,10 +119,10 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 	 */
 	protected function buildSql($verbose)
 	{
-		$schemaDir = $this->projectRoot . '/database/system';
+		$schemaDir = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG;
 		$schemas = "schema.xml";
-		$outputDir = $this->projectRoot . "/database/sql/system";
-		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
+		$outputDir = $this->projectRoot . Meshing_Paths::PATH_SQL_SYSTEM;
+		$extraPropsFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG . '/build.properties';
 
 		// Create task, configure, then run
 		$task = new Meshing_Propel_SqlBuilder();
@@ -142,9 +143,9 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 	 */
 	protected function runSql($verbose)
 	{
-		$sqlDir = $this->projectRoot . '/database/sql/system';
-		$mapFile = $this->projectRoot . '/database/system/sqldb.map';
-		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
+		$sqlDir = $this->projectRoot . Meshing_Paths::PATH_SQL_SYSTEM;
+		$mapFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG . '/sqldb.map';
+		$extraPropsFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG . '/build.properties';
 
 		$task = new Meshing_Propel_SqlRunner();
 
@@ -157,7 +158,7 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 
 	protected function runFixtures($verbose)
 	{
-		$fixturesFile = $this->projectRoot . '/database/system/fixtures.php';
+		$fixturesFile = $this->projectRoot . Meshing_Paths::PATH_SYSTEM_FIXTURES . '/fixtures.php';
 		if (file_exists($fixturesFile))
 		{
 			$runner = new Meshing_Propel_FixturesRunner($fixturesFile);

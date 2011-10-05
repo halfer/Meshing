@@ -94,10 +94,11 @@ class Meshing_Console_Command_Node_Add extends Meshing_Console_Base implements M
 	 */
 	protected function buildSql($projectRoot)
 	{
-		$schemaDir = $projectRoot . '/database/schemas/' . $this->opts->schema;
+		$schemaDir = $projectRoot . Meshing_Paths::PATH_SCHEMAS_NODES . '/' .
+			$this->opts->schema;
 		$schemas = "schema.xml";
-		$outputDir = $projectRoot . '/database/sql/' . $this->opts->name;
-		$extraPropsFile = $projectRoot . '/database/system/build.properties';
+		$outputDir = $projectRoot . Meshing_Paths::PATH_SQL_NODES . '/' . $this->opts->name;
+		$extraPropsFile = $projectRoot . Meshing_Paths::PATH_DB_CONFIG . '/build.properties';
 
 		// Create task, configure, then run
 		$task = new Meshing_Propel_SqlBuilder();
@@ -118,8 +119,8 @@ class Meshing_Console_Command_Node_Add extends Meshing_Console_Base implements M
 	 */
 	protected function runSql($projectRoot)
 	{
-		$sqlDir = $projectRoot . '/database/sql/' . $this->opts->name;
-		$mapFile = $projectRoot . '/database/system/sqldb.map';
+		$sqlDir = $projectRoot . Meshing_Paths::PATH_SQL_NODES . '/' . $this->opts->name;
+		$mapFile = $projectRoot . Meshing_Paths::PATH_DB_CONFIG . '/sqldb.map';
 
 		$task = new Meshing_Propel_SqlRunner();
 		$task->setSqlDir($sqlDir);

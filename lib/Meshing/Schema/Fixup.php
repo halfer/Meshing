@@ -20,9 +20,8 @@ class Meshing_Schema_Fixup
 	public function fixup($schemaName)
 	{
 		// Do this first, so it gets prefixed in the same way as other tables
-		$this->xml->insertTable(
-			Meshing_Utils::getProjectRoot() . '/database/system/snippets/node_identity.xml'
-		);
+		$idDir = Meshing_Utils::getProjectRoot() . Meshing_Paths::PATH_SYSTEM_SNIPPETS;
+		$this->xml->insertTable($idDir . '/node_identity.xml');
 
 		// Use the schema name as a table prefix and as a package name
 		$prefix = strtolower($schemaName);

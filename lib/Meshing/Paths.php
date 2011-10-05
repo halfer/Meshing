@@ -20,9 +20,15 @@ class Meshing_Paths
 	// Folder locations
 	const PATH_MODELS_SYSTEM =		'/database/models';
 	const PATH_MODELS_NODES =		'/database/models';
+	const PATH_SCHEMAS_NODES =		'/database/schemas';
+	const PATH_SQL_SYSTEM =			'/database/sql/system';
+	const PATH_SQL_NODES =			'/database/sql';
 	const PATH_CONNS_SYSTEM =		'/database/connections';
 	const PATH_CONNS_NODES =		'/database/connections';
-	
+	const PATH_DB_CONFIG =			'/database/system';
+	const PATH_SYSTEM_FIXTURES =	'/database/system';
+	const PATH_SYSTEM_SNIPPETS =	'/database/system/snippets';
+
 	// Custom Propel base classes
 	const PATH_CUSTOM_BASES =		'/database/system/models/customisations';
 }

@@ -60,7 +60,8 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 		}
 
 		// Try to create the folders required
-		$this->schemaDir = $this->projectRoot . '/database/schemas/' . $this->opts->name;
+		$this->schemaDir = $this->projectRoot . Meshing_Paths::PATH_SCHEMAS_NODES . '/' .
+			$this->opts->name;
 		if (!is_dir($this->schemaDir))
 		{
 			if (!@mkdir($this->schemaDir))
@@ -98,8 +99,9 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 			$this->opts->name
 		);
 
-		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
-		$modelDir = $this->projectRoot . '/database/models';
+		$extraPropsFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG .
+			'/build.properties';
+		$modelDir = $this->projectRoot . Meshing_Paths::PATH_MODELS_NODES;
 
 		// Create task, configure, then run
 		$task = new Meshing_Propel_ClassBuilder();
@@ -137,7 +139,8 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 				if (!array_key_exists($match, $entities))
 				{
 					$entities[$match] = file_get_contents(
-						$this->projectRoot . '/database/system/snippets/' . $match . '.xml'
+						$this->projectRoot . Meshing_Paths::PATH_SYSTEM_SNIPPETS . '/' .
+							$match . '.xml'
 					);
 				}
 				
@@ -170,14 +173,14 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 	{
 		$configName = 'database-conf.php';
 		$this->convertConf(
-			$this->projectRoot . '/database/system/runtime-conf.xml',
-			$this->projectRoot . '/database/connections/' . $this->opts->name,
+			$this->projectRoot . Meshing_Paths::PATH_DB_CONFIG . '/runtime-conf.xml',
+			$this->projectRoot . Meshing_Paths::PATH_CONNS_NODES . '/' . $this->opts->name,
 			$configName
 		);
 
 		// We only want the autoloading file, not the connections file... deleting to be tidy!
 		$configPath = $this->projectRoot .
-			'/database/connections/' .
+			Meshing_Paths::PATH_CONNS_NODES .
 			$this->opts->name . '/' . $configName;
 		@unlink($configPath);
 	}
@@ -189,7 +192,8 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 	protected function convertConf($runTime, $outputDir, $outputFile)
 	{
 		$schemas = "schema.xml";
-		$extraPropsFile = $this->projectRoot . '/database/system/build.properties';
+		$extraPropsFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG .
+			'/build.properties';
 
 		$task = new Meshing_Propel_ConfBuilder();
 		
