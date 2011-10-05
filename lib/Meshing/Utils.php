@@ -29,6 +29,7 @@ class Meshing_Utils
 			$projectRoot . Meshing_Paths::PATH_PROPEL_GENERATOR . PATH_SEPARATOR .
 			$projectRoot . Meshing_Paths::PATH_PHING . PATH_SEPARATOR .
 			$projectRoot . Meshing_Paths::PATH_MESHING . PATH_SEPARATOR .
+			$projectRoot . Meshing_Paths::PATH_SIMPLETEST . PATH_SEPARATOR .
 			get_include_path()
 		);
 		
