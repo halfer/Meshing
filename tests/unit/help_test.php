@@ -12,6 +12,29 @@ class ConsoleHelpTestCase extends UnitTestCase
 {
 	public function testCreation()
 	{
-		$this->assertTrue(true);
+		// Test the bare command
+		$out = $this->runCommand('');
+		$this->assertPattern('/Meshing is Free software/', $out);
+		
+		// Test a few commands from the syntax list
+		$out = $this->runCommand('commands');
+		$this->assertPattern('/node:add/', $out);
+		$this->assertPattern('/schema:add/', $out);
+		$this->assertPattern('/trust:add/', $out);
+
+		$out = $this->runCommand('help connection:add');
+		// @todo Not enough in here to constitute a test!
+		$this->assertPattern('/Syntax.+--name.+--user/', $out);
+	}
+
+	protected function runCommand($command)
+	{
+		global $projectRoot;
+
+		$command = $projectRoot . '/meshing ' . $command;
+		$output = array();
+		exec($command, $output);
+
+		return implode("\n", $output);
 	}
 }
