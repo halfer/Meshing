@@ -18,6 +18,14 @@ class Meshing_Utils
 
 	public static function initialise()
 	{
+		// Ignore repeated calls
+		static $isMeshingInitialised = false;
+		if ( $isMeshingInitialised )
+		{
+			return;
+		}
+		$isMeshingInitialised = true;
+
 		$projectRoot = self::getProjectRoot();
 
 		// Hardwired, as need this to look up paths to set up autoloader ;)
