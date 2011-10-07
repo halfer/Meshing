@@ -51,9 +51,6 @@ class Meshing_Utils
 
 	/**
 	 * Initialise the database (we don't always want this, so it's offered separately)
-	 * 
-	 * @todo Only offers system database connectivity at the moment. What would be the best way
-	 * to load the connection(s) and class mapping(s) required?
 	 */
 	public static function initialiseDb()
 	{
