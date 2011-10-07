@@ -13,7 +13,7 @@ class Meshing_Console_Command_Help extends Meshing_Console_Base implements Meshi
 	}
 
 	/**
-	 * @todo Permit detailed help to be requested for one command only
+	 * Specify what flags are available for this command
 	 */
 	public function getOpts()
 	{
