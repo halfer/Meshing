@@ -25,7 +25,6 @@ class Meshing_Console_Command_Connection_List extends Meshing_Console_Base imple
 	{
 		Meshing_Utils::initialiseDb();
 
-		// @todo Fix spelling of 'adaptor' to Propel 'adapter'?
 		$outFormat = '%-15s%-12s%-15s%-40s';
 		$this->ruleOff($lineLength = 15 + 12 + 15 + 40);
 		echo sprintf($outFormat, 'Name', 'Adaptor', 'User', 'Host') . "\n";
