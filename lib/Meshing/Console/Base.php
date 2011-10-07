@@ -32,4 +32,14 @@ class Meshing_Console_Base
 	{
 		return array('quiet|q' => 'Suppress console output');
 	}
+
+	/**
+	 * Determines whether the command should be shown in standard help
+	 * 
+	 * @return boolean
+	 */
+	public function isHiddenCommand()
+	{
+		return false;
+	}
 }

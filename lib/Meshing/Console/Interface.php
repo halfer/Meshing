@@ -10,4 +10,5 @@ interface Meshing_Console_Interface {
 	public function parseOpts();
 	public function preRunCheck();
 	public function run();
+	public function isHiddenCommand();
 }

@@ -54,12 +54,12 @@ class Meshing_Console_Utils
 				// Classes without this method are not commands at all
 				$realCommand = method_exists($className, 'getDescription');
 
-				// If description is offered, empty means hidden
+				// We consult a special method to determine whether to show the command
 				if ($realCommand)
 				{
 					$cmdClass = new $className;
 					$commands[$className] = $item;
-					if ($cmdClass->getDescription() == '')
+					if ($cmdClass->isHiddenCommand())
 					{
 						$hidden[] = $className;
 					}
