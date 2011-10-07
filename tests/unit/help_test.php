@@ -10,7 +10,7 @@ require_once 'simpletest/autorun.php';
 
 class ConsoleHelpTestCase extends UnitTestCase
 {
-	public function testCreation()
+	public function testHelp()
 	{
 		// Test the bare command
 		$out = $this->runCommand('');
@@ -29,7 +29,7 @@ class ConsoleHelpTestCase extends UnitTestCase
 
 	protected function runCommand($command)
 	{
-		global $projectRoot;
+		$projectRoot = Meshing_Utils::getProjectRoot();
 
 		$command = $projectRoot . '/meshing ' . $command;
 		$output = array();

@@ -29,6 +29,7 @@ class Meshing_Paths
 	const PATH_DB_CONFIG =			'/database/system';
 	const PATH_SYSTEM_FIXTURES =	'/database/system';
 	const PATH_SYSTEM_SNIPPETS =	'/database/system/snippets';
+	const PATH_SYSTEM_TESTS =		'/tests';
 
 	// Custom Propel base classes
 	const PATH_CUSTOM_BASES =		'/database/system/models/customisations';
