@@ -1,0 +1,3 @@
+<table name="saucer_sightings">
+	<column name="key" type="integer" primaryKey="true" />
+</table>
