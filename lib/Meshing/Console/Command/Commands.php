@@ -9,6 +9,7 @@ class Meshing_Console_Command_Commands extends Meshing_Console_Base implements M
 {
 	public function getDescription()
 	{
+		return 'Lists available Meshing console commands';
 	}
 
 	public function getOpts()
