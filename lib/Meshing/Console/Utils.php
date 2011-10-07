@@ -2,9 +2,9 @@
 
 class Meshing_Console_Utils
 {
-	public static function getCommands()
+	public static function getCommands($incHidden = false)
 	{
-		return self::readCommands();
+		return self::readCommands($incHidden);
 	}
 
 	public static function getCommandClass($command)

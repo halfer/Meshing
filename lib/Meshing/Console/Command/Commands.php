@@ -13,7 +13,9 @@ class Meshing_Console_Command_Commands extends Meshing_Console_Base implements M
 
 	public function getOpts()
 	{
-		return array();
+		return array(
+			'hidden|h' => 'Include system commands that are normally hidden'
+		);
 	}
 
 	public function preRunCheck()
@@ -22,7 +24,7 @@ class Meshing_Console_Command_Commands extends Meshing_Console_Base implements M
 
 	public function run()
 	{
-		$commands = Meshing_Console_Utils::getCommands(true);
+		$commands = Meshing_Console_Utils::getCommands($this->opts->hidden);
 		$this->listCommands($commands);
 	}
 
