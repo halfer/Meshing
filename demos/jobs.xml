@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database name="propel" defaultIdMethod="native" baseClass="MeshingBaseObject">
+	
+	<!-- Note any primary keys in non-versionable tables will be turned
+		 into ordinary columns, since Meshing adds its own PKs -->
 
 	<table name="role">
-		&current_header;
-
 		<!-- rows for this record -->
 		<column name="title" type="varchar" size="50" required="true" />
 		<column name="description" type="varchar" size="300" required="true" />
@@ -68,8 +69,6 @@
 	</table>
 
 	<table name="location">
-		&current_header;
-
 		<!-- rows for this record -->
 		<column name="country" type="varchar" size="30" required="true" />
 		<column name="address" type="varchar" size="100" required="true" />
@@ -90,8 +89,6 @@
 	</table>
 	
 	<table name="group">
-		&current_header;
-
 		<!-- rows for this record -->
 		<column name="name" type="varchar" size="50" required="true" />
 		<column name="email" type="varchar" size="100" />

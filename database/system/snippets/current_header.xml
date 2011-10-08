@@ -1,9 +1,11 @@
-		<!-- special PK defined by system -->
-		<column name="creator_node_id" type="integer" required="true" primaryKey="true" />
-		<column name="row_ord" type="integer" required="true" primaryKey="true" />
-		<foreign-key foreignTable="known_node">
-			<reference local="creator_node_id" foreign="id" />
-		</foreign-key>
+<dummy-root>
+	<!-- special PK defined by system -->
+	<column name="creator_node_id" type="integer" required="true" primaryKey="true" />
+	<column name="row_ord" type="integer" required="true" primaryKey="true" />
+	<foreign-key foreignTable="known_node">
+		<reference local="creator_node_id" foreign="id" />
+	</foreign-key>
 
-		<!-- hash for this record -->
-		<column name="hash" type="varchar" size="80" />
+	<!-- hash for this record -->
+	<column name="hash" type="varchar" size="80" />
+</dummy-root>

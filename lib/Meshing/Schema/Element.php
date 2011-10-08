@@ -97,4 +97,75 @@ class Meshing_Schema_Element extends SimpleXMLElement
 			$this['name'] = $connName;
 		}
 	}
+
+	/**
+	 * Strips all primary key columns from the schema
+	 * 
+	 * Note: not currently used, but may be useful in the future (8 Oct 2011)
+	 */
+	public function removePrimaryKeys()
+	{
+		$keys = $this->xml->xpath('/database/table/column[@primaryKey="true"]');
+		/* @var $keyColumn Meshing_Schema_Element */
+		foreach ($keys as $keyColumn)
+		{
+			unset($keyColumn[0]);
+		}
+	}
+
+	public function makePrimaryKeysOrdinaryColumns()
+	{
+		// Standard xpath search
+		//$search = '/database/table/column[@primaryKey="true"]';
+		
+		// Temporary fix to avoid user-supplied versionable tables
+		$suffix = '_versionable';
+		$match = "
+			substring(
+				@name,
+				string-length(@name) - string-length('$suffix') + 1
+			)
+			= '$suffix'
+		";
+		$search = "
+			/database/table[not($match)]/column[@primaryKey=\"true\"]
+		";
+		
+		$keys = $this->xml->xpath($search);
+		/* @var $keyColumn Meshing_Schema_Element */
+		foreach ($keys as $keyColumn)
+		{
+			unset($keyColumn['primaryKey']);
+		}
+	}
+
+	/**
+	 * Adds the specified block to all tables
+	 * 
+	 * If wrapped in a <dummy-root> for parsing purposes, this is stripped
+	 * 
+	 * @param string $xmlFile 
+	 */
+	public function addTableColumns($xmlFile)
+	{
+		$snippet = simplexml_load_file($xmlFile);
+		
+		if ($snippet->getName() == 'dummy-root')
+		{
+			$snippet = $snippet->children();
+		}
+		
+		foreach ($this->xpath('/database/table') as $table)
+		{
+			// Temporary fix to avoid user-supplied version tables
+			if (!preg_match('/_versionable$/', $table['name']))
+			{
+				// $snippet is an array of columns, so need to iterate thru them
+				foreach ($snippet as $element)
+				{
+					$this->copyXml($element, $table);
+				}
+			}
+		}
+	}
 }
