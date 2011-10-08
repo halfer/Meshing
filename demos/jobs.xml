@@ -35,51 +35,7 @@
 		</foreign-key>
 	</table>
 
-	<table name="role_versionable">
-		&versionable_header;
-
-		<!-- rows for this record -->
-		<column name="title" type="varchar" size="50" required="true" />
-		<column name="description" type="varchar" size="300" required="true" />
-		<column name="keywords" type="varchar" size="100" required="true" />
-		<column name="date_posted" type="date" required="true" />
-		<column name="date_updated" type="date" required="true" />
-		<column name="type" type="varchar" size="1" required="true" />
-		<column name="is_full_time" type="boolean" />
-		<column name="is_manager" type="boolean" />
-		<column name="hours_week" type="real" />
-		<column name="work_hours" type="varchar" size="60" />
-		<column name="annual_salary" type="real" />
-		<column name="daily_rate" type="real" />
-		<column name="currency"	type="varchar" size="2" />
-
-		<!-- foreign keys for this record -->
-		<column name="location_creator_node_id" type="integer" />
-		<column name="location_row_ord" type="integer" />
-		<foreign-key foreignTable="location">
-			<reference local="location_creator_node_id" foreign="creator_node_id" />
-			<reference local="location_row_ord" foreign="row_ord" />
-		</foreign-key>
-		<column name="group_creator_node_id" type="integer" />
-		<column name="group_row_ord" type="integer" />
-		<foreign-key foreignTable="group">
-			<reference local="group_creator_node_id" foreign="creator_node_id" />
-			<reference local="group_row_ord" foreign="row_ord" />
-		</foreign-key>
-	</table>
-
 	<table name="location">
-		<!-- rows for this record -->
-		<column name="country" type="varchar" size="30" required="true" />
-		<column name="address" type="varchar" size="100" required="true" />
-		<column name="postcode" type="varchar" size="10" required="true" />
-		<column name="latitude" type="real" />
-		<column name="longitude" type="real" />
-	</table>
-
-	<table name="location_versionable">
-		&versionable_header;
-
 		<!-- rows for this record -->
 		<column name="country" type="varchar" size="30" required="true" />
 		<column name="address" type="varchar" size="100" required="true" />
@@ -89,17 +45,6 @@
 	</table>
 	
 	<table name="group">
-		<!-- rows for this record -->
-		<column name="name" type="varchar" size="50" required="true" />
-		<column name="email" type="varchar" size="100" />
-		<column name="tel" type="varchar" size="20" />
-		<column name="web" type="varchar" size="50" />
-		<column name="type" type="varchar" size="1" />
-	</table>
-
-	<table name="group_versionable">
-		&versionable_header;
-
 		<!-- rows for this record -->
 		<column name="name" type="varchar" size="50" required="true" />
 		<column name="email" type="varchar" size="100" />

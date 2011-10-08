@@ -53,7 +53,8 @@ class Meshing_Schema_Element extends SimpleXMLElement
 	 * Pops a new element in as a child of the root element into the "to" target
 	 * 
 	 * @param SimpleXMLElement $from
-	 * @param SimpleXMLElement $to 
+	 * @param SimpleXMLElement $to
+	 * @return SimpleXMLElement The newly created element
 	 */
 	protected function copyXml(SimpleXMLElement $from, SimpleXMLElement $to)
 	{
@@ -79,6 +80,8 @@ class Meshing_Schema_Element extends SimpleXMLElement
 		{
 			$this->copyXml($fromChild, $toChild);
 		}
+
+		return $toChild;
 	}
 
 	/**
@@ -119,17 +122,7 @@ class Meshing_Schema_Element extends SimpleXMLElement
 		//$search = '/database/table/column[@primaryKey="true"]';
 		
 		// Temporary fix to avoid user-supplied versionable tables
-		$suffix = '_versionable';
-		$match = "
-			substring(
-				@name,
-				string-length(@name) - string-length('$suffix') + 1
-			)
-			= '$suffix'
-		";
-		$search = "
-			/database/table[not($match)]/column[@primaryKey=\"true\"]
-		";
+		$search = $this->xpathGetNonVersionedTables() . '/column[@primaryKey="true"]';
 		
 		$keys = $this->xml->xpath($search);
 		/* @var $keyColumn Meshing_Schema_Element */
@@ -140,13 +133,33 @@ class Meshing_Schema_Element extends SimpleXMLElement
 	}
 
 	/**
+	 * Returns an XPath search string to get non-versioned tables
+	 * 
+	 * @return string
+	 */
+	protected function xpathGetNonVersionedTables()
+	{
+		$suffix = '_versionable';
+		$match = "
+			substring(
+				@name,
+				string-length(@name) - string-length('$suffix') + 1
+			)
+			= '$suffix'
+		";
+
+		return "/database/table[not($match)]";
+	}
+
+	/**
 	 * Adds the specified block to all tables
 	 * 
 	 * If wrapped in a <dummy-root> for parsing purposes, this is stripped
 	 * 
-	 * @param string $xmlFile 
+	 * @param string $xmlFile
+	 * @param array $tableList Apply to this array of tables (or all if empty)
 	 */
-	public function addTableColumns($xmlFile)
+	public function addTableColumns($xmlFile, $tableList = array())
 	{
 		$snippet = simplexml_load_file($xmlFile);
 		
@@ -154,18 +167,59 @@ class Meshing_Schema_Element extends SimpleXMLElement
 		{
 			$snippet = $snippet->children();
 		}
-		
-		foreach ($this->xpath('/database/table') as $table)
+
+		// Use the table list if specified, otherwise use all tables
+		if (!$tableList)
 		{
-			// Temporary fix to avoid user-supplied version tables
-			if (!preg_match('/_versionable$/', $table['name']))
+			$tableList = $this->getTables();
+		}
+
+		foreach ($tableList as $table)
+		{
+			// $snippet is an array of columns, so need to iterate thru them
+			foreach ($snippet as $element)
 			{
-				// $snippet is an array of columns, so need to iterate thru them
-				foreach ($snippet as $element)
-				{
-					$this->copyXml($element, $table);
-				}
+				$this->copyXml($element, $table);
 			}
 		}
+	}
+
+	public function duplicateTables($namePrefix, $nameSuffix)
+	{
+		$tables = array();
+		foreach ($this->xpath($this->xpathGetNonVersionedTables()) as $table)
+		{
+			$tables[] = $this->duplicateTable($table, $namePrefix, $nameSuffix);
+		}
+
+		return $tables;
+	}
+
+	/**
+	 * Duplicates the specified table, renaming with the specified pre/suffixes
+	 * 
+	 * @param SimpleXMLElement $table
+	 * @param string $namePrefix
+	 * @param string $nameSuffix
+	 * @return string 
+	 */
+	protected function duplicateTable(SimpleXMLElement $table, $namePrefix, $nameSuffix)
+	{
+		$newTable = $this->copyXml($table, $this);
+		$newTable['name'] = $namePrefix . $table['name'] . $nameSuffix;
+		
+		return $newTable;
+	}
+
+	/**
+	 * Gets the full set of SimpleXMLElement table elements
+	 * 
+	 * May return any iterable type containing tables (array, SimpleXMLElement, etc)
+	 * 
+	 * @return SimpleXMLElement
+	 */
+	public function getTables()
+	{
+		return $this->xpath('/database/table');
 	}
 }

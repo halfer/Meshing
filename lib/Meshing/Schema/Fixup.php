@@ -24,11 +24,29 @@ class Meshing_Schema_Fixup
 	{
 		// Turn PKs into ordinary columns before adding our own tables (we need their keys ;-)
 		$this->xml->makePrimaryKeysOrdinaryColumns();
+		
+		// Save the real tables in an array
+		$realTables = $this->xml->getTables();
 
-		// Poke a block of XML into each table (contains new primary keys)
-		$this->xml->addTableColumns($this->snippetDir . '/current_header.xml');
+		// Duplicate all the tables and get their refs in another array
+		$versionableTables = $this->xml->duplicateTables(
+			$prefix = '',
+			$suffix = '_versionable'
+		);
 
-		// Add the id table first, so it gets prefixed in the same way as other tables
+		// Poke a block of XML into each real table (contains primary keys)
+		$this->xml->addTableColumns(
+			$this->snippetDir . '/current_header.xml',
+			$realTables
+		);
+
+		// Poke a block of XML into each versionable table (ditto)
+		$this->xml->addTableColumns(
+			$this->snippetDir . '/versionable_header.xml',
+			$versionableTables
+		);
+
+		// Add the identity table, so it gets prefixed in the same way as other tables
 		$this->xml->insertTable($this->snippetDir . '/node_identity.xml');
 
 		// Now add the known nodes table
