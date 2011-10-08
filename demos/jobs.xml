@@ -110,6 +110,4 @@
 		<column name="web" type="varchar" size="50" />
 		<column name="type" type="varchar" size="1" />
 	</table>
-
-	&known_nodes;
 </database>
