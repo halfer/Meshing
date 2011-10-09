@@ -11,10 +11,10 @@ class Meshing_Schema_Fixup
 	protected $xml;
 	protected $filename;
 	
-	public function __construct($filename)
+	public function __construct($inFilename, $outFilename)
 	{
-		$this->xml = simplexml_load_file($filename, 'Meshing_Schema_Element');
-		$this->filename = $filename;
+		$this->xml = simplexml_load_file($inFilename, 'Meshing_Schema_Element');
+		$this->filename = $outFilename;
 
 		$this->snippetDir = Meshing_Utils::getProjectRoot() . Meshing_Paths::PATH_SYSTEM_SNIPPETS;
 

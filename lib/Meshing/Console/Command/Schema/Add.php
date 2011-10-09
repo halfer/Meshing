@@ -90,11 +90,8 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 	protected function installXml()
 	{
 		$schemaProc = 'schema.xml';
-		$this->processIncludes(
-			$this->opts->file,
-			$this->schemaDir . DIRECTORY_SEPARATOR . $schemaProc
-		);
 		$this->doFixups(
+			$this->opts->file,
 			$this->schemaDir . DIRECTORY_SEPARATOR . $schemaProc,
 			$this->opts->name
 		);
@@ -118,6 +115,8 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 
 	/**
 	 * Swaps &entity; references for system snippets
+	 * 
+	 * @todo As of 8 Oct 2011, this is no longer used. May be useful in future?
 	 * 
 	 * @param type $schema Full/relative path to user's schema
 	 * @param type $outputFile Full path to output schema, where it is "installed"
@@ -155,9 +154,9 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 	/**
 	 * Modify the schema 
 	 */
-	protected function doFixups($schemaFile, $schemaName)
+	protected function doFixups($schemaFileIn, $schemaFileOut, $schemaName)
 	{
-		$fixup = new Meshing_Schema_Fixup($schemaFile);
+		$fixup = new Meshing_Schema_Fixup($schemaFileIn, $schemaFileOut);
 		$fixup->fixup($schemaName);
 	}
 
