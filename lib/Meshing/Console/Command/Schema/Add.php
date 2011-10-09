@@ -75,10 +75,6 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 
 	/**
 	 * Modifies and then builds a Propel schema
-	 * 
-	 * @todo Each table should have a versioned copy created automatically
-	 * @todo Table names should be converted into something unique eg ModelJobsRole
-	 * @todo An easier way to specify FKs?
 	 */
 	public function run()
 	{
@@ -185,6 +181,8 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 	}
 
 	/**
+	 * Creates a PHP configuration and classmaps files
+	 * 
 	 * @todo Merge this with Regen::convertConf, put them both in
 	 * Meshing_Console_Command_Connection_Base.
 	 */
