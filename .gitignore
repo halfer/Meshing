@@ -1,9 +1,12 @@
 # Normal files/folders to ignore
 database/connections/*
+!database/connections/classmap-database-conf.php
 database/models/*
 !database/models/system
 database/sql/*
+!database/sql/system/.ignore
 database/schemas/*
+!database/schemas/.ignore
 
 # Any IDE folders to ignore
 nbproject
