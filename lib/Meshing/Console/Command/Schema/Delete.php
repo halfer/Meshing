@@ -52,8 +52,8 @@ class Meshing_Console_Command_Schema_Delete extends Meshing_Console_Base impleme
 	protected function deleteDirectories()
 	{
 		$projectRoot = Meshing_Utils::getProjectRoot();
-		$schemaDir = $projectRoot . Meshing_Paths::PATH_SCHEMAS_NODES . '/' . $this->opts->name;
-		$modelDir = $projectRoot . Meshing_Paths::PATH_MODELS_NODES . '/' . $this->opts->name;
+		$schemaDir = $projectRoot . Meshing_Utils::getPaths()->getPathSchemasNodes() . '/' . $this->opts->name;
+		$modelDir = $projectRoot . Meshing_Utils::getPaths()->getPathModelsNodes() . '/' . $this->opts->name;
 		
 		echo "Done.\n";
 

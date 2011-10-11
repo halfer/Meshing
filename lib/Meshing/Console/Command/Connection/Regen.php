@@ -48,7 +48,7 @@ class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base impl
 		if (!is_readable($conf1) || !is_readable($conf2) || $this->opts->{'system'})
 		{
 			// Create a Propel runtime XML for just the system connection
-			$xmlFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG .
+			$xmlFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() .
 				'/runtime-conf.xml';
 			$this->convertConf($xmlFile, $outputDir, $outputFile);
 			
@@ -62,10 +62,10 @@ class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base impl
 		if ($this->opts->{'non-system'})
 		{
 			// Create a Propel runtime XML containing all connections		
-			$xmlFile = $this->projectRoot . Meshing_Paths::PATH_CONNS_NODES .
+			$xmlFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathConnsNodes() .
 				'/runtime-conf-regen.xml';
 			$this->createRuntimeXml(
-				$this->projectRoot . Meshing_Paths::PATH_DB_CONFIG . '/runtime-conf.xml',
+				$this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() . '/runtime-conf.xml',
 				$xmlFile
 			);
 
@@ -91,9 +91,9 @@ class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base impl
 	 */
 	protected function convertConf($runTime, $outputDir, $outputFile)
 	{
-		$schemaDir = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG;
+		$schemaDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig();
 		$schemas = "schema.xml";
-		$extraPropsFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG .
+		$extraPropsFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() .
 			'/build.properties';
 
 		$task = new Meshing_Propel_ConfBuilder();

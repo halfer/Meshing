@@ -67,9 +67,9 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 	protected function buildModel($verbose)
 	{
 		// Set db type, schema and output folder here
-		$extraPropsFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG .
+		$extraPropsFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() .
 			'/build.properties';
-		$schemaDir = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG;
+		$schemaDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig();
 		$schemas = 'schema.xml';
 		$outputDir = $this->projectRoot . Meshing_Paths::PATH_MODELS_SYSTEM;
 
@@ -119,10 +119,10 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 	 */
 	protected function buildSql($verbose)
 	{
-		$schemaDir = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG;
+		$schemaDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig();
 		$schemas = "schema.xml";
 		$outputDir = $this->projectRoot . Meshing_Paths::PATH_SQL_SYSTEM;
-		$extraPropsFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG . '/build.properties';
+		$extraPropsFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() . '/build.properties';
 
 		// Create task, configure, then run
 		$task = new Meshing_Propel_SqlBuilder();
@@ -144,8 +144,8 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 	protected function runSql($verbose)
 	{
 		$sqlDir = $this->projectRoot . Meshing_Paths::PATH_SQL_SYSTEM;
-		$mapFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG . '/sqldb.map';
-		$extraPropsFile = $this->projectRoot . Meshing_Paths::PATH_DB_CONFIG . '/build.properties';
+		$mapFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() . '/sqldb.map';
+		$extraPropsFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() . '/build.properties';
 
 		$task = new Meshing_Propel_SqlRunner();
 
