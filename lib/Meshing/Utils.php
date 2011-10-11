@@ -1,13 +1,15 @@
 <?php
 
 /**
- * Description of P2PUtils
+ * Utility class for system initialisation and configuration
  *
  * @author jon
  */
 class Meshing_Utils
 {
 	const SYSTEM_CONNECTION = 'p2p';
+
+	protected static $paths;
 	
 	public static function getProjectRoot()
 	{
@@ -16,7 +18,7 @@ class Meshing_Utils
 		);
 	}
 
-	public static function initialise()
+	public static function initialise(Meshing_Paths $paths)
 	{
 		// Ignore repeated calls
 		static $isMeshingInitialised = false;
@@ -26,18 +28,18 @@ class Meshing_Utils
 		}
 		$isMeshingInitialised = true;
 
-		$projectRoot = self::getProjectRoot();
+		// Store static copy of paths config
+		self::$paths = $paths;
 
-		// Hardwired, as need this to look up paths to set up autoloader ;)
-		require_once $projectRoot . '/lib/Meshing/Paths.php';
+		$projectRoot = self::getProjectRoot();
 
 		// Set up model & class search paths
 		set_include_path(
-			$projectRoot . Meshing_Paths::PATH_ZEND . PATH_SEPARATOR .
-			$projectRoot . Meshing_Paths::PATH_PROPEL_GENERATOR . PATH_SEPARATOR .
-			$projectRoot . Meshing_Paths::PATH_PHING . PATH_SEPARATOR .
-			$projectRoot . Meshing_Paths::PATH_MESHING . PATH_SEPARATOR .
-			$projectRoot . Meshing_Paths::PATH_SIMPLETEST . PATH_SEPARATOR .
+			$projectRoot . self::getPaths()->getPathZend() . PATH_SEPARATOR .
+			$projectRoot . self::getPaths()->getPathPropelGenerator() . PATH_SEPARATOR .
+			$projectRoot . self::getPaths()->getPathPhing() . PATH_SEPARATOR .
+			$projectRoot . self::getPaths()->getPathMeshing() . PATH_SEPARATOR .
+			$projectRoot . self::getPaths()->getPathSimpleTest() . PATH_SEPARATOR .
 			get_include_path()
 		);
 		
@@ -58,12 +60,12 @@ class Meshing_Utils
 		
 		// Include system models
 		set_include_path(
-			$projectRoot . Meshing_Paths::PATH_MODELS_SYSTEM . PATH_SEPARATOR .
+			$projectRoot . self::getPaths()->getPathModelsSystem() . PATH_SEPARATOR .
 			get_include_path()
 		);
 
-		require_once $projectRoot . Meshing_Paths::INC_PROPEL_RUNTIME;
-		Propel::init($projectRoot . Meshing_Paths::PATH_CONNS_SYSTEM . '/database-conf.php');
+		require_once $projectRoot . self::getPaths()->getFilePropelRuntime();
+		Propel::init($projectRoot . self::getPaths()->getPathConnsSystem() . '/database-conf.php');
 	}
 
 	/**
@@ -83,7 +85,7 @@ class Meshing_Utils
 		$projectRoot = self::getProjectRoot();
 		foreach ($schemaNames as $schemaName)
 		{
-			$path = $projectRoot . Meshing_Paths::PATH_CONNS_NODES . '/' .
+			$path = $projectRoot . self::getPaths()->getPathConnsNodes() . '/' .
 				$schemaName . '/classmap-database-conf.php';
 			$map = include($path);
 			$loader->addClassPaths($map);
@@ -92,7 +94,17 @@ class Meshing_Utils
 		// Propel needs to autoload our custom base classes too
 		$loader->addClassPath(
 			'MeshingBaseObject',
-			$projectRoot . Meshing_Paths::PATH_CUSTOM_BASES . '/MeshingBaseObject.php'
+			$projectRoot . self::getPaths()->getPathCustomBases() . '/MeshingBaseObject.php'
 		);
+	}
+
+	/**
+	 * Gets path config class
+	 * 
+	 * @return Meshing_Paths
+	 */
+	public static function getPaths()
+	{
+		return self::$paths;
 	}
 }

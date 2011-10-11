@@ -1,11 +1,12 @@
 <?php
 
-// System initialisation
-$projectPath = realpath(
+// System initialisation (some hardwiring required before autoloader kicks in)
+$projectRoot = realpath(
 	dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '..'
 );
-require_once $projectPath . '/lib/Meshing/Utils.php';
-Meshing_Utils::initialise();
+require_once $projectRoot . '/lib/Meshing/Paths.php';
+require_once $projectRoot . '/lib/Meshing/Utils.php';
+Meshing_Utils::initialise(new Meshing_Paths());
 
 // Pop off the script name, grab the command, pop again
 array_shift($argv);

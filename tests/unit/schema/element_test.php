@@ -2,8 +2,9 @@
 
 // Set up project
 $projectRoot = realpath(dirname(__FILE__) . '/../../..');
+require_once $projectRoot . '/lib/Meshing/Paths.php';
 require_once $projectRoot . '/lib/Meshing/Utils.php';
-Meshing_Utils::initialise();
+Meshing_Utils::initialise(new Meshing_Paths());
 
 // Init simpletest
 require_once 'simpletest/autorun.php';
