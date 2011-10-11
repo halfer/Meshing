@@ -39,7 +39,7 @@ class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base impl
 
 	public function run()
 	{
-		$outputDir = $this->projectRoot . Meshing_Paths::PATH_CONNS_SYSTEM;
+		$outputDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathConnsSystem();
 		$outputFile = 'database-conf.php';
 
 		// If the PHP config files are missing, regen just system ones to start with

@@ -29,7 +29,7 @@ class Meshing_Console_Command_System_Tests extends Meshing_Console_Base implemen
 
 		// Add the path to the standard test directory location
 		$this->testDir = Meshing_Utils::getProjectRoot() .
-			Meshing_Paths::PATH_SYSTEM_TESTS . $path;
+			Meshing_Utils::getPaths()->getPathSystemTests() . $path;
 
 		if (!is_dir($this->testDir) && !is_file($this->testDir))
 		{
