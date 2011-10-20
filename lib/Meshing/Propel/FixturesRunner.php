@@ -37,7 +37,5 @@ class Meshing_Propel_FixturesRunner
 				$class->save();
 			}
 		}
-		
-		$a = new MeshingTrustLocal();
 	}
 }
