@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of SqlBuilder
+ * Task to generate SQL for a given schema
  *
  * @author jon
  */

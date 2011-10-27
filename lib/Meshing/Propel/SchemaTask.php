@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of SchemaTask
+ * Abstract task used by SqlBuilder and ConfBuilder
  *
  * @author jon
  */

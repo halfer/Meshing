@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of SqlRunner
+ * Task to run (generated) SQL
  *
  * @author jon
  */

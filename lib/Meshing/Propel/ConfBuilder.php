@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of ConfBuilder
+ * Task to build PHP config files from XML build files
  *
  * @author jon
  */

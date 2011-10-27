@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of ClassBuilder
+ * Task to build model classes
  *
  * @author jon
  */
