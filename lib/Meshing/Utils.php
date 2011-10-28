@@ -10,6 +10,8 @@ class Meshing_Utils
 	const SYSTEM_CONNECTION = 'p2p';
 
 	protected static $paths;
+	protected static $oldIncludes;
+	protected static $isMeshingInitialised = false;
 	
 	public static function getProjectRoot()
 	{
@@ -21,12 +23,11 @@ class Meshing_Utils
 	public static function initialise(Meshing_Paths $paths)
 	{
 		// Ignore repeated calls
-		static $isMeshingInitialised = false;
-		if ( $isMeshingInitialised )
+		if (self::$isMeshingInitialised)
 		{
 			return;
 		}
-		$isMeshingInitialised = true;
+		self::$isMeshingInitialised = true;
 
 		// Store static copy of paths config
 		self::$paths = $paths;
@@ -34,7 +35,7 @@ class Meshing_Utils
 		$projectRoot = self::getProjectRoot();
 
 		// Set up model & class search paths
-		set_include_path(
+		self::$oldIncludes = set_include_path(
 			$projectRoot . self::getPaths()->getPathZend() . PATH_SEPARATOR .
 			$projectRoot . self::getPaths()->getPathPropelGenerator() . PATH_SEPARATOR .
 			$projectRoot . self::getPaths()->getPathPhing() . PATH_SEPARATOR .
@@ -106,5 +107,22 @@ class Meshing_Utils
 	public static function getPaths()
 	{
 		return self::$paths;
+	}
+
+	/**
+	 * Useful when testing and wishing to reset the paths class
+	 * 
+	 * @param Meshing_Paths $paths 
+	 */
+	public static function reinitialise(Meshing_Paths $paths)
+	{
+		if (self::$isMeshingInitialised)
+		{
+			self::$isMeshingInitialised = false;
+			set_include_path(self::$oldIncludes);
+			self::$oldIncludes = null;
+		}
+
+		self::initialise($paths);
 	}
 }
