@@ -40,7 +40,7 @@ class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base impl
 	public function run()
 	{
 		$outputDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathConnsSystem();
-		$outputFile = 'database-conf.php';
+		$outputFile = Meshing_Utils::getPaths()->getLeafRuntimePhp();
 
 		// If the PHP config files are missing, regen just system ones to start with
 		$conf1 = $outputDir . DIRECTORY_SEPARATOR . $outputFile;
@@ -48,8 +48,7 @@ class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base impl
 		if (!is_readable($conf1) || !is_readable($conf2) || $this->opts->{'system'})
 		{
 			// Create a Propel runtime XML for just the system connection
-			$xmlFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() .
-				'/runtime-conf.xml';
+			$xmlFile = $this->projectRoot . Meshing_Utils::getPaths()->getFileRuntimeXml();
 			$this->convertConf($xmlFile, $outputDir, $outputFile);
 			
 			if (!$this->opts->quiet)

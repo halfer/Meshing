@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="test" package="test-db">
-	<table name="event">
-		<column name="id" type="integer" required="true" primaryKey="true" />
+<database name="test" package="test-db" defaultIdMethod="native">
+	<table name="meshing_test_event">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 		<column name="name" type="varchar" size="50" required="true" />
 		<column name="description" type="varchar" size="250" />
 		<column name="location" type="varchar" size="250" />
 		<column name="nearest_city" type="varchar" size="100" />
 		<column name="organiser_id" type="integer" required="true" />
-		<foreign-key foreignTable="organiser">
+		<foreign-key foreignTable="meshing_test_organiser">
 			<reference local="organiser_id" foreign="id" />
 		</foreign-key>
 	</table>
 	
-	<table name="organiser">
-		<column name="id" type="integer" required="true" primaryKey="true" />
+	<table name="meshing_test_organiser">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 		<column name="name" type="varchar" size="50" required="true" />		
 		<column name="email" type="varchar" size="100" />
 	</table>

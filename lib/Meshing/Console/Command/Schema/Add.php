@@ -168,7 +168,7 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 	{
 		$configName = 'database-conf.php';
 		$this->convertConf(
-			$this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() . '/runtime-conf.xml',
+			$this->projectRoot . Meshing_Utils::getPaths()->getFileRuntimeXml(),
 			$this->projectRoot . Meshing_Utils::getPaths()->getPathConnsNodes() . '/' . $this->opts->name,
 			$configName
 		);

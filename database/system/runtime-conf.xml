@@ -10,6 +10,15 @@
 					<password></password>
 				</connection>
 			</datasource>
+
+			<datasource id="test">
+				<adapter>pgsql</adapter>
+				<connection>
+					<dsn>pgsql:host=localhost dbname=meshing_test user=jon password=</dsn>
+					<user>jon</user>
+					<password></password>
+				</connection>
+			</datasource>
 		</datasources>
 	</propel>
 </config>

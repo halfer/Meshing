@@ -87,6 +87,24 @@ class Meshing_Paths
 		return $this->getPathDbConfig() . '/sqldb.map';
 	}
 
+	/**
+	 * Get location of XML runtime connections config
+	 * 
+	 * This doesn't go through getGeneratedPath() as we want all systems (prod, test)
+	 * to use various connections from the one config location.
+	 * 
+	 * @return string
+	 */
+	public function getFileRuntimeXml()
+	{
+		return '/database/system/runtime-conf.xml';
+	}
+
+	public function getLeafRuntimePhp()
+	{
+		return 'database-conf.php';
+	}
+
 	public function getPathSystemFixtures()
 	{
 		return $this->getGeneratedPath('/database/system');

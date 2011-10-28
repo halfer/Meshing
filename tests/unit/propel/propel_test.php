@@ -34,11 +34,13 @@ class PropelGeneralTestCase extends UnitTestCase
 			'/build.properties';
 		$this->modelDir = $this->projectRoot . $this->paths->getPathModelsNodes();
 		$this->sqlDir = $this->projectRoot . $this->paths->getPathSqlSystem();
+		$this->connDir = $this->projectRoot . $this->paths->getPathConnsSystem();
 		
 		$this->schemas = 'test_schema1.xml';
 
 		$this->deleteFolderContents($this->modelDir, 'model');
-		$this->deleteFolderContents($this->sqlDir, 'sql');		
+		$this->deleteFolderContents($this->sqlDir, 'sql');
+		$this->deleteFolderContents($this->connDir, 'connections');
 	}
 
 	protected function deleteFolderContents($folder, $purpose)
@@ -87,7 +89,7 @@ class PropelGeneralTestCase extends UnitTestCase
 		foreach ($classes as $class)
 		{
 			$this->assertTrue(
-				$this->classExists($class),
+				$this->classExists('MeshingTest' . $class),
 				'Checking generated class `' . $class . '` exists'
 			);
 		}
@@ -136,11 +138,59 @@ class PropelGeneralTestCase extends UnitTestCase
 
 	public function testConfBuilder()
 	{
+		$xmlFile = $this->projectRoot . $this->paths->getFileRuntimeXml();
+		$outputFile = $this->paths->getLeafRuntimePhp();
+
+		$task = new Meshing_Propel_ConfBuilder();
+		$task->addSchemas($this->schemaDir, $this->schemas);
+		$task->setXmlFile($xmlFile);
+		$task->setOutputDir($this->connDir);
+		$task->setOutputFile($outputFile);
+		$task->addPropertiesFile($this->extraPropsFile);
+		$task->run();
 		
+		$this->assertTrue(
+			file_exists($this->connDir . '/' . $outputFile),
+			'Check connections file has been generated'
+		);
+		
+		$this->assertTrue(
+			file_exists($this->connDir . '/classmap-' . $outputFile),
+			'Check classmap file has been generated'
+		);
 	}
 
 	public function testModels()
 	{
+		Meshing_Utils::initialiseDb();
 		
+		try
+		{
+			$organiser = new MeshingTestOrganiser();
+			$organiser->setName($orgName = 'Mr. Badger');
+
+			$event = new MeshingTestEvent();
+			$event->setName($eventName = 'Expert Burrowing In The Built Environment');
+			$event->setMeshingTestOrganiser($organiser);
+			$event->save();
+			$ok = true;
+		}
+		catch (Exception $e)
+		{
+			$ok = false;
+		}
+		
+		$this->assertTrue($ok, 'Save some rows to the test model');
+
+		// Check they have been written okay
+		$organiser = MeshingTestOrganiserQuery::create()->
+			findOneByName($orgName);
+		$event = MeshingTestEventQuery::create()->
+			findOneByName($eventName);
+		$this->assertTrue(
+			($organiser instanceof MeshingTestOrganiser) &&
+			($event instanceof MeshingTestEvent),
+			'Retrieve rows from the database'
+		);
 	}
 }
