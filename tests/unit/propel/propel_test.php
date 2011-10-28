@@ -17,14 +17,33 @@ require_once 'simpletest/autorun.php';
  */
 class PropelGeneralTestCase extends UnitTestCase
 {
-	public function setUp()
+	/**
+	 * Initialisation for all tests
+	 * 
+	 * We're using the constructor rather than setUp() as the latter is called once
+	 * per test, and we want an init to be called once for all tests here.
+	 */
+	public function __construct($label = false)
 	{
+		parent::__construct($label);
+
 		$this->projectRoot = realpath(dirname(__FILE__) . '/../../..');
 		$this->paths = Meshing_Utils::getPaths();
+		$this->schemaDir = $this->projectRoot . $this->paths->getPathDbConfig();
+		$this->extraPropsFile = $this->projectRoot . $this->paths->getPathDbConfig() .
+			'/build.properties';
 		$this->modelDir = $this->projectRoot . $this->paths->getPathModelsNodes();
+		$this->sqlDir = $this->projectRoot . $this->paths->getPathSqlSystem();
+		
+		$this->schemas = 'test_schema1.xml';
 
-		// Delete anything in the model folder
-		if (file_exists($this->modelDir))
+		$this->deleteFolderContents($this->modelDir, 'model');
+		$this->deleteFolderContents($this->sqlDir, 'sql');		
+	}
+
+	protected function deleteFolderContents($folder, $purpose)
+	{
+		if (file_exists($folder))
 		{
 			// @todo Convert this to PHP, so as to avoid OS-specific call
 			$isWindows = (
@@ -34,33 +53,28 @@ class PropelGeneralTestCase extends UnitTestCase
 			);
 			if (!$isWindows)
 			{
-				$command = 'rm -rf ' . $this->modelDir . '/*';
+				$command = 'rm -rf ' . $folder . '/*';
 				$return = null;
 				@system($command, $return);
 				if ($return)
 				{
-					trigger_error('Failed to delete model folder', E_USER_WARNING);
+					trigger_error(
+						"Failed to delete contents of $purpose folder",
+						E_USER_WARNING
+					);
 				}
 			}
-		}
+		}		
 	}
 
 	/**
-	 * Start of tests for building model class files
-	 * 
-	 * @todo Can we control the package name? Would be good to turn that off here
-	 * @todo Add some actual tests :)
+	 * Tests the building of model class files
 	 */
 	public function testClassBuilder()
 	{
-		$rt = $this->projectRoot;
-
-		$extraPropsFile = $rt . $this->paths->getPathDbConfig() . '/build.properties';
-		$schemaDir = $rt . $this->paths->getPathDbConfig();
-
 		$task = new Meshing_Propel_ClassBuilder();
-		$task->addPropertiesFile($extraPropsFile);
-		$task->addSchemas($schemaDir, 'test_schema1.xml');
+		$task->addPropertiesFile($this->extraPropsFile);
+		$task->addSchemas($this->schemaDir, $this->schemas);
 		$task->setOutputDir($this->modelDir);
 		$task->run();
 
@@ -84,5 +98,49 @@ class PropelGeneralTestCase extends UnitTestCase
 		return file_exists(
 			$this->modelDir . '/' . $this->package . '/' . $model . '.php'
 		);
+	}
+
+	/**
+	 * Tests the building of generated SQL
+	 */
+	public function testSqlBuilder()
+	{
+		$task = new Meshing_Propel_SqlBuilder();
+		$task->addPropertiesFile($this->extraPropsFile);
+		$task->addSchemas($this->schemaDir, $this->schemas);
+		$task->setOutputDir($this->sqlDir);
+		$task->run();
+		
+		$this->assertTrue(
+			file_exists($this->sqlDir . '/schema.sql'),
+			'Checking generated SQL exists'
+		);
+	}
+
+	/**
+	 * Runs generated SQL against the configured db
+	 */
+	public function testSqlRunner()
+	{
+		$mapFile = $this->projectRoot . $this->paths->getFileDbMap();
+		
+		$task = new Meshing_Propel_SqlRunner();
+		$task->setSqlDir($this->sqlDir);
+		$task->setMapFile($mapFile);
+		$task->addPropertiesFile($this->extraPropsFile);
+
+		$task->run();
+		
+		// No tests here at the moment - we'll connect to test db later
+	}
+
+	public function testConfBuilder()
+	{
+		
+	}
+
+	public function testModels()
+	{
+		
 	}
 }

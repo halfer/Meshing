@@ -120,7 +120,7 @@ class Meshing_Console_Command_Node_Add extends Meshing_Console_Base implements M
 	protected function runSql($projectRoot)
 	{
 		$sqlDir = $projectRoot . Meshing_Utils::getPaths()->getPathSqlNodes() . '/' . $this->opts->name;
-		$mapFile = $projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() . '/sqldb.map';
+		$mapFile = $projectRoot . Meshing_Utils::getPaths()->getFileDbMap();
 
 		$task = new Meshing_Propel_SqlRunner();
 		$task->setSqlDir($sqlDir);

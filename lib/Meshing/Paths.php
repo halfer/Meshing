@@ -82,6 +82,11 @@ class Meshing_Paths
 		return $this->getGeneratedPath('/database/system');
 	}
 
+	public function getFileDbMap()
+	{
+		return $this->getPathDbConfig() . '/sqldb.map';
+	}
+
 	public function getPathSystemFixtures()
 	{
 		return $this->getGeneratedPath('/database/system');

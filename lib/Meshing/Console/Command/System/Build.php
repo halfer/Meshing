@@ -145,8 +145,7 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 	protected function runSql($verbose)
 	{
 		$sqlDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathSqlSystem();
-		$mapFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() .
-			'/sqldb.map';
+		$mapFile = $this->projectRoot . Meshing_Utils::getPaths()->getFileDbMap();
 		$extraPropsFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() .
 			'/build.properties';
 
