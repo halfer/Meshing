@@ -15,8 +15,8 @@ class Meshing_Propel_ClassBuilder extends Meshing_Propel_SchemaTask
 		$this->schemaConfiguration($task);
 
 		// Create a directory structure to match the package names
-		$task->setPackageObjectModel('1');
-		
+		$task->setPackageObjectModel(true);
+
 		return $task;
 	}
 }
