@@ -47,26 +47,34 @@ class PropelGeneralTestCase extends UnitTestCase
 	{
 		if (file_exists($folder))
 		{
-			// @todo Convert this to PHP, so as to avoid OS-specific call
-			$isWindows = (
-				(PHP_OS == 'WIN32') ||
-				(PHP_OS == 'WINNT') ||
-				(PHP_OS == 'Windows')
+			// Preserve these, they are part of the folder structure
+			$preserve = array('.ignore');
+			
+			// Delete contents of specified folder
+			$directory = new RecursiveDirectoryIterator($folder);
+			$iterator = new RecursiveIteratorIterator(
+				$directory,
+				RecursiveIteratorIterator::CHILD_FIRST
 			);
-			if (!$isWindows)
+			
+			$success = true;
+			foreach ($iterator as $path)
 			{
-				$command = 'rm -rf ' . $folder . '/*';
-				$return = null;
-				@system($command, $return);
-				if ($return)
+				$name = $path->__toString();
+				if (!in_array($name, $preserve))
 				{
-					trigger_error(
-						"Failed to delete contents of $purpose folder",
-						E_USER_WARNING
-					);
+					$success = ($path->isDir() ? @rmdir($name) : @unlink($name)) && $success;
 				}
 			}
-		}		
+
+			if (!$success)
+			{
+				trigger_error(
+					"Failed to delete contents of $purpose folder",
+					E_USER_WARNING
+				);
+			}
+		}
 	}
 
 	/**
