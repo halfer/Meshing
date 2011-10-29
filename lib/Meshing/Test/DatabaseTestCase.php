@@ -2,17 +2,48 @@
 
 /**
  * Used to set up a database test
+ * 
+ * Note I've used a _test prefix here to avoid methods being detected by SimpleTest;
+ * while they could be made public and without the underscore, but then we'd lose
+ * the ability to determine execution order in relation to other test methods in
+ * child classes.
  *
  * @author jon
  */
 class Meshing_Test_DatabaseTestCase extends UnitTestCase
 {
+	/**
+	 * Initialisation for all tests
+	 * 
+	 * We're using the constructor rather than setUp() as the latter is called once
+	 * per test, and we want an init to be called once for all tests here.
+	 */
+	public function __construct($label = false)
+	{
+		parent::__construct($label);
+
+		$this->projectRoot = realpath(dirname(__FILE__) . '/../../..');
+		$this->paths = Meshing_Utils::getPaths();
+		$this->schemaDir = $this->projectRoot . $this->paths->getPathDbConfig();
+		$this->extraPropsFile = $this->projectRoot . $this->paths->getPathDbConfig() .
+			'/build.properties';
+		$this->modelDir = $this->projectRoot . $this->paths->getPathModelsNodes();
+		$this->sqlDir = $this->projectRoot . $this->paths->getPathSqlSystem();
+		$this->connDir = $this->projectRoot . $this->paths->getPathConnsSystem();
+		
+		$this->schemas = 'test_schema1.xml';
+
+		$this->deleteFolderContents($this->modelDir, 'model');
+		$this->deleteFolderContents($this->sqlDir, 'sql');
+		$this->deleteFolderContents($this->connDir, 'connections');
+	}
+
 	protected function deleteFolderContents($folder, $purpose)
 	{
 		if (file_exists($folder))
 		{
 			// Preserve these, they are part of the folder structure
-			$preserve = array('.ignore');
+			$preserveList = array('.ignore');
 			
 			// Delete contents of specified folder
 			$directory = new RecursiveDirectoryIterator($folder);
@@ -25,7 +56,7 @@ class Meshing_Test_DatabaseTestCase extends UnitTestCase
 			foreach ($iterator as $path)
 			{
 				$name = $path->__toString();
-				if (!in_array($name, $preserve))
+				if (!$this->ignoreName($preserveList, $name))
 				{
 					$success = ($path->isDir() ? @rmdir($name) : @unlink($name)) && $success;
 				}
@@ -39,5 +70,85 @@ class Meshing_Test_DatabaseTestCase extends UnitTestCase
 				);
 			}
 		}
+	}
+
+	protected function ignoreName(array $ignoreList, $path)
+	{
+		$match = false;
+		foreach ($ignoreList as $ignore)
+		{
+			$match = preg_match("/$ignore\$/", $path);
+			if ($match)
+			{
+				break;
+			}
+		}
+		
+		return (boolean) $match;
+	}
+	
+	protected function classExists($model, $package, $prefix = '')
+	{
+		return file_exists(
+			$this->modelDir . '/' . $package . '/' . $prefix . $model . '.php'
+		);
+	}
+
+	/**
+	 * Tests the building of generated SQL
+	 */
+	protected function _testSqlBuilder()
+	{
+		$task = new Meshing_Propel_SqlBuilder();
+		$task->addPropertiesFile($this->extraPropsFile);
+		$task->addSchemas($this->schemaDir, $this->schemas);
+		$task->setOutputDir($this->sqlDir);
+		$task->run();
+		
+		$this->assertTrue(
+			file_exists($this->sqlDir . '/schema.sql'),
+			'Checking generated SQL exists'
+		);
+	}
+
+	/**
+	 * Runs generated SQL against the configured db
+	 */
+	protected function _testSqlRunner()
+	{
+		$mapFile = $this->projectRoot . $this->paths->getFileDbMap();
+		
+		$task = new Meshing_Propel_SqlRunner();
+		$task->setSqlDir($this->sqlDir);
+		$task->setMapFile($mapFile);
+		$task->addPropertiesFile($this->extraPropsFile);
+
+		$task->run();
+		
+		// No tests here at the moment - we'll connect to test db later
+	}
+
+	protected function _testConfBuilder()
+	{
+		$xmlFile = $this->projectRoot . $this->paths->getFileRuntimeXml();
+		$outputFile = $this->paths->getLeafRuntimePhp();
+
+		$task = new Meshing_Propel_ConfBuilder();
+		$task->addSchemas($this->schemaDir, $this->schemas);
+		$task->setXmlFile($xmlFile);
+		$task->setOutputDir($this->connDir);
+		$task->setOutputFile($outputFile);
+		$task->addPropertiesFile($this->extraPropsFile);
+		$task->run();
+		
+		$this->assertTrue(
+			file_exists($this->connDir . '/' . $outputFile),
+			'Check connections file has been generated'
+		);
+		
+		$this->assertTrue(
+			file_exists($this->connDir . '/classmap-' . $outputFile),
+			'Check classmap file has been generated'
+		);
 	}
 }

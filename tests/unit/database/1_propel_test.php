@@ -26,25 +26,10 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 	public function __construct($label = false)
 	{
 		parent::__construct($label);
-
-		$this->projectRoot = realpath(dirname(__FILE__) . '/../../..');
-		$this->paths = Meshing_Utils::getPaths();
-		$this->schemaDir = $this->projectRoot . $this->paths->getPathDbConfig();
-		$this->extraPropsFile = $this->projectRoot . $this->paths->getPathDbConfig() .
-			'/build.properties';
-		$this->modelDir = $this->projectRoot . $this->paths->getPathModelsNodes();
-		$this->sqlDir = $this->projectRoot . $this->paths->getPathSqlSystem();
-		$this->connDir = $this->projectRoot . $this->paths->getPathConnsSystem();
-		
-		$this->schemas = 'test_schema1.xml';
-
-		$this->deleteFolderContents($this->modelDir, 'model');
-		$this->deleteFolderContents($this->sqlDir, 'sql');
-		$this->deleteFolderContents($this->connDir, 'connections');
 	}
 
 	/**
-	 * Tests the building of model class files
+	 * Tests the building of standard model class files
 	 */
 	public function testClassBuilder()
 	{
@@ -54,26 +39,21 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 		$task->setOutputDir($this->modelDir);
 		$task->run();
 
-		$this->package = 'test-db';
+		// @todo Use Meshing_Schema_Element to force the package name, remove it from the test schema
+		$package = 'test_propel';
 
 		// Find these classes
 		$classes = array(
-			'Event', 'EventPeer', 'EventQuery', 'Organiser', 'OrganiserPeer', 'OrganiserQuery'
+			'MeshingTestEvent', 'MeshingTestEventPeer', 'MeshingTestEventQuery',
+			'MeshingTestOrganiser', 'MeshingTestOrganiserPeer', 'MeshingTestOrganiserQuery'
 		);
 		foreach ($classes as $class)
 		{
 			$this->assertTrue(
-				$this->classExists('MeshingTest' . $class),
+				$this->classExists($class, $package),
 				'Checking generated class `' . $class . '` exists'
 			);
 		}
-	}
-
-	protected function classExists($model)
-	{
-		return file_exists(
-			$this->modelDir . '/' . $this->package . '/' . $model . '.php'
-		);
 	}
 
 	/**
@@ -81,16 +61,7 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 	 */
 	public function testSqlBuilder()
 	{
-		$task = new Meshing_Propel_SqlBuilder();
-		$task->addPropertiesFile($this->extraPropsFile);
-		$task->addSchemas($this->schemaDir, $this->schemas);
-		$task->setOutputDir($this->sqlDir);
-		$task->run();
-		
-		$this->assertTrue(
-			file_exists($this->sqlDir . '/schema.sql'),
-			'Checking generated SQL exists'
-		);
+		$this->_testSqlBuilder();
 	}
 
 	/**
@@ -98,40 +69,12 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 	 */
 	public function testSqlRunner()
 	{
-		$mapFile = $this->projectRoot . $this->paths->getFileDbMap();
-		
-		$task = new Meshing_Propel_SqlRunner();
-		$task->setSqlDir($this->sqlDir);
-		$task->setMapFile($mapFile);
-		$task->addPropertiesFile($this->extraPropsFile);
-
-		$task->run();
-		
-		// No tests here at the moment - we'll connect to test db later
+		$this->_testSqlRunner();
 	}
 
 	public function testConfBuilder()
 	{
-		$xmlFile = $this->projectRoot . $this->paths->getFileRuntimeXml();
-		$outputFile = $this->paths->getLeafRuntimePhp();
-
-		$task = new Meshing_Propel_ConfBuilder();
-		$task->addSchemas($this->schemaDir, $this->schemas);
-		$task->setXmlFile($xmlFile);
-		$task->setOutputDir($this->connDir);
-		$task->setOutputFile($outputFile);
-		$task->addPropertiesFile($this->extraPropsFile);
-		$task->run();
-		
-		$this->assertTrue(
-			file_exists($this->connDir . '/' . $outputFile),
-			'Check connections file has been generated'
-		);
-		
-		$this->assertTrue(
-			file_exists($this->connDir . '/classmap-' . $outputFile),
-			'Check classmap file has been generated'
-		);
+		$this->_testConfBuilder();
 	}
 
 	public function testModels()

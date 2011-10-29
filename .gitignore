@@ -12,6 +12,7 @@ database/schemas/*
 tests/database/models/*
 tests/database/connections/*
 tests/database/sql/*
+tests/database/schemas/*
 
 # Any IDE folders to ignore
 nbproject

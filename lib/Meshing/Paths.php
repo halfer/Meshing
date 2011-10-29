@@ -110,9 +110,17 @@ class Meshing_Paths
 		return $this->getGeneratedPath('/database/system');
 	}
 
+	/**
+	 * Gets location of snippets folder
+	 * 
+	 * Another config that, at the time of writing, we don't want to modify for
+	 * the test system - hence no getGeneratedPath usage.
+	 * 
+	 * @return string
+	 */
 	public function getPathSystemSnippets()
 	{
-		return $this->getGeneratedPath('/database/system/snippets');
+		return '/database/system/snippets';
 	}
 
 	public function getPathSystemTests()
