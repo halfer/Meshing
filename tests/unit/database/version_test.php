@@ -3,13 +3,14 @@
 // Set up project
 $projectRoot = realpath(dirname(__FILE__) . '/../../..');
 require_once $projectRoot . '/lib/Meshing/Paths.php';
+require_once $projectRoot . '/tests/unit/Meshing_Test_Paths.php';
 require_once $projectRoot . '/lib/Meshing/Utils.php';
-Meshing_Utils::initialise(new Meshing_Paths());
+Meshing_Utils::initialise(new Meshing_Test_Paths());
 
 // Init simpletest
 require_once 'simpletest/autorun.php';
 
-class ModelVersioningTestCase extends Meshing_Test_ModelTestCase
+class ModelVersioningTestCase extends Meshing_Test_DatabaseTestCase
 {
 	public function setUp()
 	{
