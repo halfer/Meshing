@@ -18,29 +18,35 @@ require_once 'simpletest/autorun.php';
 class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 {
 	/**
-	 * Initialisation for all tests
-	 * 
-	 * We're using the constructor rather than setUp() as the latter is called once
-	 * per test, and we want an init to be called once for all tests here.
-	 */
-	public function __construct($label = false)
-	{
-		parent::__construct($label);
-	}
-
-	/**
 	 * Tests the building of standard model class files
 	 */
 	public function testClassBuilder()
 	{
+		$package = 'test_propel';
+		$this->outputSchemaDir .= '/' . $package;
+		
+		if (!file_exists($this->outputSchemaDir))
+		{
+			$success = @mkdir($this->outputSchemaDir);
+			if (!$success)
+			{
+				trigger_error('Could not create schema folder', E_USER_WARNING);
+			}
+		}
+
+		// Copy schema and reset package name
+		$xml = simplexml_load_file(
+			$this->schemaDir . '/' . $this->schemas,
+			'Meshing_Schema_Element'
+		);
+		$xml->setPackageName($package);
+		$xml->asXml($this->outputSchemaDir . '/' . $this->paths->getLeafStandardSchema());
+		
 		$task = new Meshing_Propel_ClassBuilder();
 		$task->addPropertiesFile($this->extraPropsFile);
-		$task->addSchemas($this->schemaDir, $this->schemas);
+		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
 		$task->setOutputDir($this->modelDir);
 		$task->run();
-
-		// @todo Use Meshing_Schema_Element to force the package name, remove it from the test schema
-		$package = 'test_propel';
 
 		// Find these classes
 		$classes = array(

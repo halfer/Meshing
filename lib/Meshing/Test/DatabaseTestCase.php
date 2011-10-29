@@ -24,15 +24,18 @@ class Meshing_Test_DatabaseTestCase extends UnitTestCase
 
 		$this->projectRoot = realpath(dirname(__FILE__) . '/../../..');
 		$this->paths = Meshing_Utils::getPaths();
+
 		$this->schemaDir = $this->projectRoot . $this->paths->getPathDbConfig();
+		$this->outputSchemaDir = $this->projectRoot . $this->paths->getPathSchemasNodes();
+		$this->schemas = 'test_schema1.xml';
+
 		$this->extraPropsFile = $this->projectRoot . $this->paths->getPathDbConfig() .
 			'/build.properties';
 		$this->modelDir = $this->projectRoot . $this->paths->getPathModelsNodes();
 		$this->sqlDir = $this->projectRoot . $this->paths->getPathSqlSystem();
 		$this->connDir = $this->projectRoot . $this->paths->getPathConnsSystem();
-		
-		$this->schemas = 'test_schema1.xml';
 
+		$this->deleteFolderContents($this->outputSchemaDir, 'schema');
 		$this->deleteFolderContents($this->modelDir, 'model');
 		$this->deleteFolderContents($this->sqlDir, 'sql');
 		$this->deleteFolderContents($this->connDir, 'connections');
@@ -101,7 +104,7 @@ class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	{
 		$task = new Meshing_Propel_SqlBuilder();
 		$task->addPropertiesFile($this->extraPropsFile);
-		$task->addSchemas($this->schemaDir, $this->schemas);
+		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
 		$task->setOutputDir($this->sqlDir);
 		$task->run();
 		
@@ -134,7 +137,7 @@ class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$outputFile = $this->paths->getLeafRuntimePhp();
 
 		$task = new Meshing_Propel_ConfBuilder();
-		$task->addSchemas($this->schemaDir, $this->schemas);
+		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
 		$task->setXmlFile($xmlFile);
 		$task->setOutputDir($this->connDir);
 		$task->setOutputFile($outputFile);

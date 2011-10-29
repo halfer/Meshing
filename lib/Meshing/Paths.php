@@ -57,6 +57,11 @@ class Meshing_Paths
 		return $this->getGeneratedPath('/database/schemas');
 	}
 
+	public function getLeafStandardSchema()
+	{
+		return 'schema.xml';
+	}
+
 	public function getPathSqlSystem()
 	{
 		return $this->getGeneratedPath('/database/sql/system');
