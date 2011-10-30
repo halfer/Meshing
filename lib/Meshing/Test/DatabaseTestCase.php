@@ -30,18 +30,22 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 
 		$this->schemaDir = $this->projectRoot . $this->paths->getPathDbConfig();
 		$this->outputSchemaDir = $this->projectRoot . $this->paths->getPathSchemasNodes() .
-			'/' . $this->getPackage();
+			'/' . $package;
 		$this->schemas = 'test_schema1.xml';
 
 		$this->extraPropsFile = $this->projectRoot . $this->paths->getPathDbConfig() .
 			'/build.properties';
 		$this->modelDir = $this->projectRoot . $this->paths->getPathModelsNodes();
-		$this->sqlDir = $this->projectRoot . $this->paths->getPathSqlSystem();
+		$this->sqlDir = $this->projectRoot . $this->paths->getPathSqlNodes() .
+			'/' . $package;
 		$this->connDir = $this->projectRoot . $this->paths->getPathConnsSystem();
 
+		// These all use the package name as a subfolder
 		$this->deleteFolderContents($this->outputSchemaDir, 'schema');
-		$this->deleteFolderContents($this->modelDir, 'model');
+		$this->deleteFolderContents($this->modelDir . '/' . $package, 'model');
 		$this->deleteFolderContents($this->sqlDir, 'sql');
+		
+		// This is common to all db tests
 		$this->deleteFolderContents($this->connDir, 'connections');
 
 		$this->createSchemaDir($this->outputSchemaDir);
