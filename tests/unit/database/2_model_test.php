@@ -18,16 +18,7 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 	public function testClassBuilder()
 	{
 		$package = 'test_model';
-		$this->outputSchemaDir .= '/' . $package;
-		
-		if (!file_exists($this->outputSchemaDir))
-		{
-			$success = @mkdir($this->outputSchemaDir);
-			if (!$success)
-			{
-				trigger_error('Could not create schema folder', E_USER_WARNING);
-			}
-		}
+		$this->setPackage($package);
 
 		// Convert schema to node format (no class prefix)
 		$fixup = new Meshing_Schema_Fixup(
@@ -36,24 +27,22 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 		);
 		$fixup->fixup($package);
 
-		$task = new Meshing_Propel_ClassBuilder();
-		$task->addPropertiesFile($this->extraPropsFile);
-		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
-		$task->setOutputDir($this->modelDir);
-		$task->run();
-		
-		// @todo More classes to add here
-		// Find these classes
-		$classes = array(
-			'Event', 'EventPeer', 'EventQuery', 'Organiser', 'OrganiserPeer', 'OrganiserQuery'
-		);
-		foreach ($classes as $class)
-		{
-			$this->assertTrue(
-				$this->classExists('MeshingTest' . $class, $package, 'TestModel'),
-				'Checking generated class `' . $class . '` exists'
+		// Do generation of classes and all checking
+		$this->_testClassBuilder($package, 'TestModel');
+	}
+
+	/**
+	 * This is an extended list of expected classes
+	 * 
+	 * @return array
+	 */
+	protected function expectedClasses()
+	{
+		return parent::expectedClasses() +
+			array(
+				'KnownNode', 'MeshingIdentity',
+				'MeshingTestEventVersionable', 'MeshingTestOrganiserVersionable'
 			);
-		}
 	}
 
 	/**

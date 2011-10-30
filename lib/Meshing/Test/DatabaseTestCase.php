@@ -97,6 +97,57 @@ class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		);
 	}
 
+	protected function createSchemaDir($schemaDir)
+	{
+		if (!file_exists($schemaDir))
+		{
+			$success = @mkdir($schemaDir);
+			if (!$success)
+			{
+				trigger_error('Could not create schema folder', E_USER_WARNING);
+			}
+		}
+	}
+
+	protected function setPackage($package)
+	{
+		$this->outputSchemaDir .= '/' . $package;		
+		$this->createSchemaDir($this->outputSchemaDir);
+	}
+
+	protected function _testClassBuilder($package, $prefix = null)
+	{
+		$task = new Meshing_Propel_ClassBuilder();
+		$task->addPropertiesFile($this->extraPropsFile);
+		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
+		$task->setOutputDir($this->modelDir);
+		$task->run();
+
+		// Find these classes
+		foreach ($this->expectedClasses() as $class)
+		{
+			foreach (array('', 'Peer', 'Query') as $classSuffix)
+			{
+				$this->assertTrue(
+					$this->classExists($class . $classSuffix, $package, $prefix),
+					'Checking generated class `' . $class . $classSuffix . '` exists'
+				);
+			}
+		}
+	}
+
+	/**
+	 * This is the basic list of expected classes
+	 * 
+	 * @return array
+	 */
+	protected function expectedClasses()
+	{
+		return array(
+			'MeshingTestEvent', 'MeshingTestOrganiser',
+		);
+	}
+
 	/**
 	 * Tests the building of generated SQL
 	 */

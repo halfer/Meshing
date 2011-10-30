@@ -23,16 +23,7 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 	public function testClassBuilder()
 	{
 		$package = 'test_propel';
-		$this->outputSchemaDir .= '/' . $package;
-		
-		if (!file_exists($this->outputSchemaDir))
-		{
-			$success = @mkdir($this->outputSchemaDir);
-			if (!$success)
-			{
-				trigger_error('Could not create schema folder', E_USER_WARNING);
-			}
-		}
+		$this->setPackage($package);
 
 		// Copy schema and reset package name
 		$xml = simplexml_load_file(
@@ -42,24 +33,8 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 		$xml->setPackageName($package);
 		$xml->asXml($this->outputSchemaDir . '/' . $this->paths->getLeafStandardSchema());
 		
-		$task = new Meshing_Propel_ClassBuilder();
-		$task->addPropertiesFile($this->extraPropsFile);
-		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
-		$task->setOutputDir($this->modelDir);
-		$task->run();
-
-		// Find these classes
-		$classes = array(
-			'MeshingTestEvent', 'MeshingTestEventPeer', 'MeshingTestEventQuery',
-			'MeshingTestOrganiser', 'MeshingTestOrganiserPeer', 'MeshingTestOrganiserQuery'
-		);
-		foreach ($classes as $class)
-		{
-			$this->assertTrue(
-				$this->classExists($class, $package),
-				'Checking generated class `' . $class . '` exists'
-			);
-		}
+		// Do generation of classes and all checking
+		$this->_testClassBuilder($package);
 	}
 
 	/**
