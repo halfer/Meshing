@@ -132,4 +132,46 @@ class SchemaElementTestCase extends UnitTestCase
 		$post = $this->getAttribute($this->xml, 'name');
 		$this->assertTrue($connName == $post, 'Setting schema connection name');		
 	}
+
+	public function testGetParent()
+	{
+		foreach ($this->xml->xpath('/database/table/foreign-key') as $foreignKey)
+		{
+			$parent = $foreignKey->getParentNode();
+			$this->assertEqual($parent->getName(), 'table', 'Checking getting parent node');
+		}
+
+		foreach ($this->xml->xpath('/database/table') as $table)
+		{
+			$parent = $table->getParentNode();
+			$this->assertEqual($parent->getName(), 'database', 'Checking getting parent node');
+		}
+	}
+
+	public function testRepairForeignKeys()
+	{
+		$fks = $this->xml->repairForeignKeys();
+		
+		// Check that each <foreign-key> block has a reference to the new local creator column
+		foreach ($fks as $foreignKey)
+		{
+			$ref = $foreignKey->xpath($foreignKey->xpathGetForeignKeyReferences());
+			$ref = count($ref) == 1 ? $ref[0] : null;
+			$this->assertTrue(
+				($ref instanceof Meshing_Schema_Element),
+				'Checking foreign keys each have one new creator node reference'
+			);
+
+			// Check that the table parent of the fk has a new column
+			$foreignTableName = $ref['local'];
+			$newKeyColumn = $foreignKey->getParentNode()->xpath(
+				'column[@name="' . $foreignTableName . '"]'
+			);
+			$newKeyColumn = count($newKeyColumn) == 1 ? $newKeyColumn[0] : null;
+			$this->assertTrue(
+				$newKeyColumn instanceof Meshing_Schema_Element,
+				'Checking foreign keys are accompanied by one new foreign key column'
+			);
+		}
+	}
 }

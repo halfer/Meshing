@@ -22,8 +22,8 @@ class Meshing_Schema_Fixup
 
 	public function fixup($schemaName)
 	{
-		// Turn PKs into ordinary columns before adding our own tables (we need their keys ;-)
-		$this->xml->makePrimaryKeysOrdinaryColumns();
+		// Change existing FKs into composite keys (add creator node col)
+		$this->xml->repairForeignKeys();
 		
 		// Save the real tables in an array
 		$realTables = $this->xml->getTables();

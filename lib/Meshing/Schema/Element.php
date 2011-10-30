@@ -139,17 +139,73 @@ class Meshing_Schema_Element extends SimpleXMLElement
 	 */
 	protected function xpathGetNonVersionedTables()
 	{
-		$suffix = '_versionable';
-		$match = "
-			substring(
-				@name,
-				string-length(@name) - string-length('$suffix') + 1
-			)
-			= '$suffix'
-		";
+		$match = $this->xpathAttributeEndsWith('name', '_versionable');
 
 		return "/database/table[not($match)]";
 	}
+
+	/**
+	 * Returns an XPath search string to get <reference> nodes we've added in the fixup process
+	 * 
+	 * @return string
+	 */
+	public function xpathGetForeignKeyReferences()
+	{
+		$match = $this->xpathAttributeEndsWith('local', '_creator_node_id');
+
+		return "reference[$match]";
+	}
+
+	protected function xpathAttributeEndsWith($attribute, $suffix)
+	{
+		return "
+			substring(
+				@$attribute,
+				string-length(@$attribute) - string-length('$suffix') + 1
+			)
+			= '$suffix'
+		";
+	}
+
+	/**
+	 * For every single/composite FK found, a creator column & reference is added
+	 * 
+	 * @return array List of foreign keys that were repaired
+	 */
+	public function repairForeignKeys()
+	{
+		$fks = $this->xml->xpath('/database/table/foreign-key');
+		
+		foreach ($fks as $foreignKey)
+		{
+			// Choose foreign ref col name
+			$tableName = $foreignKey['foreignTable'];
+			$colName = $tableName . '_creator_node_id';
+
+			// Insert <reference> node
+			$ref = $foreignKey->addChild('reference');
+			$ref['local'] = $colName;
+			$ref['foreign'] = 'creator_node_id';
+
+			// Insert a new <column> as referred to in <reference>
+			$fkColumn = $foreignKey->getParentNode()->addChild('column');
+			$fkColumn['name'] = $colName;
+			$fkColumn['type'] = 'integer';
+			$fkColumn['required'] = 'true';
+		}
+		
+		return $fks;
+	}
+
+	/**
+	 * Returns the object parent of the current node
+	 * 
+	 * @return Meshing_Schema_Element 
+	 */
+    public function getParentNode()
+    {
+        return current($this->xpath('parent::*'));
+    }
 
 	/**
 	 * Adds the specified block to all tables

@@ -40,7 +40,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 			'/' . $package;
 		$this->connDir = $this->projectRoot . $this->paths->getPathConnsSystem();
 
-		// These all use the package name as a subfolder
+		// These all use the package name as a subfolder (the model one is done by Propel)
 		$this->deleteFolderContents($this->outputSchemaDir, 'schema');
 		$this->deleteFolderContents($this->modelDir . '/' . $package, 'model');
 		$this->deleteFolderContents($this->sqlDir, 'sql');
