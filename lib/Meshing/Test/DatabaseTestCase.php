@@ -10,23 +10,27 @@
  *
  * @author jon
  */
-class Meshing_Test_DatabaseTestCase extends UnitTestCase
+abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 {
+	protected $package;
+	
 	/**
 	 * Initialisation for all tests
 	 * 
 	 * We're using the constructor rather than setUp() as the latter is called once
 	 * per test, and we want an init to be called once for all tests here.
 	 */
-	public function __construct($label = false)
+	public function __construct($package, $label = false)
 	{
 		parent::__construct($label);
+		$this->package = $package;
 
 		$this->projectRoot = realpath(dirname(__FILE__) . '/../../..');
 		$this->paths = Meshing_Utils::getPaths();
 
 		$this->schemaDir = $this->projectRoot . $this->paths->getPathDbConfig();
-		$this->outputSchemaDir = $this->projectRoot . $this->paths->getPathSchemasNodes();
+		$this->outputSchemaDir = $this->projectRoot . $this->paths->getPathSchemasNodes() .
+			'/' . $this->getPackage();
 		$this->schemas = 'test_schema1.xml';
 
 		$this->extraPropsFile = $this->projectRoot . $this->paths->getPathDbConfig() .
@@ -39,6 +43,8 @@ class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$this->deleteFolderContents($this->modelDir, 'model');
 		$this->deleteFolderContents($this->sqlDir, 'sql');
 		$this->deleteFolderContents($this->connDir, 'connections');
+
+		$this->createSchemaDir($this->outputSchemaDir);
 	}
 
 	protected function deleteFolderContents($folder, $purpose)
@@ -109,13 +115,7 @@ class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		}
 	}
 
-	protected function setPackage($package)
-	{
-		$this->outputSchemaDir .= '/' . $package;		
-		$this->createSchemaDir($this->outputSchemaDir);
-	}
-
-	protected function _testClassBuilder($package, $prefix = null)
+	protected function _testClassBuilder($prefix = null)
 	{
 		$task = new Meshing_Propel_ClassBuilder();
 		$task->addPropertiesFile($this->extraPropsFile);
@@ -124,6 +124,7 @@ class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$task->run();
 
 		// Find these classes
+		$package = $this->getPackage();
 		foreach ($this->expectedClasses() as $class)
 		{
 			foreach (array('', 'Peer', 'Query') as $classSuffix)
@@ -204,5 +205,10 @@ class Meshing_Test_DatabaseTestCase extends UnitTestCase
 			file_exists($this->connDir . '/classmap-' . $outputFile),
 			'Check classmap file has been generated'
 		);
+	}
+
+	protected function getPackage()
+	{
+		return $this->package;
 	}
 }

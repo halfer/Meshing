@@ -17,24 +17,26 @@ require_once 'simpletest/autorun.php';
  */
 class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 {
+	public function __construct($label = false)
+	{
+		parent::__construct('test_propel', $label);
+	}
+
 	/**
 	 * Tests the building of standard model class files
 	 */
 	public function testClassBuilder()
 	{
-		$package = 'test_propel';
-		$this->setPackage($package);
-
 		// Copy schema and reset package name
 		$xml = simplexml_load_file(
 			$this->schemaDir . '/' . $this->schemas,
 			'Meshing_Schema_Element'
 		);
-		$xml->setPackageName($package);
+		$xml->setPackageName($this->getPackage());
 		$xml->asXml($this->outputSchemaDir . '/' . $this->paths->getLeafStandardSchema());
 		
 		// Do generation of classes and all checking
-		$this->_testClassBuilder($package);
+		$this->_testClassBuilder();
 	}
 
 	/**

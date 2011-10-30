@@ -12,23 +12,25 @@ require_once 'simpletest/autorun.php';
 
 class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 {
+	public function __construct($label = false)
+	{
+		parent::__construct('test_model', $label);
+	}
+
 	/**
 	 * Tests the building of node model class files
 	 */
 	public function testClassBuilder()
 	{
-		$package = 'test_model';
-		$this->setPackage($package);
-
 		// Convert schema to node format (no class prefix)
 		$fixup = new Meshing_Schema_Fixup(
 			$this->schemaDir . '/' . $this->schemas,
 			$this->outputSchemaDir . '/' . $this->paths->getLeafStandardSchema()
 		);
-		$fixup->fixup($package);
+		$fixup->fixup($this->getPackage());
 
 		// Do generation of classes and all checking
-		$this->_testClassBuilder($package, 'TestModel');
+		$this->_testClassBuilder('TestModel');
 	}
 
 	/**
