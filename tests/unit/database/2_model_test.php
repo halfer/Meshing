@@ -22,12 +22,7 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 	 */
 	public function testClassBuilder()
 	{
-		// Convert schema to node format (no class prefix)
-		$fixup = new Meshing_Schema_Fixup(
-			$this->schemaDir . '/' . $this->schemas,
-			$this->outputSchemaDir . '/' . $this->paths->getLeafStandardSchema()
-		);
-		$fixup->fixup($this->getPackage());
+		$this->doFixup();
 
 		// Do generation of classes and all checking
 		$this->_testClassBuilder('TestModel');

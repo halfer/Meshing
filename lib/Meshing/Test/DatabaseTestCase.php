@@ -119,7 +119,24 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		}
 	}
 
-	protected function _testClassBuilder($prefix = null)
+	protected function doFixup()
+	{
+		// Convert schema to node format (no class prefix)
+		$fixup = new Meshing_Schema_Fixup(
+			$this->schemaDir . '/' . $this->schemas,
+			$this->outputSchemaDir . '/' . $this->paths->getLeafStandardSchema()
+		);
+		$fixup->fixup($this->getPackage());
+
+	}
+
+	/**
+	 * Tests to build model classes, and optionally to test that build
+	 * 
+	 * @param string $prefix
+	 * @param boolean $runTests 
+	 */
+	protected function _testClassBuilder($prefix = null, $runTests = true)
 	{
 		$task = new Meshing_Propel_ClassBuilder();
 		$task->addPropertiesFile($this->extraPropsFile);
@@ -128,15 +145,18 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$task->run();
 
 		// Find these classes
-		$package = $this->getPackage();
-		foreach ($this->expectedClasses() as $class)
+		if ($runTests)
 		{
-			foreach (array('', 'Peer', 'Query') as $classSuffix)
+			$package = $this->getPackage();
+			foreach ($this->expectedClasses() as $class)
 			{
-				$this->assertTrue(
-					$this->classExists($class . $classSuffix, $package, $prefix),
-					'Checking generated class `' . $class . $classSuffix . '` exists'
-				);
+				foreach (array('', 'Peer', 'Query') as $classSuffix)
+				{
+					$this->assertTrue(
+						$this->classExists($class . $classSuffix, $package, $prefix),
+						'Checking generated class `' . $class . $classSuffix . '` exists'
+					);
+				}
 			}
 		}
 	}
@@ -154,26 +174,29 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	}
 
 	/**
-	 * Tests the building of generated SQL
+	 * Generates SQL from a schema, and optionally tests it
 	 */
-	protected function _testSqlBuilder()
+	protected function _testSqlBuilder($runTests = true)
 	{
 		$task = new Meshing_Propel_SqlBuilder();
 		$task->addPropertiesFile($this->extraPropsFile);
 		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
 		$task->setOutputDir($this->sqlDir);
 		$task->run();
-		
-		$this->assertTrue(
-			file_exists($this->sqlDir . '/schema.sql'),
-			'Checking generated SQL exists'
-		);
+
+		if ($runTests)
+		{
+			$this->assertTrue(
+				file_exists($this->sqlDir . '/schema.sql'),
+				'Checking generated SQL exists'
+			);
+		}
 	}
 
 	/**
 	 * Runs generated SQL against the configured db
 	 */
-	protected function _testSqlRunner()
+	protected function _testSqlRunner($runTests = true)
 	{
 		$mapFile = $this->projectRoot . $this->paths->getFileDbMap();
 		
@@ -183,11 +206,20 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$task->addPropertiesFile($this->extraPropsFile);
 
 		$task->run();
-		
+
 		// No tests here at the moment - we'll connect to test db later
+		if ($runTests)
+		{
+			
+		}
 	}
 
-	protected function _testConfBuilder()
+	/**
+	 * Build runtime configuration files, optionally testing them
+	 * 
+	 * @param type $runTests 
+	 */
+	protected function _testConfBuilder($runTests = true)
 	{
 		$xmlFile = $this->projectRoot . $this->paths->getFileRuntimeXml();
 		$outputFile = $this->paths->getLeafRuntimePhp();
@@ -199,16 +231,19 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$task->setOutputFile($outputFile);
 		$task->addPropertiesFile($this->extraPropsFile);
 		$task->run();
-		
-		$this->assertTrue(
-			file_exists($this->connDir . '/' . $outputFile),
-			'Check connections file has been generated'
-		);
-		
-		$this->assertTrue(
-			file_exists($this->connDir . '/classmap-' . $outputFile),
-			'Check classmap file has been generated'
-		);
+
+		if ($runTests)
+		{
+			$this->assertTrue(
+				file_exists($this->connDir . '/' . $outputFile),
+				'Check connections file has been generated'
+			);
+
+			$this->assertTrue(
+				file_exists($this->connDir . '/classmap-' . $outputFile),
+				'Check classmap file has been generated'
+			);
+		}
 	}
 
 	protected function getPackage()
