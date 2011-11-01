@@ -75,19 +75,16 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 		$con = Propel::getConnection('test');
 
 		// Create an entry to satisfy later constraints
-		$node = new TestModelKnownNode();
-		$node->setName('Us!');
-		$node->save($con);
-		$nodeId = $node->getPrimaryKey();
+		$node = $this->createKnownNode($con);
 
 		try
 		{
 			$organiser = new TestModelMeshingTestOrganiser();
-			$organiser->setCreatorNodeId($nodeId);
+			$organiser->setCreatorNodeId($node->getPrimaryKey());
 			$organiser->setName($orgName = 'Mr. Badger');
 
 			$event = new TestModelMeshingTestEvent();
-			$event->setCreatorNodeId($nodeId);
+			$event->setCreatorNodeId($node->getPrimaryKey());
 			$event->setName($eventName = 'Expert Burrowing In The Built Environment');
 			$event->setTestModelMeshingTestOrganiser($organiser);
 			$event->save($con);

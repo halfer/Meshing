@@ -250,4 +250,19 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	{
 		return $this->package;
 	}
+
+	/**
+	 * Creates a new KnownNode for node models
+	 * 
+	 * @param PropelPDO $con PDO connection object
+	 * @return TestModelKnownNode 
+	 */
+	protected function createKnownNode(PropelPDO $con = null)
+	{
+		$node = new TestModelKnownNode();
+		$node->setName('Us!');
+		$node->save($con);
+
+		return $node;
+	}
 }
