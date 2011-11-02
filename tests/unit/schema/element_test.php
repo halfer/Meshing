@@ -174,4 +174,14 @@ class SchemaElementTestCase extends UnitTestCase
 			);
 		}
 	}
+
+	public function testSetBaseClass()
+	{
+		$customClass = 'SmallWeaselClass';
+		$this->assertNotEqual($this->xml['baseClass'], $customClass);
+		
+		$this->xml->setCustomBaseClass($customClass);
+		
+		$this->assertEqual($this->xml['baseClass'], $customClass);
+	}
 }

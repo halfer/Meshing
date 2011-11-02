@@ -59,6 +59,9 @@ class Meshing_Schema_Fixup
 
 		// Models need a real Propel conn as default (but we will always use a non-default conn)
 		$this->xml->setConnectionName(Meshing_Utils::SYSTEM_CONNECTION);
+
+		// All row classes should extend a custom base
+		$this->xml->setCustomBaseClass('MeshingBaseObject');
 		
 		// Save the file under the same name
 		$this->xml->asXML($this->filename);

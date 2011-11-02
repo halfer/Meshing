@@ -278,4 +278,14 @@ class Meshing_Schema_Element extends SimpleXMLElement
 	{
 		return $this->xpath('/database/table');
 	}
+
+	/**
+	 * Sets a baseClass attribute at the <database> level
+	 * 
+	 * @param string $class 
+	 */
+	public function setCustomBaseClass($class)
+	{
+		$this['baseClass'] = $class;
+	}
 }
