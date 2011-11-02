@@ -67,6 +67,9 @@ class Meshing_Utils
 
 		require_once $projectRoot . self::getPaths()->getFilePropelRuntime();
 		Propel::init($projectRoot . self::getPaths()->getPathConnsSystem() . '/database-conf.php');
+
+		// Not normally needed, but the tests use this connection approach even for node schemas
+		self::autoloadMeshingClasses();
 	}
 
 	/**
@@ -91,12 +94,19 @@ class Meshing_Utils
 			$map = include($path);
 			$loader->addClassPaths($map);
 		}
-		
+
+		self::autoloadMeshingClasses();
+	}
+
+	protected static function autoloadMeshingClasses()
+	{
 		// Propel needs to autoload our custom base classes too
+		$projectRoot = self::getProjectRoot();
+		$loader = PropelAutoloader::getInstance();
 		$loader->addClassPath(
 			'MeshingBaseObject',
 			$projectRoot . self::getPaths()->getPathCustomBases() . '/MeshingBaseObject.php'
-		);
+		);		
 	}
 
 	/**

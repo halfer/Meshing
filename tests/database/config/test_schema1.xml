@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="test" defaultIdMethod="native">
+<database name="test" defaultIdMethod="native" baseClass="MeshingBaseObject">
 	<table name="meshing_test_event">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 		<column name="name" type="varchar" size="50" required="true" />

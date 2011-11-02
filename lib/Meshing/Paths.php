@@ -133,9 +133,15 @@ class Meshing_Paths
 		return $this->getGeneratedPath('/tests');
 	}
 
-	public function getPathCustomBases()
+	public function getPathCustomBases($override = false)
 	{
-		return $this->getGeneratedPath('/database/system/models/customisations');
+		$path = '/database/system/models/customisations';
+		if ($override)
+		{
+			$path = $this->getLibraryPath($path);
+		}
+
+		return $path;
 	}
 
 	/**
