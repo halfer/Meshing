@@ -6,6 +6,8 @@
 		<column name="description" type="varchar" size="250" />
 		<column name="location" type="varchar" size="250" />
 		<column name="nearest_city" type="varchar" size="100" />
+		<column name="start_time" type="timestamp" />
+		<column name="duration_mins" type="integer" />
 		<column name="organiser_id" type="integer" required="true" />
 		<foreign-key foreignTable="test_organiser">
 			<reference local="organiser_id" foreign="id" />

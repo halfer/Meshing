@@ -43,6 +43,7 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 					'name' => 'Expert Tunnelling In The Built Environment',
 					'description' => 'A fascinating presentation on how the modern badger can use human method of construction for a long-lasting sett',
 					'location' => 'Birmingham Town Hall', 'nearest_city' => 'Birmingham, UK',
+					'start_time' => '2011-11-02 19:30:00', 'duration_mins' => 60,
 					'TestModelTestOrganiser' => 'FOREIGN_KEY',
 				),
 			),
