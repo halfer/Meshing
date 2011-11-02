@@ -32,20 +32,99 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 
 		// Create an entry to satisfy later constraints
 		$node = $this->createKnownNode($con);
+		
+		$versions = array(
+			// Initialisation
+			1 => array(
+				'TestModelTestOrganiser' => array(
+					'name' => 'Mr. Badger',
+				),
+				'TestModelTestEvent' => array(
+					'name' => 'Expert Tunnelling In The Built Environment',
+					'description' => 'A fascinating presentation on how the modern badger can use human method of construction for a long-lasting sett',
+					'location' => 'Birmingham Town Hall', 'nearest_city' => 'Birmingham, UK',
+					'TestModelTestOrganiser' => 'FOREIGN_KEY',
+				),
+			),
+			
+			// Change the email address for the organiser
+			2 => array(
+				'TestModelTestOrganiser' => array(
+					'email' => 'mr_badger@dontpokebadgerswithspoons.com',
+				),
+			),
+			
+			// Sadly Mr. Badger has had to drop out, but we have a new speaker
+			3 => array(
+				'TestModelTestOrganiser' => array(
+					'name' => 'Mr. Brian Furry',
+					'email' => 'brian.furry@wwf.org',
+				),
+			),
+		);
 
 		try
 		{
-			$organiser = new TestModelTestOrganiser();
-			$organiser->setCreatorNodeId($node->getPrimaryKey());
-			$organiser->setName($orgName = 'Mr. Badger');
-			$organiser->save($con);
+			$this->writeVersionableData($versions, $node, $con);
 			$ok = true;
 		}
 		catch (Exception $e)
 		{
+			echo $e->getMessage() . "\n";
 			$ok = false;
 		}
 		
+		// Did we write the data ok?
+		$this->assertTrue($ok, 'Write versionable data to the database');
+		
 		// @todo Add some versioning tests here
+	}
+
+	/**
+	 * Writes version data from a specific array format
+	 * 
+	 * @param array $versions 
+	 */
+	protected function writeVersionableData($versions, TestModelKnownNode $node, PDO $con = null)
+	{
+		// Init an objects list for this class
+		$objects = array();
+
+		foreach ($versions as $versionNo => $versionData)
+		{
+			foreach ( $versionData as $class => $data )
+			{
+				// Use existing row, or create a new instance
+				if (array_key_exists($class, $objects))
+				{
+					$object = $objects[$class];
+				}
+				else
+				{
+					$object = new $class();
+					$object->setCreatorNodeId($node->getPrimaryKey());
+				}
+				
+				foreach ($data as $column => $value)
+				{
+					if ($value == 'FOREIGN_KEY')
+					{
+						// Pokes the appropriate class in as a foreign reference
+						$method = 'set' . $column;
+						$foreignObj = $objects[$column];
+						$object->$method($foreignObj);
+					}
+					else
+					{
+						// Set standard column
+						$object->setByName($column, $value, BasePeer::TYPE_FIELDNAME);
+					}
+				}
+
+				// Save and store a reference
+				$object->save($con);
+				$objects[$class] = $object;
+			}
+		}
 	}
 }
