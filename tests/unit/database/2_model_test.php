@@ -38,7 +38,7 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 		return parent::expectedClasses() +
 			array(
 				'KnownNode', 'MeshingIdentity',
-				'MeshingTestEventVersionable', 'MeshingTestOrganiserVersionable'
+				'TestEventVersionable', 'TestOrganiserVersionable'
 			);
 	}
 
@@ -79,14 +79,14 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 
 		try
 		{
-			$organiser = new TestModelMeshingTestOrganiser();
+			$organiser = new TestModelTestOrganiser();
 			$organiser->setCreatorNodeId($node->getPrimaryKey());
 			$organiser->setName($orgName = 'Mr. Badger');
 
-			$event = new TestModelMeshingTestEvent();
+			$event = new TestModelTestEvent();
 			$event->setCreatorNodeId($node->getPrimaryKey());
 			$event->setName($eventName = 'Expert Burrowing In The Built Environment');
-			$event->setTestModelMeshingTestOrganiser($organiser);
+			$event->setTestModelTestOrganiser($organiser);
 			$event->save($con);
 			$ok = true;
 		}
@@ -100,13 +100,13 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 		$this->assertTrue($ok, 'Save some rows to the test model');
 
 		// Check they have been written okay
-		$organiser = TestModelMeshingTestOrganiserQuery::create()->
+		$organiser = TestModelTestOrganiserQuery::create()->
 			findOneByName($orgName, $con);
-		$event = TestModelMeshingTestEventQuery::create()->
+		$event = TestModelTestEventQuery::create()->
 			findOneByName($eventName, $con);
 		$this->assertTrue(
-			($organiser instanceof TestModelMeshingTestOrganiser) &&
-			($event instanceof TestModelMeshingTestEvent),
+			($organiser instanceof TestModelTestOrganiser) &&
+			($event instanceof TestModelTestEvent),
 			'Retrieve rows from the database'
 		);
 	}

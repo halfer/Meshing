@@ -127,7 +127,6 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 			$this->outputSchemaDir . '/' . $this->paths->getLeafStandardSchema()
 		);
 		$fixup->fixup($this->getPackage());
-
 	}
 
 	/**
@@ -169,7 +168,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	protected function expectedClasses()
 	{
 		return array(
-			'MeshingTestEvent', 'MeshingTestOrganiser',
+			'TestEvent', 'TestOrganiser',
 		);
 	}
 

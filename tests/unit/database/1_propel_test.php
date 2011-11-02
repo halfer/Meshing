@@ -66,12 +66,12 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 		
 		try
 		{
-			$organiser = new MeshingTestOrganiser();
+			$organiser = new TestOrganiser();
 			$organiser->setName($orgName = 'Mr. Badger');
 
-			$event = new MeshingTestEvent();
+			$event = new TestEvent();
 			$event->setName($eventName = 'Expert Burrowing In The Built Environment');
-			$event->setMeshingTestOrganiser($organiser);
+			$event->setTestOrganiser($organiser);
 			$event->save();
 			$ok = true;
 		}
@@ -83,13 +83,13 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 		$this->assertTrue($ok, 'Save some rows to the test model');
 
 		// Check they have been written okay
-		$organiser = MeshingTestOrganiserQuery::create()->
+		$organiser = TestOrganiserQuery::create()->
 			findOneByName($orgName);
-		$event = MeshingTestEventQuery::create()->
+		$event = TestEventQuery::create()->
 			findOneByName($eventName);
 		$this->assertTrue(
-			($organiser instanceof MeshingTestOrganiser) &&
-			($event instanceof MeshingTestEvent),
+			($organiser instanceof TestOrganiser) &&
+			($event instanceof TestEvent),
 			'Retrieve rows from the database'
 		);
 	}

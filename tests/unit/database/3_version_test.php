@@ -19,7 +19,7 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 		
 		// Clear db away from previous tests
 		$this->doFixup();
-		$this->_testClassBuilder("TestModel", $runTests = false);
+		$this->_testClassBuilder('TestModel', $runTests = false);
 		$this->_testSqlBuilder($runTests);
 		$this->_testConfBuilder($runTests);
 		$this->_testSqlRunner($runTests);
@@ -35,7 +35,7 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 
 		try
 		{
-			$organiser = new TestModelMeshingTestOrganiser();
+			$organiser = new TestModelTestOrganiser();
 			$organiser->setCreatorNodeId($node->getPrimaryKey());
 			$organiser->setName($orgName = 'Mr. Badger');
 			$organiser->save($con);

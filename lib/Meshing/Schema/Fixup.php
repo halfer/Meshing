@@ -20,6 +20,11 @@ class Meshing_Schema_Fixup
 
 	}
 
+	/**
+	 * Applies the standard 'fixup' process to node schemas
+	 *
+	 * @param type $schemaName
+	 */
 	public function fixup($schemaName)
 	{
 		// Change existing FKs into composite keys (add creator node col)
