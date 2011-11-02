@@ -23,16 +23,20 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 		$this->_testSqlBuilder($runTests);
 		$this->_testConfBuilder($runTests);
 		$this->_testSqlRunner($runTests);
-	}
 
-	public function testVersion()
-	{
+		// Init the database connections
 		Meshing_Utils::initialiseDb();
-		$con = Propel::getConnection('test');
+		$this->con = Propel::getConnection('test');
 
 		// Create an entry to satisfy later constraints
-		$node = $this->createKnownNode($con);
-		
+		$this->node = $this->createKnownNode($this->con);
+
+		// Create a cache for rows we write
+		$this->objects = array();
+	}
+
+	public function testSaveVersions()
+	{		
 		$versions = array(
 			// Initialisation
 			1 => array(
@@ -64,6 +68,15 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 			),
 		);
 
+		// Write this block of data
+		$ok = $this->writeDataCatchErrors($versions, $this->node, $this->con);
+		$this->assertTrue($ok, 'Write versionable data to the database');
+
+		// More tests here
+	}
+
+	protected function writeDataCatchErrors($versions, TestModelKnownNode $node, PDO $con = null)
+	{
 		try
 		{
 			$this->writeVersionableData($versions, $node, $con);
@@ -71,34 +84,27 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage() . "\n";
 			$ok = false;
 		}
-		
-		// Did we write the data ok?
-		$this->assertTrue($ok, 'Write versionable data to the database');
-		
-		// @todo Add some versioning tests here
+
+		return $ok;
 	}
 
 	/**
-	 * Writes version data from a specific array format
+	 * Saves data in a versioned way, using a specific array format
 	 * 
 	 * @param array $versions 
 	 */
 	protected function writeVersionableData($versions, TestModelKnownNode $node, PDO $con = null)
 	{
-		// Init an objects list for this class
-		$objects = array();
-
 		foreach ($versions as $versionNo => $versionData)
 		{
 			foreach ( $versionData as $class => $data )
 			{
 				// Use existing row, or create a new instance
-				if (array_key_exists($class, $objects))
+				if (array_key_exists($class, $this->objects))
 				{
-					$object = $objects[$class];
+					$object = $this->objects[$class];
 				}
 				else
 				{
@@ -112,7 +118,7 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 					{
 						// Pokes the appropriate class in as a foreign reference
 						$method = 'set' . $column;
-						$foreignObj = $objects[$column];
+						$foreignObj = $this->objects[$column];
 						$object->$method($foreignObj);
 					}
 					else
@@ -124,7 +130,7 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 
 				// Save and store a reference
 				$object->save($con);
-				$objects[$class] = $object;
+				$this->objects[$class] = $object;
 			}
 		}
 	}
