@@ -53,6 +53,7 @@ class MeshingBaseObject extends BaseObject
 			findOne($con);
 		$maxVersion = $maxVersion ? $maxVersion : 0;
 		
+		// @todo Remove these type hints - very handy for development though :)
 		/* @var $row TestModelTestOrganiser */
 		/* @var $vsn TestModelTestOrganiserVersionable */
 
