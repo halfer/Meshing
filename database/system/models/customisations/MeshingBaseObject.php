@@ -40,10 +40,6 @@ class MeshingBaseObject extends BaseObject
 			return true;
 		}
 
-		// Create a new versionable
-		$vsnName = $this->getVersionableRowName();
-		$vsn = new $vsnName();
-
 		// Get max version (@todo deal with race conditions between here and save -
 		// maybe just use the database auto-increment system instead?)
 		$query = call_user_func(array($this->getVersionableQueryName(), 'create'));
@@ -57,20 +53,22 @@ class MeshingBaseObject extends BaseObject
 		/* @var $row TestModelTestOrganiser */
 		/* @var $vsn TestModelTestOrganiserVersionable */
 
+		// Create a new versionable
+		$vsnName = $this->getVersionableRowName();
+		$vsn = new $vsnName();
+
 		// Save the row state as a version before we commit new values
 		$row = $this->reselectThisRow($con);		
 		$row->copyInto($vsn);
 		$keys = $row->getPrimaryKey();
 		$keys[] = $maxVersion + 1;
 		$vsn->setPrimaryKey($keys);
-		try
-		{
-			$vsn->save($con);
-		}
-		catch (PropelException $e)
-		{
-			echo $e->getMessage() . "\n";
-		}
+
+		// Complete some metadata
+		$vsn->setTimeApplied(time());
+
+		// Let this throw an exception, to be caught higher up
+		$vsn->save($con);
 			
 		return true;
 	}

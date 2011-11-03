@@ -89,14 +89,26 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 			$this->con,
 			'TestModelTestEvent'
 		);
-		$this->assertEqual($count, 1);
+		$this->assertEqual($count, 1, 'Checking counts of version rows are OK');
 	
 		$count = MeshingBasePeer::countOldVersions(
 			$organiser->getPrimaryKey(),
 			$this->con,
 			'TestModelTestOrganiser'
 		);
-		$this->assertEqual($count, 2);
+		$this->assertEqual($count, 2, 'Checking counts of version rows are OK');
+
+		// Check all versions have a timestamp
+		$count1 = TestModelTestEventVersionableQuery::create()->
+			filterByTimeApplied(null, Criteria::ISNULL)->
+			count($this->con);
+		$count2 = TestModelTestOrganiserVersionableQuery::create()->
+			filterByTimeApplied(null, Criteria::ISNULL)->
+			count($this->con);			
+		$this->assertTrue(
+			($count1 == 0) && ($count2 == 0),
+			'Checking all versions have a timestamp'
+		);
 	}
 
 	protected function writeDataCatchErrors($versions, TestModelKnownNode $node, PDO $con = null)
