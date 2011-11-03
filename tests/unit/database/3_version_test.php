@@ -118,6 +118,7 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 	 */
 	protected function writeVersionableData($versions, TestModelKnownNode $node, PDO $con = null)
 	{
+		/* @var $object TestModelTestEvent */
 		$ok = true;
 		foreach ($versions as $versionNo => $versionData)
 		{
@@ -149,6 +150,12 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 						$object->setByName($column, $value, BasePeer::TYPE_FIELDNAME);
 					}
 				}
+
+				// Set metadata that should be handled outside the model layer
+				$time = time();
+				$object->setVersionMetadata(
+					$timeEdited = $time, $timeReceived = null, $timeApplied = $time
+				);
 
 				// Save and store a reference
 				$ok = $ok && $object->save($con);

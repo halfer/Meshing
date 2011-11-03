@@ -7,6 +7,10 @@
  */
 class MeshingBaseObject extends BaseObject
 {
+	protected $metadataTimeEdited;
+	protected $metadataTimeReceived;
+	protected $metadataTimeApplied;
+
 	/**
 	 * Create a version (containing no column data, just metadata) after a new row is inserted
 	 * 
@@ -32,8 +36,7 @@ class MeshingBaseObject extends BaseObject
 		}
 
 		// Create a new versionable row
-		$time = time();
-		$vsn = $this->createVersionableRow($time, $con);
+		$vsn = $this->createVersionableRow($con);
 
 		// Let this throw an exception, to be caught higher up
 		$vsn->save($con);
@@ -44,8 +47,6 @@ class MeshingBaseObject extends BaseObject
 	 * 
 	 * Note: if this table is referenced by another table, that 'parent' will be
 	 * preUpdated as well - we just intercept that by checking the modified flag
-	 * 
-	 * @todo Swap out hardwired column for peer constants
 	 * 
 	 * @param PropelPDO $con 
 	 */
@@ -62,8 +63,7 @@ class MeshingBaseObject extends BaseObject
 		/* @var $vsn TestModelTestOrganiserVersionable */
 
 		// Create a new versionable row
-		$time = time();
-		$vsn = $this->createVersionableRow($time, $con);
+		$vsn = $this->createVersionableRow($con);
 
 		// Save the row state as a version before we commit new values
 		$row = $this->reselectThisRow($con);		
@@ -76,12 +76,14 @@ class MeshingBaseObject extends BaseObject
 	}
 
 	/**
-	 *
+	 * Returns a versionable row, to use in response to INSERTs or UPDATEs
+	 * 
+	 * @todo Swap out hardwired column for peer constants
 	 * 
 	 * @param type $time
 	 * @return vsnName 
 	 */
-	protected function createVersionableRow($time, PropelPDO $con = null)
+	protected function createVersionableRow(PropelPDO $con = null)
 	{
 		// Create a new versionable
 		/* @var $vsn TestModelTestOrganiserVersionable */
@@ -103,7 +105,18 @@ class MeshingBaseObject extends BaseObject
 		$vsn->setPrimaryKey($keys);
 
 		// Complete some metadata common to inserts & updates
-		$vsn->setTimeApplied($time);
+		if ($this->metadataTimeEdited)
+		{
+			$vsn->setTimeEdited($this->metadataTimeEdited);
+		}
+		if ($this->metadataTimeReceived)
+		{
+			$vsn->setTimeReceived($this->metadataTimeReceived);
+		}
+		if ($this->metadataTimeApplied)
+		{
+			$vsn->setTimeApplied($this->metadataTimeApplied);
+		}
 
 		return $vsn;
 	}
@@ -172,6 +185,22 @@ class MeshingBaseObject extends BaseObject
 	public function getLatestVersionedRow()
 	{
 		
+	}
+
+	/**
+	 * Provides the class with metadata to save with the object
+	 * 
+	 * @param integer $timeEdited
+	 * @param integer $timeReceived
+	 * @param integer $timeApplied 
+	 */
+	public function setVersionMetadata($timeEdited = null, $timeReceived = null,
+		$timeApplied = null
+	)
+	{
+		$this->metadataTimeEdited = $timeEdited;
+		$this->metadataTimeReceived = $timeReceived;
+		$this->metadataTimeApplied = $timeApplied;
 	}
 
 	protected function reselectThisRow(PropelPDO $con = null)
