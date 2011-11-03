@@ -5,6 +5,13 @@
 		<reference local="creator_node_id" foreign="id" />
 	</foreign-key>
 
-	<!-- hash for this record -->
-	<column name="hash" type="varchar" size="80" />
+	<!-- pointer to last version in versionable table;
+	can't do this at the moment since the copy routine
+	copies this from current->versionable and overwrites
+	a good version number with null!
+	
+	For the time being, to get a related versionable row,
+	we'll match on PK and choose MAX(version)
+	<column name="version" type="integer" />
+	-->
 </dummy-root>

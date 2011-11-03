@@ -39,8 +39,16 @@ class Meshing_Schema_Fixup
 			$suffix = '_versionable'
 		);
 
-		// Remove auto-incrementing from versionable PKs
+		// Use base classes only for real tables (not KnownNodes or Versionables)
+		$this->xml->setBaseClasses(
+			'MeshingBaseObject',
+			'MeshingBasePeer',
+			$realTables
+		);
+
+		// Make various changes to versionable tables
 		$this->xml->removeVersionableAutoIncrementing();
+		$this->xml->removeVersionableRequiredAttributes();
 
 		// Poke a block of XML into each real table (contains primary keys)
 		$this->xml->addTableColumns(
@@ -67,10 +75,6 @@ class Meshing_Schema_Fixup
 
 		// Models need a real Propel conn as default (but we will always use a non-default conn)
 		$this->xml->setConnectionName(Meshing_Utils::SYSTEM_CONNECTION);
-
-		// All row classes should extend a custom base & peer
-		$this->xml->setCustomBaseClass('MeshingBaseObject');
-		$this->xml->setCustomBasePeer('MeshingBasePeer');
 		
 		// Save the file under the same name
 		$this->xml->asXML($this->filename);

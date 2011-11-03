@@ -301,10 +301,33 @@ class Meshing_Schema_Element extends SimpleXMLElement
 	{
 		$match = $this->xpathAttributeEndsWith('name', '_versionable');
 		$match = "/database/table[$match]/column[@primaryKey=\"true\"][@autoIncrement=\"true\"]";
-		
+
 		foreach ($this->xpath($match) as $column)
 		{
 			unset($column['autoIncrement']);
+		}
+	}
+
+	/**
+	 * Sets all versionable non-PK columns as nullable (essential for row inserts)
+	 */
+	public function removeVersionableRequiredAttributes()
+	{
+		$match = $this->xpathAttributeEndsWith('name', '_versionable');
+		$match = "/database/table[$match]/column[not(@primaryKey=\"true\")][@required=\"true\"]";
+
+		foreach ($this->xpath($match) as $column)
+		{
+			unset($column['required']);
+		}		
+	}
+
+	public function setBaseClasses($class, $peer, $tableList = array())
+	{
+		foreach ($tableList as $table)
+		{
+			$table['baseClass'] = $class;
+			$table['basePeer'] = $peer;
 		}
 	}
 }

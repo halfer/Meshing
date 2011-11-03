@@ -7,19 +7,36 @@
  */
 class MeshingBaseObject extends BaseObject
 {
-	public function postSave(PropelPDO $con = null)
-	{
-		
-	}
-
 	/**
-	 * Create a version row after a new row is inserted
+	 * Create a version (containing no column data, just metadata) after a new row is inserted
 	 * 
 	 * @param PropelPDO $con 
 	 */
 	public function postInsert(PropelPDO $con = null)
 	{
+		// If the key is incomplete, this is due to a save on a row referencing another unsaved object
+		// @todo Ask why this behaviour exists, and if there is a better way to deal with this?
+		$complete = true;
+		foreach ($this->getPrimaryKey() as $element)
+		{
+			if (is_null($element))
+			{
+				$complete = false;
+				break;
+			}
+		}
 		
+		if (!$complete)
+		{
+			return;
+		}
+
+		// Create a new versionable row
+		$time = time();
+		$vsn = $this->createVersionableRow($time, $con);
+
+		// Let this throw an exception, to be caught higher up
+		$vsn->save($con);
 	}
 
 	/**
@@ -40,6 +57,37 @@ class MeshingBaseObject extends BaseObject
 			return true;
 		}
 
+		// NB, these type hints are just for development :)
+		/* @var $row TestModelTestOrganiser */
+		/* @var $vsn TestModelTestOrganiserVersionable */
+
+		// Create a new versionable row
+		$time = time();
+		$vsn = $this->createVersionableRow($time, $con);
+
+		// Save the row state as a version before we commit new values
+		$row = $this->reselectThisRow($con);		
+		$row->copyInto($vsn, $deepCopy = false, $makeNew = false);
+
+		// Let this throw an exception, to be caught higher up
+		$vsn->save($con);
+
+		return true;
+	}
+
+	/**
+	 *
+	 * 
+	 * @param type $time
+	 * @return vsnName 
+	 */
+	protected function createVersionableRow($time, PropelPDO $con = null)
+	{
+		// Create a new versionable
+		/* @var $vsn TestModelTestOrganiserVersionable */
+		$vsnName = $this->getVersionableRowName();
+		$vsn = new $vsnName();
+
 		// Get max version (@todo deal with race conditions between here and save -
 		// maybe just use the database auto-increment system instead?)
 		$query = call_user_func(array($this->getVersionableQueryName(), 'create'));
@@ -48,38 +96,25 @@ class MeshingBaseObject extends BaseObject
 			select('max')->
 			findOne($con);
 		$maxVersion = $maxVersion ? $maxVersion : 0;
-		
-		// @todo Remove these type hints - very handy for development though :)
-		/* @var $row TestModelTestOrganiser */
-		/* @var $vsn TestModelTestOrganiserVersionable */
 
-		// Create a new versionable
-		$vsnName = $this->getVersionableRowName();
-		$vsn = new $vsnName();
-
-		// Save the row state as a version before we commit new values
-		$row = $this->reselectThisRow($con);		
-		$row->copyInto($vsn);
-		$keys = $row->getPrimaryKey();
+		// Insert the version PK (current + version number)
+		$keys = $this->getPrimaryKey();
 		$keys[] = $maxVersion + 1;
 		$vsn->setPrimaryKey($keys);
 
-		// Complete some metadata
-		$vsn->setTimeApplied(time());
+		// Complete some metadata common to inserts & updates
+		$vsn->setTimeApplied($time);
 
-		// Let this throw an exception, to be caught higher up
-		$vsn->save($con);
-			
-		return true;
+		return $vsn;
 	}
 
-	public function countOldVersions(PropelPDO $con = null)
+	public function countVersions(PropelPDO $con = null)
 	{
 		// Create a versionable instance
 		$vsnName = $this->getVersionableRowName();
 		$vsn = new $vsnName();
 
-		// Get the pk criteria for the versionable (fake the version; we throw it away anyway)
+		// Get the pk criteria for the versionable (fake the version, we throw it away anyway)
 		$keys = $this->getPrimaryKey();
 		$keys = is_array($keys) ? $keys : array($keys);
 		$vsn->setPrimaryKey(array_merge($keys, array(1)));
@@ -117,17 +152,33 @@ class MeshingBaseObject extends BaseObject
 		return $count;
 	}
 
-	public function countVersions(PropelPDO $con = null)
+	public function countOldVersions(PropelPDO $con = null)
 	{
-		return $this->countOldVersions($con) + $this->countNewVersions($con);
+		return $this->countVersions($con) - $this->countNewVersions($con);
+	}
+
+	/**
+	 * Gets metadata for the current row, plus all previous values
+	 * 
+	 * @todo Need to write this code
+	 * 
+	 * Do in one go to avoid race conditions:
+	 * 
+	 * SELECT * FROM x WHERE (pks) AND
+	 *	version = (
+	 *		SELECT MAX(version) FROM x WHERE (pks)
+	 *	)
+	 */
+	public function getLatestVersionedRow()
+	{
+		
 	}
 
 	protected function reselectThisRow(PropelPDO $con = null)
 	{
-		return call_user_func_array(
-			array($this->getPeerName(), 'retrieveByPK'),
-			$this->getPrimaryKey() + array($con)
-		);
+		$key = array_merge($this->getPrimaryKey(), array($con));
+
+		return call_user_func_array(array($this->getPeerName(), 'retrieveByPK'), $key);
 	}
 
 	protected function getPeerName()

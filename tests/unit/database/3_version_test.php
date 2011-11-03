@@ -69,7 +69,7 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 		);
 
 		// Write this block of data
-		$ok = $this->writeDataCatchErrors($versions, $this->node, $this->con);
+		$ok = $this->writeVersionableData($versions, $this->node, $this->con);
 		$this->assertTrue($ok, 'Write versionable data to the database');
 
 		/*
@@ -111,21 +111,6 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 		);
 	}
 
-	protected function writeDataCatchErrors($versions, TestModelKnownNode $node, PDO $con = null)
-	{
-		try
-		{
-			$this->writeVersionableData($versions, $node, $con);
-			$ok = true;
-		}
-		catch (Exception $e)
-		{
-			$ok = false;
-		}
-
-		return $ok;
-	}
-
 	/**
 	 * Saves data in a versioned way, using a specific array format
 	 * 
@@ -133,6 +118,7 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 	 */
 	protected function writeVersionableData($versions, TestModelKnownNode $node, PDO $con = null)
 	{
+		$ok = true;
 		foreach ($versions as $versionNo => $versionData)
 		{
 			foreach ( $versionData as $class => $data )
@@ -165,9 +151,11 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 				}
 
 				// Save and store a reference
-				$object->save($con);
+				$ok = $ok && $object->save($con);
 				$this->objects[$class] = $object;
 			}
 		}
+
+		return $ok;
 	}
 }

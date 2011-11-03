@@ -9,7 +9,6 @@
 	<!-- metadata for this record -->
 	<column name="editor_node_id" type="integer" />
 	<column name="received_change_id" type="integer" />
-	<column name="time_created" type="timestamp" />
 	<column name="time_edited" type="timestamp" />
 	<column name="time_received" type="timestamp" />
 	<column name="time_applied" type="timestamp" />
