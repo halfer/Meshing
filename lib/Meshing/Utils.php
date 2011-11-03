@@ -103,10 +103,9 @@ class Meshing_Utils
 		// Propel needs to autoload our custom base classes too
 		$projectRoot = self::getProjectRoot();
 		$loader = PropelAutoloader::getInstance();
-		$loader->addClassPath(
-			'MeshingBaseObject',
-			$projectRoot . self::getPaths()->getPathCustomBases() . '/MeshingBaseObject.php'
-		);		
+		$path = $projectRoot . self::getPaths()->getPathCustomBases();
+		$loader->addClassPath('MeshingBaseObject', $path . '/MeshingBaseObject.php');
+		$loader->addClassPath('MeshingBasePeer', $path . '/MeshingBasePeer.php');
 	}
 
 	/**

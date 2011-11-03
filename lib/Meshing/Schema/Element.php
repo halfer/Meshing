@@ -288,4 +288,9 @@ class Meshing_Schema_Element extends SimpleXMLElement
 	{
 		$this['baseClass'] = $class;
 	}
+
+	public function setCustomBasePeer($class)
+	{
+		$this['basePeer'] = $class;		
+	}
 }
