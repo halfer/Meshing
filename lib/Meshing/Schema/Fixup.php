@@ -39,6 +39,9 @@ class Meshing_Schema_Fixup
 			$suffix = '_versionable'
 		);
 
+		// Remove auto-incrementing from versionable PKs
+		$this->xml->removeVersionableAutoIncrementing();
+
 		// Poke a block of XML into each real table (contains primary keys)
 		$this->xml->addTableColumns(
 			$this->snippetDir . '/current_header.xml',

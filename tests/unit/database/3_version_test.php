@@ -45,7 +45,7 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 				),
 				'TestModelTestEvent' => array(
 					'name' => 'Expert Tunnelling In The Built Environment',
-					'description' => 'A fascinating presentation on how the modern badger can use human method of construction for a long-lasting sett',
+					'description' => 'A fascinating presentation on how the modern badger can use human methods of construction for a long-lasting sett',
 					'location' => 'Birmingham Town Hall', 'nearest_city' => 'Birmingham, UK',
 					'start_time' => '2011-11-02 19:30:00', 'duration_mins' => 60,
 					'TestModelTestOrganiser' => 'FOREIGN_KEY',
@@ -72,7 +72,31 @@ class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
 		$ok = $this->writeDataCatchErrors($versions, $this->node, $this->con);
 		$this->assertTrue($ok, 'Write versionable data to the database');
 
-		// More tests here
+		/*
+		 * @var $organiser TestModelTestOrganiser
+		 * @var $event TestModelTestEvent
+		 */
+		$organiser = $this->objects['TestModelTestOrganiser'];
+		$event = $this->objects['TestModelTestEvent'];
+
+		// Check the expected number of versions
+		$this->assertEqual($event->countVersions($this->con), 1);
+		$this->assertEqual($organiser->countVersions($this->con), 3);
+
+		// Do some new/old counts from the peer
+		$count = MeshingBasePeer::countNewVersions(
+			$event->getPrimaryKey(),
+			$this->con,
+			'TestModelTestEvent'
+		);
+		$this->assertEqual($count, 1);
+	
+		$count = MeshingBasePeer::countOldVersions(
+			$organiser->getPrimaryKey(),
+			$this->con,
+			'TestModelTestOrganiser'
+		);
+		$this->assertEqual($count, 2);
 	}
 
 	protected function writeDataCatchErrors($versions, TestModelKnownNode $node, PDO $con = null)

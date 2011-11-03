@@ -293,4 +293,18 @@ class Meshing_Schema_Element extends SimpleXMLElement
 	{
 		$this['basePeer'] = $class;		
 	}
+
+	/**
+	 * Remove auto-increment behaviour from original PK in versionable table
+	 */
+	public function removeVersionableAutoIncrementing()
+	{
+		$match = $this->xpathAttributeEndsWith('name', '_versionable');
+		$match = "/database/table[$match]/column[@primaryKey=\"true\"][@autoIncrement=\"true\"]";
+		
+		foreach ($this->xpath($match) as $column)
+		{
+			unset($column['autoIncrement']);
+		}
+	}
 }

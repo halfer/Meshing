@@ -25,30 +25,70 @@ class MeshingBaseObject extends BaseObject
 	/**
 	 * Create a version row before an existing row is updated
 	 * 
+	 * Note: if this table is referenced by another table, that 'parent' will be
+	 * preUpdated as well - we just intercept that by checking the modified flag
+	 * 
+	 * @todo Swap out hardwired column for peer constants
+	 * 
 	 * @param PropelPDO $con 
 	 */
 	public function preUpdate(PropelPDO $con = null)
 	{
-		// Since we don't currently capture the initial state of the row object,
-		// we will (currently) need to select it again before the save.
+		// Ignore (related) rows with no changes
+		if (!$this->isModified())
+		{
+			return true;
+		}
+
+		// Create a new versionable
+		$vsnName = $this->getVersionableRowName();
+		$vsn = new $vsnName();
+
+		// Get max version (@todo deal with race conditions between here and save -
+		// maybe just use the database auto-increment system instead?)
+		$query = call_user_func(array($this->getVersionableQueryName(), 'create'));
+		$maxVersion = $query->
+			withColumn('MAX(version)', 'max')->
+			select('max')->
+			findOne($con);
+		$maxVersion = $maxVersion ? $maxVersion : 0;
 		
+		/* @var $row TestModelTestOrganiser */
+		/* @var $vsn TestModelTestOrganiserVersionable */
+
+		// Save the row state as a version before we commit new values
+		$row = $this->reselectThisRow($con);		
+		$row->copyInto($vsn);
+		$keys = $row->getPrimaryKey();
+		$keys[] = $maxVersion + 1;
+		$vsn->setPrimaryKey($keys);
+		try
+		{
+			$vsn->save($con);
+		}
+		catch (PropelException $e)
+		{
+			echo $e->getMessage() . "\n";
+		}
+			
 		return true;
 	}
 
 	public function countOldVersions(PropelPDO $con = null)
 	{
-		$rowName = constant($this->getPeerName() . '::OM_CLASS');
-		
 		// Create a versionable instance
-		$vsnName = $rowName . 'Versionable';
+		$vsnName = $this->getVersionableRowName();
 		$vsn = new $vsnName();
 
-		// Get the table-qualified name of the version column
-		$vsnPeerName = $rowName . 'VersionablePeer';
-		$vsnColName = constant($vsnPeerName . '::VERSION');
-
-		// Get the criteria but remove the version col from it
+		// Get the pk criteria for the versionable (fake the version; we throw it away anyway)
+		$keys = $this->getPrimaryKey();
+		$keys = is_array($keys) ? $keys : array($keys);
+		$vsn->setPrimaryKey(array_merge($keys, array(1)));
 		$crit = $vsn->buildPkeyCriteria();
+
+		// Remove the version from the criteria (match just on original PK)
+		$vsnPeerName = $this->getVersionablePeerName();
+		$vsnColName = constant($vsnPeerName . '::VERSION');
 		$crit->remove($vsnColName);
 
 		// Then count the number of rows
@@ -67,11 +107,7 @@ class MeshingBaseObject extends BaseObject
 		if ($this->isNew())
 		{
 			// If the object has been constructed for the purpose, we need to do a select
-			$row = call_user_func_array(
-				array($this->getPeerName(), 'retrieveByPK'),
-				$this->getPrimaryKey() + array($con)
-			);
-			$count = $row ? 1 : 0;
+			$count = $this->reselectThisRow($con) ? 1 : 0;
 		}
 		else
 		{
@@ -83,12 +119,40 @@ class MeshingBaseObject extends BaseObject
 	}
 
 	public function countVersions(PropelPDO $con = null)
-	{		
+	{
 		return $this->countOldVersions($con) + $this->countNewVersions($con);
+	}
+
+	protected function reselectThisRow(PropelPDO $con = null)
+	{
+		return call_user_func_array(
+			array($this->getPeerName(), 'retrieveByPK'),
+			$this->getPrimaryKey() + array($con)
+		);
 	}
 
 	protected function getPeerName()
 	{
 		return get_class($this->getPeer());
+	}
+
+	protected function getRowName()
+	{
+		return constant($this->getPeerName() . '::OM_CLASS');
+	}
+
+	protected function getVersionableRowName()
+	{
+		return $this->getRowName() . 'Versionable';
+	}
+
+	protected function getVersionablePeerName()
+	{
+		return $this->getRowName() . 'VersionablePeer';
+	}
+
+	protected function getVersionableQueryName()
+	{
+		return $this->getRowName() . 'VersionableQuery';
 	}
 }
