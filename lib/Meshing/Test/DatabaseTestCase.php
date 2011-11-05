@@ -126,7 +126,19 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 			$this->schemaDir . '/' . $this->schemas,
 			$this->outputSchemaDir . '/' . $this->paths->getLeafStandardSchema()
 		);
+		$fixup->setBaseClass($this->getBaseClass());
+		$fixup->setBasePeer($this->getBasePeer());
 		$fixup->fixup($this->getPackage());
+	}
+
+	protected function getBaseClass()
+	{
+		return 'MeshingBaseObject';
+	}
+
+	protected function getBasePeer()
+	{
+		return 'MeshingBasePeer';
 	}
 
 	/**

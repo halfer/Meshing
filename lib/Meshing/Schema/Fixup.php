@@ -10,6 +10,10 @@ class Meshing_Schema_Fixup
 	/* @var $xml Meshing_Schema_Element */
 	protected $xml;
 	protected $filename;
+
+	// Default base class names
+	protected $baseName = 'MeshingBaseObject';
+	protected $basePeer = 'MeshingBasePeer';
 	
 	public function __construct($inFilename, $outFilename)
 	{
@@ -40,11 +44,7 @@ class Meshing_Schema_Fixup
 		);
 
 		// Use base classes only for real tables (not KnownNodes or Versionables)
-		$this->xml->setBaseClasses(
-			'MeshingBaseObject',
-			'MeshingBasePeer',
-			$realTables
-		);
+		$this->xml->setBaseClasses($this->baseName, $this->basePeer, $realTables);
 
 		// Make various changes to versionable tables
 		$this->xml->removeVersionableAutoIncrementing();
@@ -78,5 +78,15 @@ class Meshing_Schema_Fixup
 		
 		// Save the file under the same name
 		$this->xml->asXML($this->filename);
+	}
+
+	public function setBaseClass($baseName)
+	{
+		$this->baseName = $baseName;
+	}
+
+	public function setBasePeer($basePeer)
+	{
+		$this->basePeer = $basePeer;
 	}
 }

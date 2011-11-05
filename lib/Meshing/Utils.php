@@ -106,6 +106,9 @@ class Meshing_Utils
 		$path = $projectRoot . self::getPaths()->getPathCustomBases();
 		$loader->addClassPath('MeshingBaseObject', $path . '/MeshingBaseObject.php');
 		$loader->addClassPath('MeshingBasePeer', $path . '/MeshingBasePeer.php');
+
+		// For testing locking, but no harm in adding it here
+		$loader->addClassPath('TestMeshingBaseObject', $path . '/TestMeshingBaseObject.php');
 	}
 
 	/**

@@ -29,17 +29,40 @@ class MeshingBaseObject extends BaseObject
 				break;
 			}
 		}
-		
+
 		if (!$complete)
 		{
 			return;
 		}
 
-		// Create a new versionable row
-		$vsn = $this->createVersionableRow($con);
+		// @todo This is how we should do it
+		//Meshing_Database_Locker::getInstance($con)->obtainTableLock();
 
-		// Let this throw an exception, to be caught higher up
-		$vsn->save($con);
+		// Prevent race condition between MAX() and INSERT - lock table here
+		$peer = $this->getPeerName();
+		$tableName = constant($peer . '::TABLE_NAME');
+		$ok = Meshing_Database_Locker::obtainTableLock($con, $tableName, 0);
+		if (!$ok)
+		{
+			throw new Exception('Failed to obtain database lock on ' . $tableName);
+		}
+
+		// Create a new versionable row
+		try
+		{
+			$vsn = $this->createVersionableRow($con);
+			$this->_preVersionSave($vsn, false);
+			$vsn->save($con);
+		}
+		catch (Exception $e)
+		{
+			// Release lock and re-throw error
+			Meshing_Database_Locker::releaseTableLock($con, $tableName, 0);
+			throw $e;
+		}
+
+		// Everything went ok - release table lock here
+		Meshing_Database_Locker::releaseTableLock($con, $tableName, 0);
 	}
 
 	/**
@@ -69,10 +92,23 @@ class MeshingBaseObject extends BaseObject
 		$row = $this->reselectThisRow($con);		
 		$row->copyInto($vsn, $deepCopy = false, $makeNew = false);
 
+		// Pre-version save hook (used for testing)
+		$this->_preVersionSave($vsn, true);
+
 		// Let this throw an exception, to be caught higher up
 		$vsn->save($con);
 
 		return true;
+	}
+
+	/**
+	 * Called by internal routines just before version save (testing hook)
+	 * 
+	 * @param BaseObject $vsn
+	 * @param boolean $update
+	 */
+	protected function _preVersionSave(BaseObject $vsn, $update)
+	{
 	}
 
 	/**

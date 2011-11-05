@@ -130,7 +130,7 @@ class Meshing_Paths
 
 	public function getPathSystemTests()
 	{
-		return $this->getGeneratedPath('/tests');
+		return $this->getLibraryPath('/tests');
 	}
 
 	public function getPathCustomBases($override = false)

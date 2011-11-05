@@ -10,26 +10,12 @@ Meshing_Utils::reinitialise(new Meshing_Test_Paths());
 // Init simpletest
 require_once 'simpletest/autorun.php';
 
-class PropelVersionTestCase extends Meshing_Test_DatabaseTestCase
+class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 {
 	public function __construct($label = false)
 	{
 		// Same package name as test 2
 		parent::__construct('test_model', $label);
-		
-		// Clear db away from previous tests
-		$this->doFixup();
-		$this->_testClassBuilder('TestModel', $runTests = false);
-		$this->_testSqlBuilder($runTests);
-		$this->_testConfBuilder($runTests);
-		$this->_testSqlRunner($runTests);
-
-		// Init the database connections
-		Meshing_Utils::initialiseDb();
-		$this->con = Propel::getConnection('test');
-
-		// Create an entry to satisfy later constraints
-		$this->node = $this->createKnownNode($this->con);
 
 		// Create a cache for rows we write
 		$this->objects = array();
