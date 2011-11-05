@@ -21,6 +21,11 @@ class Meshing_Test_Paths extends Meshing_Paths
 		return $this->getGeneratedPath('/database/config');		
 	}
 
+	public function getTestLogPath()
+	{
+		return $this->getPathSystemTests() . '/database/log';
+	}
+
 	protected function getGeneratedPath($path)
 	{
 		return '/tests' . $path;

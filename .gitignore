@@ -13,6 +13,8 @@ tests/database/models/*
 tests/database/connections/*
 tests/database/sql/*
 tests/database/schemas/*
+tests/database/log/*
+!test/database/log/.ignore
 
 # Any IDE folders to ignore
 nbproject

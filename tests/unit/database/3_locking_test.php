@@ -8,6 +8,7 @@ require_once $projectRoot . '/lib/Meshing/Utils.php';
 Meshing_Utils::reinitialise(new Meshing_Test_Paths());
 
 define('CHILD_TOKEN', 'meshing_test');
+define('LOCKING_TEST_LOG', 'log.log');
 
 // If we're running the child here, we'll pass an token
 global $argv;
@@ -19,7 +20,7 @@ if ($token == CHILD_TOKEN)
 	Meshing_Utils::initialiseDb();
 	
 	// Run child test
-	new LockingTestCaseChild($projectRoot, $argv[2]);
+	new LockingTestCaseChild($argv[2]);
 	exit();
 }
 else
@@ -34,6 +35,10 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 	{
 		// Same package name as test 2
 		parent::__construct('test_model', $label);
+
+		// Create/empty the log
+		$logDir = Meshing_Utils::getProjectRoot() . Meshing_Utils::getPaths()->getTestLogPath();
+		file_put_contents($logDir . '/' . LOCKING_TEST_LOG, '');
 
 		// Create test row
 		$organiser = new TestModelTestOrganiser();
@@ -87,7 +92,7 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 
 class LockingTestCaseChild
 {
-	public function __construct($projectRoot, $id)
+	public function __construct($id)
 	{
 		// Get connection to operate from
 		$con = Propel::getConnection('test');
@@ -99,17 +104,16 @@ class LockingTestCaseChild
 			$organiser = TestModelTestOrganiserPeer::retrieveByPK(1, 1, $con);
 			$organiser->setName('Random name #' . rand(1, 999999));
 			$organiser->save($con);
-			$ok = true;
 			$log = "ok\n";
 		}
 		catch (Exception $e)
 		{
-			$ok = false;
 			$log = "error\n" . $e->getMessage() . "\n";
 		}
 
+		$logDir = Meshing_Utils::getProjectRoot() . Meshing_Utils::getPaths()->getTestLogPath();
 		file_put_contents(
-			$projectRoot . '/log.log',
+			$logDir . '/' . LOCKING_TEST_LOG,
 			"Child #$id {\n{$log}}\n",
 			FILE_APPEND
 		);
