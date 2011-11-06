@@ -38,7 +38,8 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 
 		// Create/empty the log
 		$logDir = Meshing_Utils::getProjectRoot() . Meshing_Utils::getPaths()->getTestLogPath();
-		file_put_contents($logDir . '/' . LOCKING_TEST_LOG, '');
+		$this->logFile = $logDir . '/' . LOCKING_TEST_LOG;
+		file_put_contents($this->logFile, '');
 
 		// Create test row
 		$organiser = new TestModelTestOrganiser();
@@ -70,7 +71,8 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 		$testsDir = $this->projectRoot . $this->paths->getPathSystemTests();
 		$script = $testsDir . '/' . (array_key_exists(0, $argv) ? $argv[0] : null);
 
-		for ($id = 0; $id < 10; $id++)
+		$childCount = 10;
+		for ($id = 0; $id < $childCount; $id++)
 		{
 			$command = 'php "' . $script . '" ' . CHILD_TOKEN . ' ' . $id;
 			$background = '> /dev/null 2>&1 &';
@@ -81,12 +83,62 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 			// (no $output is returned even if errors are output to stdout)
 			if ($output === false)
 			{
-				$this->fail('There was a problem executing a background task');
+				user_error('There was a problem executing a background task', E_USER_NOTICE);
 				break;
 			}
 		}
 
-		// @todo Wait for all children to finish
+		// Wait for all children to finish (if finished, okCount is populated)
+		$iter = 0;
+		$okCount = null;
+		do
+		{
+			sleep(2);
+			$iter++;
+			
+			// Time limit
+			if ($iter > 10)
+			{
+				user_error('Time limit expired waiting for child tasks to complete', E_USER_NOTICE);
+				break;
+			}
+			
+			$completed = $this->allChildrenFinished($childCount, $okCount);
+
+		} while (!$completed);
+
+		$this->assertEqual(
+			$okCount,
+			$childCount,
+			'Check that all inserts have completed without race condition problems'
+		);
+	}
+
+	protected function allChildrenFinished($childCount, &$okCount)
+	{
+		if (!file_exists($this->logFile))
+		{
+			return false;
+		}
+
+		$logData = file_get_contents($this->logFile);
+
+		$matches = array();
+		$count = preg_match_all('/Child #\d+ {([^}]+)}/s', $logData, $matches);
+
+		if ($count == $childCount)
+		{
+			$okCount = 0;
+			$innerMatches = $matches[1];
+			foreach ($innerMatches as $innerMatch)
+			{
+				if (trim($innerMatch) == 'ok') {
+					$okCount++;
+				}
+			}
+		}
+
+		return ($count == $childCount);
 	}
 }
 
