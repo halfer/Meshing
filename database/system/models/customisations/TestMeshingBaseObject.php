@@ -22,6 +22,6 @@ class TestMeshingBaseObject extends MeshingBaseObject
 		}
 
 		// Encourage race condition between MAX() and INSERT
-		sleep(2);
+		sleep(1);
 	}
 }

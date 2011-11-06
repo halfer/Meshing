@@ -35,13 +35,10 @@ class MeshingBaseObject extends BaseObject
 			return;
 		}
 
-		// @todo This is how we should do it
-		//Meshing_Database_Locker::getInstance($con)->obtainTableLock();
-
 		// Prevent race condition between MAX() and INSERT - lock table here
-		$peer = $this->getPeerName();
-		$tableName = constant($peer . '::TABLE_NAME');
-		$ok = Meshing_Database_Locker::obtainTableLock($con, $tableName, 0);
+		$tableName = constant($this->getPeerName() . '::TABLE_NAME');
+		$locker = Meshing_Database_Locker::getInstance($con);
+		$ok = $locker->obtainTableLock($tableName);
 		if (!$ok)
 		{
 			throw new Exception('Failed to obtain database lock on ' . $tableName);
@@ -57,12 +54,12 @@ class MeshingBaseObject extends BaseObject
 		catch (Exception $e)
 		{
 			// Release lock and re-throw error
-			Meshing_Database_Locker::releaseTableLock($con, $tableName, 0);
+			$locker->releaseTableLock($tableName);
 			throw $e;
 		}
 
 		// Everything went ok - release table lock here
-		Meshing_Database_Locker::releaseTableLock($con, $tableName, 0);
+		$locker->releaseTableLock($tableName);
 	}
 
 	/**
@@ -81,22 +78,41 @@ class MeshingBaseObject extends BaseObject
 			return true;
 		}
 
-		// NB, these type hints are just for development :)
+		// NB, these type hints are just for development
 		/* @var $row TestModelTestOrganiser */
 		/* @var $vsn TestModelTestOrganiserVersionable */
+		
+		// Prevent race condition between MAX() and UPDATE - lock table here
+		$tableName = constant($this->getPeerName() . '::TABLE_NAME');
+		$locker = Meshing_Database_Locker::getInstance($con);
+		$ok = $locker->obtainTableLock($tableName);
+		if (!$ok)
+		{
+			throw new Exception('Failed to obtain database lock on ' . $tableName);
+		}
 
-		// Create a new versionable row
-		$vsn = $this->createVersionableRow($con);
+		try
+		{
+			// Create a new versionable row
+			$vsn = $this->createVersionableRow($con);
 
-		// Save the row state as a version before we commit new values
-		$row = $this->reselectThisRow($con);		
-		$row->copyInto($vsn, $deepCopy = false, $makeNew = false);
+			// Save the row state as a version before we commit new values
+			$row = $this->reselectThisRow($con);		
+			$row->copyInto($vsn, $deepCopy = false, $makeNew = false);
 
-		// Pre-version save hook (used for testing)
-		$this->_preVersionSave($vsn, true);
+			// Let this throw an exception, to be caught higher up
+			$this->_preVersionSave($vsn, true);
+			$vsn->save($con);
+		}
+		catch (Exception $e)
+		{
+			// Release lock and re-throw error
+			$locker->releaseTableLock($tableName);
+			throw $e;			
+		}
 
-		// Let this throw an exception, to be caught higher up
-		$vsn->save($con);
+		// Everything went ok - release table lock here
+		$locker->releaseTableLock($tableName);
 
 		return true;
 	}

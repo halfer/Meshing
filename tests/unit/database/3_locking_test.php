@@ -93,11 +93,11 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 		$okCount = null;
 		do
 		{
-			sleep(2);
+			sleep(1);
 			$iter++;
 			
 			// Time limit
-			if ($iter > 10)
+			if ($iter > 15)
 			{
 				user_error('Time limit expired waiting for child tasks to complete', E_USER_NOTICE);
 				break;
