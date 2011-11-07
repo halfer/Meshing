@@ -72,9 +72,6 @@ class Meshing_Schema_Fixup
 		$prefix = strtolower($schemaName);
 		$this->xml->prefixTablesManually($prefix . '_');
 		$this->xml->setPackageName($prefix);
-
-		// Models need a real Propel conn as default (but we will always use a non-default conn)
-		$this->xml->setConnectionName(Meshing_Utils::SYSTEM_CONNECTION);
 		
 		// Save the file under the same name
 		$this->xml->asXML($this->filename);
