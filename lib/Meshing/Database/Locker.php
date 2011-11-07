@@ -31,13 +31,10 @@ class Meshing_Database_Locker
 	protected static function getClassName(PropelPDO $con)
 	{
 		// Get the database type
-		//$type = $con->getAttribute(PDO::ATTR_DRIVER_NAME);
-		//$filter = new Zend_Filter_Word_UnderscoreToCamelCase();
-		//$type = $filter->filter($type);
-		//$class = 'Meshing_Database_Locker_' . $type;
-
-		// Use general class for now, @todo fix
-		$class = 'Meshing_Database_Locker_Generic';
+		$type = $con->getAttribute(PDO::ATTR_DRIVER_NAME);
+		$filter = new Zend_Filter_Word_UnderscoreToCamelCase();
+		$type = $filter->filter($type);
+		$class = 'Meshing_Database_Locker_' . $type;
 
 		return $class;
 	}

@@ -66,15 +66,12 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 			user_error("Can't currently test locking on the Windows platform", E_USER_NOTICE);
 		}
 
-		// Get test path
-		global $argv;
-		$testsDir = $this->projectRoot . $this->paths->getPathSystemTests();
-		$script = $testsDir . '/' . (array_key_exists(0, $argv) ? $argv[0] : null);
-
+		// @todo This could be simplified a bit by >> piping straight to the log file, then
+		// echoing in the child rather than writing to the log
 		$childCount = 10;
 		for ($id = 0; $id < $childCount; $id++)
 		{
-			$command = 'php "' . $script . '" ' . CHILD_TOKEN . ' ' . $id;
+			$command = 'php "' . __FILE__ . '" ' . CHILD_TOKEN . ' ' . $id;
 			$background = '> /dev/null 2>&1 &';
 			$return = null;
 			$output = system($command . ' ' . $background, $return);
@@ -88,7 +85,7 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 			}
 		}
 
-		// Wait for all children to finish (if finished, okCount is populated)
+		// Wait for all children to finish
 		$iter = 0;
 		$okCount = null;
 		do
@@ -96,14 +93,14 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 			sleep(1);
 			$iter++;
 			
+			$completed = $this->allChildrenFinished($childCount, $okCount);
+
 			// Time limit
-			if ($iter > 15)
+			if (($iter > 20) && !$completed)
 			{
-				user_error('Time limit expired waiting for child tasks to complete', E_USER_NOTICE);
+				user_error("Time limit expired, but only $okCount of $childCount children finished", E_USER_NOTICE);
 				break;
 			}
-			
-			$completed = $this->allChildrenFinished($childCount, $okCount);
 
 		} while (!$completed);
 
@@ -116,6 +113,7 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 
 	protected function allChildrenFinished($childCount, &$okCount)
 	{
+		$okCount = 0;
 		if (!file_exists($this->logFile))
 		{
 			return false;
@@ -126,15 +124,11 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 		$matches = array();
 		$count = preg_match_all('/Child #\d+ {([^}]+)}/s', $logData, $matches);
 
-		if ($count == $childCount)
+		$innerMatches = $matches[1];
+		foreach ($innerMatches as $innerMatch)
 		{
-			$okCount = 0;
-			$innerMatches = $matches[1];
-			foreach ($innerMatches as $innerMatch)
-			{
-				if (trim($innerMatch) == 'ok') {
-					$okCount++;
-				}
+			if (trim($innerMatch) == 'ok') {
+				$okCount++;
 			}
 		}
 

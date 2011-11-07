@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Provides a table locking facility for a specific database
+ * Provides a table locking facility for PostgreSQL
  *
  * @author jon
  */
-class Meshing_Database_Locker_Generic
+class Meshing_Database_Locker_Pgsql
 {
 	protected $con;
 
@@ -17,7 +17,6 @@ class Meshing_Database_Locker_Generic
 	public function obtainTableLock($table, $lockType = Meshing_Database_Locker::READ)
 	{
 		$this->con->beginTransaction();
-		// @todo This is probably specific to PostgreSQL - move to specific class
 		$this->con->exec('LOCK TABLE ' . $table . ' IN SHARE ROW EXCLUSIVE MODE');
 
 		return true;
