@@ -63,7 +63,8 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 		// If Windows, we can't test
 		if (substr(PHP_OS, 0, 3) == 'WIN')
 		{
-			user_error("Can't currently test locking on the Windows platform", E_USER_NOTICE);
+			user_error("Can't currently test locking on the Windows platform", E_USER_WARNING);
+			return;
 		}
 
 		// @todo This could be simplified a bit by >> piping straight to the log file, then
@@ -80,7 +81,7 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 			// (no $output is returned even if errors are output to stdout)
 			if ($output === false)
 			{
-				user_error('There was a problem executing a background task', E_USER_NOTICE);
+				user_error('There was a problem executing a background task', E_USER_WARNING);
 				break;
 			}
 		}
@@ -98,7 +99,7 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 			// Time limit
 			if (($iter > 20) && !$completed)
 			{
-				user_error("Time limit expired, but only $okCount of $childCount children finished", E_USER_NOTICE);
+				user_error("Time limit expired, but only $okCount of $childCount children finished", E_USER_WARNING);
 				break;
 			}
 
