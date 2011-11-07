@@ -19,11 +19,11 @@ class Meshing_Database_Locker
 	{
 		$class = self::getClassName($con);
 
-		// @todo This seems to hang things, replace with a file_exists check
-		//if (!class_exists($class, $autoload = false))
-		//{
-		//	throw new Exception("The locking system doesn't yet support a $type database");
-		//}
+		// We really need to fail if the db is not supported
+		if (!class_exists($class, $autoload = true))
+		{
+			throw new Exception("The locking system doesn't yet support a $type database");
+		}
 
 		return new $class($con);
 	}
