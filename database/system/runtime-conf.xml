@@ -5,7 +5,7 @@
 			<datasource id="p2p">
 				<adapter>pgsql</adapter>
 				<connection>
-					<dsn>pgsql:host=localhost dbname=meshing_system user=jon password=</dsn>
+					<dsn>pgsql:host=localhost; dbname=meshing_system; user=jon; password=</dsn>
 					<user>jon</user>
 					<password></password>
 				</connection>
@@ -14,7 +14,7 @@
 			<datasource id="test">
 				<adapter>pgsql</adapter>
 				<connection>
-					<dsn>pgsql:host=localhost dbname=meshing_test user=jon password=</dsn>
+					<dsn>pgsql:host=localhost; dbname=meshing_test; user=jon; password=</dsn>
 					<user>jon</user>
 					<password></password>
 				</connection>

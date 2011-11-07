@@ -36,7 +36,7 @@ class MeshingBaseObject extends BaseObject
 		}
 
 		// Prevent race condition between MAX() and INSERT - lock table here
-		$tableName = constant($this->getPeerName() . '::TABLE_NAME');
+		$tableName = constant($this->getVersionablePeerName() . '::TABLE_NAME');
 		$locker = Meshing_Database_Locker::getInstance($con);
 		$ok = $locker->obtainTableLock($tableName);
 		if (!$ok)
@@ -83,7 +83,7 @@ class MeshingBaseObject extends BaseObject
 		/* @var $vsn TestModelTestOrganiserVersionable */
 		
 		// Prevent race condition between MAX() and UPDATE - lock table here
-		$tableName = constant($this->getPeerName() . '::TABLE_NAME');
+		$tableName = constant($this->getVersionablePeerName() . '::TABLE_NAME');
 		$locker = Meshing_Database_Locker::getInstance($con);
 		$ok = $locker->obtainTableLock($tableName);
 		if (!$ok)
