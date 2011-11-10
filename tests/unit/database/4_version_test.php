@@ -95,6 +95,13 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 			($count1 == 0) && ($count2 == 0),
 			'Checking all versions have a timestamp'
 		);
+
+		// Check that the event has a non-null hash
+		$this->assertNotNull($event->getHash(), 'Check row hash is not null');
+
+		// @todo Check that some previous versions have the correct old values
+
+		// @todo Check that deleting a row results in a soft delete
 	}
 
 	/**

@@ -142,8 +142,7 @@ class MeshingBaseObject extends BaseObject
 		$vsnName = $this->getVersionableRowName();
 		$vsn = new $vsnName();
 
-		// Get max version (@todo deal with race conditions between here and save -
-		// maybe just use the database auto-increment system instead?)
+		// Get max version
 		$query = call_user_func(array($this->getVersionableQueryName(), 'create'));
 		$maxVersion = $query->
 			withColumn('MAX(version)', 'max')->
@@ -155,6 +154,10 @@ class MeshingBaseObject extends BaseObject
 		$keys = $this->getPrimaryKey();
 		$keys[] = $maxVersion + 1;
 		$vsn->setPrimaryKey($keys);
+
+		// The version hash is always for the current record, not the version
+		$hashFunction = $vsn->getMeshingHashType();
+		$vsn->setMeshingHash($this->calcHash($hashFunction));
 
 		// Complete some metadata common to inserts & updates
 		if ($this->metadataTimeEdited)
@@ -173,7 +176,41 @@ class MeshingBaseObject extends BaseObject
 		return $vsn;
 	}
 
+	/**
+	 *
+	 * @todo Set a deleted timestamp and return false
+	 * 
+	 * @param PropelPDO $con
+	 * @return type 
+	 */
+	public function preDelete(PropelPDO $con = null)
+	{
+		return parent::preDelete($con);
+	}
+
 	public function countVersions(PropelPDO $con = null)
+	{
+		// Get the criteria req'd to select all versions
+		$crit = $this->getSelectAllVersionsCriteria();
+
+		// Then count the number of rows
+		$vsnPeerName = $this->getVersionablePeerName();
+		$count = call_user_func(
+			array($vsnPeerName, 'doCount'),
+			$crit,
+			$_distinct = false,
+			$con
+		);
+		
+		return $count;
+	}
+
+	/**
+	 * For a current row, returns criteria required to select all its versionable rows
+	 * 
+	 * @return Criteria
+	 */
+	protected function getSelectAllVersionsCriteria()
 	{
 		// Create a versionable instance
 		$vsnName = $this->getVersionableRowName();
@@ -190,15 +227,7 @@ class MeshingBaseObject extends BaseObject
 		$vsnColName = constant($vsnPeerName . '::VERSION');
 		$crit->remove($vsnColName);
 
-		// Then count the number of rows
-		$count = call_user_func(
-			array($vsnPeerName, 'doCount'),
-			$crit,
-			$_distinct = false,
-			$con
-		);
-		
-		return $count;
+		return $crit;
 	}
 
 	public function countNewVersions(PropelPDO $con = null)
@@ -262,14 +291,19 @@ class MeshingBaseObject extends BaseObject
 		return call_user_func_array(array($this->getPeerName(), 'retrieveByPK'), $key);
 	}
 
+	protected function getRowName()
+	{
+		return constant($this->getPeerName() . '::OM_CLASS');
+	}
+
 	protected function getPeerName()
 	{
 		return get_class($this->getPeer());
 	}
 
-	protected function getRowName()
+	protected function getMapName()
 	{
-		return constant($this->getPeerName() . '::OM_CLASS');
+		return $this->getRowName() . 'TableMap';
 	}
 
 	protected function getVersionableRowName()
@@ -279,11 +313,125 @@ class MeshingBaseObject extends BaseObject
 
 	protected function getVersionablePeerName()
 	{
-		return $this->getRowName() . 'VersionablePeer';
+		return $this->getVersionableRowName() . 'Peer';
 	}
 
 	protected function getVersionableQueryName()
 	{
-		return $this->getRowName() . 'VersionableQuery';
+		return $this->getVersionableRowName() . 'Query';
+	}
+
+	protected function getVersionableMapName()
+	{
+		return $this->getVersionableRowName() . 'TableMap';
+	}
+
+	/**
+	 * Gets hash of current object, or previous specified version
+	 * 
+	 * @param PropelPDO $con The integer of the version required
+	 * @param integer $version
+	 */
+	public function getHash(PropelPDO $con = null, $version = null)
+	{
+		// Initial check (@todo maybe it would be OK to return null here?)
+		if ($this->isNew())
+		{
+			throw new Exception('New rows do not have hashes set');
+		}
+
+		$crit = $this->getSelectAllVersionsCriteria();
+		$vsnColName = constant($this->getVersionablePeerName() . '::VERSION');
+
+		if (is_null($version))
+		{
+			// To get the current item, save a select by grabbing the latest version row
+			$crit->addDescendingOrderByColumn($vsnColName);
+		}
+		else
+		{
+			// Do some checks on the supplied version number
+			if ($version < 1)
+			{
+				throw new Exception('The version number must be 1 or greater');
+			}
+
+			$maxVersion = $this->countVersions($con);
+			if ($version > $maxVersion)
+			{
+				throw new Exception('There are not that many versions for this row');
+			}
+
+			$crit->add($vsnColName, $version);
+		}
+
+		// Grabs the latest/only row depending on above criteria
+		$row = call_user_func(
+			array($this->getVersionablePeerName(), 'doSelectOne'),
+			$crit,
+			$con
+		);
+
+		return $row->getMeshingHash();
+	}
+
+	/**
+	 * Calculate hash for this row
+	 * 
+	 * The hashing strategy is suggested to be thus. Ordinary columns are concatenated
+	 * in their table order, and the hashing function applied to the result. However
+	 * for selected columns (usually lazy-loaded ones) their value is replaced with
+	 * a cached copy of the function applied to that column only. This ensures that
+	 * a hash can be re-calculated without having to load lazy-loaded columns, which
+	 * may be slow and memory-hungry.
+	 * 
+	 * So it might look a bit like this:
+	 * 
+	 *		hash(a + b + c + hash(blob_d) + ...)
+	 * 
+	 * The cached hashes may be stored either in the same versionable table, or a
+	 * parallel table (the former to start with, as it's easier).
+	 * 
+	 * @author jon
+	 */
+	public function calcHash($hashFunction)
+	{
+		/* @var $vsnTableMap TableMap */
+		/* @var $hashTableMap TableMap */
+		$thisMapName = $this->getMapName();
+		$thisTableMap = new $thisMapName();
+		$vsnMapName = $this->getVersionableMapName();
+		$vsnTableMap = new $vsnMapName();
+
+		/* @var $columnMap ColumnMap */
+		$values = array();
+		foreach($thisTableMap->getColumns() as $columnMap)
+		{
+			$columnName = $columnMap->getName();
+
+			// See if a cached hash exists for this column (@todo avoid hard-wired suffix)
+			$hashColumnName = $columnName . '_HASH_CACHE';
+			$isCached = $vsnTableMap->containsColumn($hashColumnName);
+
+			if ($isCached)
+			{
+				// Get hash; bomb out if it doesn't exist (even nulls are hashed)
+				$hash = $this->getByName($hashColumnName, BasePeer::TYPE_RAW_COLNAME);
+				if (!$hash)
+				{
+					throw new Exception("No hash found for column '$columnName'");
+				}
+				$value = $hashFunction($hash);
+			}
+			else
+			{
+				// Trivial case - just concatenate the column value
+				$value = $this->getByName($columnName, BasePeer::TYPE_RAW_COLNAME);		
+			}
+
+			$values[] = $value;
+		}
+
+		return $hashFunction(implode('', $values));
 	}
 }

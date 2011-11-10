@@ -12,6 +12,7 @@
 	<column name="time_edited" type="timestamp" />
 	<column name="time_received" type="timestamp" />
 	<column name="time_applied" type="timestamp" />
+	<column name="time_deleted" type="timestamp" />
 	<foreign-key foreignTable="known_node">
 		<reference local="editor_node_id" foreign="id" />
 	</foreign-key>
@@ -22,5 +23,6 @@
 	-->
 
 	<!-- hash for this record -->
-	<column name="hash" type="varchar" size="80" />
+	<column name="meshing_hash" type="varchar" size="80" />
+	<column name="meshing_hash_type" type="varchar" size="6" default="sha1" />
 </dummy-root>
