@@ -8,8 +8,10 @@
  * 
  * @author jon
  */
-class Meshing_Hash_Base
+abstract class Meshing_Hash_Base
 {
+	const CACHE_COLUMN_SUFFIX = 'HASH_CACHE';
+	
 	/**
 	 * Gets hash of current object, or previous specified version
 	 * 
@@ -83,18 +85,17 @@ class Meshing_Hash_Base
 		/* @var $vsnTableMap TableMap */
 		/* @var $hashTableMap TableMap */
 		$thisMapName = $object->getMapName();
-		$thisTableMap = new $thisMapName();
 		$vsnMapName = $object->getVersionableMapName();
 		$vsnTableMap = new $vsnMapName();
 
 		/* @var $columnMap ColumnMap */
 		$values = array();
-		foreach($thisTableMap->getColumns() as $columnMap)
+		foreach($this->getHashableColumns(new $thisMapName()) as $columnMap)
 		{
 			$columnName = $columnMap->getName();
 
-			// See if a cached hash exists for this column (@todo avoid hard-wired suffix)
-			$hashColumnName = $columnName . '_HASH_CACHE';
+			// See if a cached hash exists for this column
+			$hashColumnName = $columnName . self::CACHE_COLUMN_SUFFIX;
 			$isCached = $vsnTableMap->containsColumn($hashColumnName);
 
 			if ($isCached)
@@ -118,4 +119,6 @@ class Meshing_Hash_Base
 
 		return $hashFunction(implode('', $values));
 	}
+
+	abstract protected function getHashableColumns(TableMap $tableMap);
 }

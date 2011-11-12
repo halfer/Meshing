@@ -151,7 +151,7 @@ class Meshing_Paths
 	 */
 	public function getHashProvider()
 	{
-		return new Meshing_Hash_Base();
+		return new Meshing_Hash_Strategy_WithoutVersion();
 	}
 
 	/**
