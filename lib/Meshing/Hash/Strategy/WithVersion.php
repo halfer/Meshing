@@ -13,7 +13,7 @@
  *
  * @author jon
  */
-class Meshing_Hash_Strategy_WithVersion extends Meshing_Hash_Strategy_Base
+class Meshing_Hash_Strategy_WithVersion extends Meshing_Hash_Strategy_Basic
 {
 	protected function preHash(MeshingBaseObject $object, array $values)
 	{
