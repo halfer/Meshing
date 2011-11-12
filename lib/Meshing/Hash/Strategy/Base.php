@@ -99,7 +99,7 @@ abstract class Meshing_Hash_Strategy_Base
 
 		/* @var $columnMap ColumnMap */
 		$values = array();
-		foreach($this->getHashableColumns($thisMap) as $columnMap)
+		foreach($this->getHashableColumns($object, $thisMap) as $columnMap)
 		{
 			$columnName = $columnMap->getName();
 
@@ -126,10 +126,21 @@ abstract class Meshing_Hash_Strategy_Base
 			$values[] = $value;
 		}
 
+		// Last chance for child classes to modify before it gets hashed
+		$values = $this->preHash($object, $values);
+
 		return $hashFunction(implode('', $values));
 	}
 
-	abstract protected function getHashableColumns(TableMap $tableMap);
+	protected function getHashableColumns(MeshingBaseObject $object, TableMap $tableMap)
+	{
+		return $tableMap->getColumns();
+	}
+
+	protected function preHash(MeshingBaseObject $object, array $values)
+	{
+		return $values;
+	}
 
 	/**
 	 * Gets value for row table
