@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class MeshingBaseObject extends BaseObject
+class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 {
 	protected $metadataTimeEdited;
 	protected $metadataTimeReceived;
@@ -210,7 +210,7 @@ class MeshingBaseObject extends BaseObject
 	 * 
 	 * @return Criteria
 	 */
-	protected function getSelectAllVersionsCriteria()
+	public function getSelectAllVersionsCriteria()
 	{
 		// Create a versionable instance
 		$vsnName = $this->getVersionableRowName();
@@ -291,37 +291,37 @@ class MeshingBaseObject extends BaseObject
 		return call_user_func_array(array($this->getPeerName(), 'retrieveByPK'), $key);
 	}
 
-	protected function getRowName()
+	public function getRowName()
 	{
 		return constant($this->getPeerName() . '::OM_CLASS');
 	}
 
-	protected function getPeerName()
+	public function getPeerName()
 	{
 		return get_class($this->getPeer());
 	}
 
-	protected function getMapName()
+	public function getMapName()
 	{
 		return $this->getRowName() . 'TableMap';
 	}
 
-	protected function getVersionableRowName()
+	public function getVersionableRowName()
 	{
 		return $this->getRowName() . 'Versionable';
 	}
 
-	protected function getVersionablePeerName()
+	public function getVersionablePeerName()
 	{
 		return $this->getVersionableRowName() . 'Peer';
 	}
 
-	protected function getVersionableQueryName()
+	public function getVersionableQueryName()
 	{
 		return $this->getVersionableRowName() . 'Query';
 	}
 
-	protected function getVersionableMapName()
+	public function getVersionableMapName()
 	{
 		return $this->getVersionableRowName() . 'TableMap';
 	}
@@ -331,107 +331,38 @@ class MeshingBaseObject extends BaseObject
 	 * 
 	 * @param PropelPDO $con The integer of the version required
 	 * @param integer $version
+	 * @return string
 	 */
 	public function getHash(PropelPDO $con = null, $version = null)
 	{
-		// Initial check (@todo maybe it would be OK to return null here?)
-		if ($this->isNew())
-		{
-			throw new Exception('New rows do not have hashes set');
-		}
-
-		$crit = $this->getSelectAllVersionsCriteria();
-		$vsnColName = constant($this->getVersionablePeerName() . '::VERSION');
-
-		if (is_null($version))
-		{
-			// To get the current item, save a select by grabbing the latest version row
-			$crit->addDescendingOrderByColumn($vsnColName);
-		}
-		else
-		{
-			// Do some checks on the supplied version number
-			if ($version < 1)
-			{
-				throw new Exception('The version number must be 1 or greater');
-			}
-
-			$maxVersion = $this->countVersions($con);
-			if ($version > $maxVersion)
-			{
-				throw new Exception('There are not that many versions for this row');
-			}
-
-			$crit->add($vsnColName, $version);
-		}
-
-		// Grabs the latest/only row depending on above criteria
-		$row = call_user_func(
-			array($this->getVersionablePeerName(), 'doSelectOne'),
-			$crit,
-			$con
-		);
-
-		return $row->getMeshingHash();
+		return $this->getHashProvider()->getHash($this, $con, $version);
 	}
 
 	/**
 	 * Calculate hash for this row
 	 * 
-	 * The hashing strategy is suggested to be thus. Ordinary columns are concatenated
-	 * in their table order, and the hashing function applied to the result. However
-	 * for selected columns (usually lazy-loaded ones) their value is replaced with
-	 * a cached copy of the function applied to that column only. This ensures that
-	 * a hash can be re-calculated without having to load lazy-loaded columns, which
-	 * may be slow and memory-hungry.
-	 * 
-	 * So it might look a bit like this:
-	 * 
-	 *		hash(a + b + c + hash(blob_d) + ...)
-	 * 
-	 * The cached hashes may be stored either in the same versionable table, or a
-	 * parallel table (the former to start with, as it's easier).
-	 * 
-	 * @author jon
+	 * @param string $hashFunction
 	 */
 	public function calcHash($hashFunction)
 	{
-		/* @var $vsnTableMap TableMap */
-		/* @var $hashTableMap TableMap */
-		$thisMapName = $this->getMapName();
-		$thisTableMap = new $thisMapName();
-		$vsnMapName = $this->getVersionableMapName();
-		$vsnTableMap = new $vsnMapName();
+		return $this->getHashProvider()->calcHash($this, $hashFunction);
+	}
 
-		/* @var $columnMap ColumnMap */
-		$values = array();
-		foreach($thisTableMap->getColumns() as $columnMap)
+	/**
+	 * Gets an instance of the hashing object
+	 * 
+	 * @staticvar Meshing_Hash_Base $hashProvider
+	 * @return Meshing_Hash_Base
+	 */
+	protected function getHashProvider()
+	{
+		static $hashProvider;
+
+		if (!$hashProvider)
 		{
-			$columnName = $columnMap->getName();
-
-			// See if a cached hash exists for this column (@todo avoid hard-wired suffix)
-			$hashColumnName = $columnName . '_HASH_CACHE';
-			$isCached = $vsnTableMap->containsColumn($hashColumnName);
-
-			if ($isCached)
-			{
-				// Get hash; bomb out if it doesn't exist (even nulls are hashed)
-				$hash = $this->getByName($hashColumnName, BasePeer::TYPE_RAW_COLNAME);
-				if (!$hash)
-				{
-					throw new Exception("No hash found for column '$columnName'");
-				}
-				$value = $hashFunction($hash);
-			}
-			else
-			{
-				// Trivial case - just concatenate the column value
-				$value = $this->getByName($columnName, BasePeer::TYPE_RAW_COLNAME);		
-			}
-
-			$values[] = $value;
+			$hashProvider = Meshing_Utils::getPaths()->getHashProvider();
 		}
 
-		return $hashFunction(implode('', $values));
+		return $hashProvider;
 	}
 }

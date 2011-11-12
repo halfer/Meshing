@@ -145,6 +145,16 @@ class Meshing_Paths
 	}
 
 	/**
+	 * Chooses a hashing provider for the caller
+	 * 
+	 * @return Meshing_Hash_Base
+	 */
+	public function getHashProvider()
+	{
+		return new Meshing_Hash_Base();
+	}
+
+	/**
 	 * Permits child classes to modify all library locations
 	 * 
 	 * @param string $path
