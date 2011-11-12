@@ -8,7 +8,7 @@
  * 
  * @author jon
  */
-abstract class Meshing_Hash_Base
+abstract class Meshing_Hash_Strategy_Base
 {
 	const CACHE_COLUMN_SUFFIX = 'HASH_CACHE';
 	
