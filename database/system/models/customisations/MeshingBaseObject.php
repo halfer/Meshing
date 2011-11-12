@@ -157,7 +157,7 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 
 		// The version hash is always for the current record, not the version
 		$hashFunction = $vsn->getMeshingHashType();
-		$vsn->setMeshingHash($this->calcHash($hashFunction));
+		$vsn->setMeshingHash($this->calcHash($con, $hashFunction));
 
 		// Complete some metadata common to inserts & updates
 		if ($this->metadataTimeEdited)
@@ -301,9 +301,14 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		return get_class($this->getPeer());
 	}
 
-	public function getMapName()
+	/**
+	 * Gets the table map for the row class
+	 * 
+	 * @return TableMap 
+	 */
+	public function getRowMap()
 	{
-		return $this->getRowName() . 'TableMap';
+		return call_user_func(array($this->getPeerName(), 'getTableMap'));
 	}
 
 	public function getVersionableRowName()
@@ -321,9 +326,14 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		return $this->getVersionableRowName() . 'Query';
 	}
 
-	public function getVersionableMapName()
+	/**
+	 * Gets the table map for the version class
+	 * 
+	 * @return TableMap 
+	 */
+	public function getVersionableMap()
 	{
-		return $this->getVersionableRowName() . 'TableMap';
+		return call_user_func(array($this->getVersionablePeerName(), 'getTableMap'));
 	}
 
 	/**
@@ -333,9 +343,9 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	 * @param integer $version
 	 * @return string
 	 */
-	public function getHash(PropelPDO $con = null, $version = null)
+	public function getHash(PropelPDO $con, $version = null)
 	{
-		return $this->getHashProvider()->getHash($this, $con, $version);
+		return $this->getHashProvider($con)->getHash($this, $version);
 	}
 
 	/**
@@ -343,24 +353,26 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	 * 
 	 * @param string $hashFunction
 	 */
-	public function calcHash($hashFunction)
+	public function calcHash(PropelPDO $con, $hashFunction)
 	{
-		return $this->getHashProvider()->calcHash($this, $hashFunction);
+		return $this->getHashProvider($con)->calcHash($this, $hashFunction);
 	}
 
 	/**
 	 * Gets an instance of the hashing object
 	 * 
+	 * FIXME If this is called twice with different connections, the second one will be wrong
+	 * 
 	 * @staticvar Meshing_Hash_Base $hashProvider
 	 * @return Meshing_Hash_Base
 	 */
-	protected function getHashProvider()
+	protected function getHashProvider(PropelPDO $con)
 	{
 		static $hashProvider;
 
 		if (!$hashProvider)
 		{
-			$hashProvider = Meshing_Utils::getPaths()->getHashProvider();
+			$hashProvider = Meshing_Utils::getPaths()->getHashProvider($con);
 		}
 
 		return $hashProvider;

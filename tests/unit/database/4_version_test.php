@@ -97,7 +97,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		);
 
 		// Check that the event has a non-null hash
-		$this->assertNotNull($event->getHash(), 'Check row hash is not null');
+		$this->assertNotNull($event->getHash($this->con), 'Check row hash is not null');
 
 		// @todo Check that some previous versions have the correct old values
 

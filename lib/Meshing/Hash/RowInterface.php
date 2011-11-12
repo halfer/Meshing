@@ -11,6 +11,6 @@ interface Meshing_Hash_RowInterface
 	public function countVersions();
 	public function getSelectAllVersionsCriteria();
 	public function getVersionablePeerName();
-	public function getMapName();
-	public function getVersionableMapName();
+	public function getRowMap();
+	public function getVersionableMap();
 }
