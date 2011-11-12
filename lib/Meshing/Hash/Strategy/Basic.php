@@ -81,14 +81,7 @@ class Meshing_Hash_Strategy_Basic
 	 * a hash can be re-calculated without having to load lazy-loaded columns, which
 	 * may be slow and memory-hungry.
 	 * 
-	 * So it might look a bit like this:
-	 * 
-	 *		hash(a + b + c + hash(blob_d) + ...)
-	 * 
-	 * The cached hashes may be stored either in the same versionable table, or a
-	 * parallel table (the former to start with, as it's easier).
-	 * 
-	 * @author jon
+	 * So it might look like this: hash(a + b + c + hash(blob_d) + ...)
 	 */
 	public function calcHash(MeshingBaseObject $object, $hashFunction)
 	{
@@ -145,7 +138,9 @@ class Meshing_Hash_Strategy_Basic
 	/**
 	 * Gets value for row table
 	 * 
-	 * Swaps foreign creator_node_id values for their unique FQDN value
+	 * Swaps foreign creator_node_id values for their unique FQDN value. Note that the other
+	 * part(s) to a primary or foreign key is set by the creator and is the same in all nodes,
+	 * so may be hashed without causing difference problems between nodes.
 	 * 
 	 * @todo Better node table detection required (should use known prefix)
 	 * @todo Fix column name hardwiring

@@ -147,9 +147,9 @@ class Meshing_Paths
 	/**
 	 * Chooses a hashing provider for the caller
 	 * 
-	 * @return Meshing_Hash_Base
+	 * @return Meshing_Hash_Strategy_Basic
 	 */
-	public function getHashProvider(PropelPDO $con)
+	public function getHashProvider(PropelPDO $con = null)
 	{
 		return new Meshing_Hash_Strategy_Basic($con);
 	}
