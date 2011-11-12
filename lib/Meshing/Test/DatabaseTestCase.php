@@ -272,6 +272,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	{
 		$node = new TestModelKnownNode();
 		$node->setName('Us!');
+		$node->setFqdn('http://example.com/path');
 		$node->save($con);
 
 		return $node;
