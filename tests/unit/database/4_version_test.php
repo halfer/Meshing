@@ -104,6 +104,49 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		// @todo Check that deleting a row results in a soft delete
 	}
 
+	public function testBadVersionNumbers()
+	{
+		// Retrieve the previously set up organiser row
+		/* @var $organiser TestModelTestOrganiser */
+		$organiser = TestModelTestOrganiserQuery::create()->findOne($this->con);
+
+		$error = false;
+		try
+		{
+			$organiser->getHash($this->con, 0);
+		}
+		catch (Exception $e)
+		{
+			$error = true;
+		}
+		$this->assertTrue($error, 'Checking that zero is a bad version number');
+
+		// Count number of versions; ensure v is a good number...
+		$count = $organiser->countVersions($this->con);
+		$error = false;
+		try
+		{
+			$organiser->getHash($this->con, $count);
+		}
+		catch (Exception $e)
+		{
+			$error = true;
+		}
+		$this->assertFalse($error, 'Checking that the last version is a good version number');
+
+		// ... and ensure v + 1 is a bad number
+		$error = false;
+		try
+		{
+			$organiser->getHash($this->con, $count + 1);
+		}
+		catch (Exception $e)
+		{
+			$error = true;
+		}
+		$this->assertTrue($error, 'Checking that max(version) + 1 is a bad version number');
+	}
+
 	/**
 	 * Saves data in a versioned way, using a specific array format
 	 * 
