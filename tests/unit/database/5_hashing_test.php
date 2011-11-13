@@ -26,6 +26,7 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 		$paths = Meshing_Utils::getPaths();
 		$strategy = new Meshing_Hash_Strategy_Basic($this->con);
 		$paths->setHashProvider($strategy);
+		$this->clearProviderCache();
 
 		return $strategy;
 	}
@@ -35,8 +36,18 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 		$paths = Meshing_Utils::getPaths();
 		$strategy = new Meshing_Hash_Strategy_Version($this->con);
 		$paths->setHashProvider($strategy);
+		$this->clearProviderCache();
 
 		return $strategy;
+	}
+
+	/**
+	 * Clears the static object variables used to cache a provider per connection
+	 */
+	protected function clearProviderCache()
+	{
+		$o = new MeshingBaseObject();
+		$o->clearHashProviders();
 	}
 
 	public function testBasicHash()
@@ -70,24 +81,13 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 		);
 	}
 
-	public function testNoHashOnNewRows()
+	public function testNullHashOnNewRows()
 	{
 		// This should throw an exception
 		$event = new TestModelTestEvent();
-		$error = false;
-		try
-		{
-			$version = $event->getHash($this->con);
-		}
-		catch (Exception $e)
-		{
-			$error = true;
-		}
-
-		// Check that an error was thrown
-		$this->assertTrue(
-			$error,
-			'Check that getting a hash on an unsaved row throws an exception'
+		$this->assertNull(
+			$event->getHash($this->con),
+			'Check that getting a hash on an unsaved row returns null'
 		);
 	}
 
@@ -97,8 +97,7 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 	public function testNullVersusEmptyStringHashing()
 	{
 		// Do initial save with an empty, non-null value
-		$organiser = TestModelTestOrganiserQuery::create()->
-			findOne($this->con);
+		$organiser = TestModelTestOrganiserQuery::create()->findOne($this->con);
 		$organiser->setEmail('');
 		$organiser->save($this->con);
 
@@ -123,6 +122,16 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 	public function testVersionHash()
 	{
 		$strategy = $this->useVersionStrategy();
+
+		// Get an organiser record
+		$organiser = TestModelTestOrganiserQuery::create()->findOne($this->con);
+
+		// Create a record
+		$event = new TestModelTestEvent();
+		$event->setCreatorNodeId($this->node->getId());
+		$event->setName('Small-Scale Oil Drilling For Cats');
+		$event->setTestModelTestOrganiser($organiser);
+		$event->save($this->con);
 
 		// @todo ...
 	}

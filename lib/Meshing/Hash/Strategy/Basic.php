@@ -30,10 +30,10 @@ class Meshing_Hash_Strategy_Basic
 	 */
 	public function getHash(BaseObject $object, $version = null)
 	{
-		// Initial check (@todo maybe it would be OK to return null here?)
+		// Return null if not saved, as there is no previous hash to get
 		if ($object->isNew())
 		{
-			throw new Exception('New rows do not have hashes set');
+			return null;
 		}
 
 		$crit = $object->getSelectAllVersionsCriteria();
@@ -67,6 +67,13 @@ class Meshing_Hash_Strategy_Basic
 			$crit,
 			$this->con
 		);
+
+		// There's a gap between saving a row and its version row. So, if we're in an insert
+		// and using the Version hash provider, we must catch having no versionable row.
+		if (!$row)
+		{
+			return null;
+		}
 
 		return $row->getMeshingHash();
 	}
