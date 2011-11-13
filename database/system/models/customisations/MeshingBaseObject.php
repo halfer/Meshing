@@ -361,20 +361,24 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	/**
 	 * Gets an instance of the hashing object
 	 * 
-	 * FIXME If this is called twice with different connections, the second one will be wrong
+	 * It is possible that Meshing will connect to several connections, either in a production
+	 * nodeset where several databases are in use, or in testing. To ensure our provider uses
+	 * the right connection, we cache hash providers per connection.
 	 * 
 	 * @staticvar Meshing_Hash_Base $hashProvider
+	 * @param PropelPDO $con
 	 * @return Meshing_Hash_Base
 	 */
-	protected function getHashProvider(PropelPDO $con)
+	protected function getHashProvider(Meshing_Database_Connection $con)
 	{
-		static $hashProvider;
+		static $hashProviders = array();
 
-		if (!$hashProvider)
+		$key = (string) $con;
+		if (!array_key_exists($key, $hashProviders))
 		{
-			$hashProvider = Meshing_Utils::getPaths()->getHashProvider($con);
+			$hashProviders[$key] = Meshing_Utils::getPaths()->getHashProvider($con);
 		}
 
-		return $hashProvider;
+		return $hashProviders[$key];
 	}
 }

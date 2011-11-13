@@ -8,6 +8,7 @@
 					<dsn>pgsql:host=localhost; dbname=meshing_system; user=jon; password=</dsn>
 					<user>jon</user>
 					<password></password>
+					<classname>Meshing_Database_Connection</classname>
 				</connection>
 			</datasource>
 
@@ -17,6 +18,7 @@
 					<dsn>pgsql:host=localhost; dbname=meshing_test; user=jon; password=</dsn>
 					<user>jon</user>
 					<password></password>
+					<classname>Meshing_Database_Connection</classname>
 				</connection>
 			</datasource>
 		</datasources>
