@@ -13,12 +13,13 @@
  *
  * @author jon
  */
-class Meshing_Hash_Strategy_WithVersion extends Meshing_Hash_Strategy_Basic
+class Meshing_Hash_Strategy_Version extends Meshing_Hash_Strategy_Basic
 {
 	protected function preHash(MeshingBaseObject $object, array $values)
 	{
 		// Get previous hash to add into the current hashing process
-		$values[] = $object->getHash($this->con);
+		$previousHash = $object->getHash($this->con);
+		$values[] = $previousHash . $this->getValueTerminator($previousHash);
 
 		return $values;
 	}

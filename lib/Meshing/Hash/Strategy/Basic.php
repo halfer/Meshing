@@ -116,7 +116,7 @@ class Meshing_Hash_Strategy_Basic
 				$value = $this->getRowValue($object, $columnMap);
 			}
 
-			$values[] = $value;
+			$values[] = $value . $this->getValueTerminator($value);
 		}
 
 		// Last chance for child classes to modify before it gets hashed
@@ -128,6 +128,11 @@ class Meshing_Hash_Strategy_Basic
 	protected function getHashableColumns(MeshingBaseObject $object, TableMap $tableMap)
 	{
 		return $tableMap->getColumns();
+	}
+
+	public function getValueTerminator($value)
+	{
+		return (is_null($value) ? 0 : 1) . '|';
 	}
 
 	protected function preHash(MeshingBaseObject $object, array $values)

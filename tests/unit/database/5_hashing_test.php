@@ -24,13 +24,25 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 	protected function useBasicStrategy()
 	{
 		$paths = Meshing_Utils::getPaths();
-		$paths->setHashProvider(new Meshing_Hash_Strategy_Basic($this->con));		
+		$strategy = new Meshing_Hash_Strategy_Basic($this->con);
+		$paths->setHashProvider($strategy);
+
+		return $strategy;
 	}
 
-	public function testSimpleSha1()
+	protected function useVersionStrategy()
 	{
-		$this->useBasicStrategy();
-		
+		$paths = Meshing_Utils::getPaths();
+		$strategy = new Meshing_Hash_Strategy_Version($this->con);
+		$paths->setHashProvider($strategy);
+
+		return $strategy;
+	}
+
+	public function testBasicHash()
+	{
+		$strategy = $this->useBasicStrategy();
+
 		// Create a record
 		$organiser = new TestModelTestOrganiser();
 		$organiser->setCreatorNodeId($this->node->getId());
@@ -38,13 +50,19 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 		$organiser->setEmail('email@example.com');
 		$organiser->save($this->con);
 
-		// Calc the hash and see if it is okay
-		$expectedHash = sha1(
-			$organiser->getId() .
-			$organiser->getName() .
-			$organiser->getEmail() .
-			$organiser->getTestModelKnownNode($this->con)->getFqdn()
+		// Calc the hash and see if it is okay (interleaved 1s = "preceding value not null")
+		$values = array(
+			$organiser->getId(),
+			$organiser->getName(),
+			$organiser->getEmail(),
+			$organiser->getTestModelKnownNode($this->con)->getFqdn(),
 		);
+		$out = '';
+		foreach ($values as $value)
+		{
+			$out .= $value . $strategy->getValueTerminator($value);
+		}
+		$expectedHash = sha1($out);
 		$this->assertEqual(
 			$expectedHash,
 			$organiser->getHash($this->con),
@@ -71,5 +89,41 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 			$error,
 			'Check that getting a hash on an unsaved row throws an exception'
 		);
+	}
+
+	/**
+	 * Since null and empty string cast to the same string, check their hashes are different
+	 */
+	public function testNullVersusEmptyStringHashing()
+	{
+		// Do initial save with an empty, non-null value
+		$organiser = TestModelTestOrganiserQuery::create()->
+			findOne($this->con);
+		$organiser->setEmail('');
+		$organiser->save($this->con);
+
+		// Get the hash of the current record
+		$hash = $organiser->getHash($this->con);
+
+		// Now do a save with a null value
+		$organiser->setEmail(null);
+		$organiser->save($this->con);
+
+		// Compare the hash values - they should be different
+		$this->assertNotEqual(
+			$hash,
+			$organiser->getHash($this->con),
+			'Check that empty string and null hash to different values'
+		);
+	}
+
+	/**
+	 * Checks that the version hash is working
+	 */
+	public function testVersionHash()
+	{
+		$strategy = $this->useVersionStrategy();
+
+		// @todo ...
 	}
 }
