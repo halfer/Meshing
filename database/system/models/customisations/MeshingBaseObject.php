@@ -358,6 +358,8 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		return $this->getHashProvider($con)->calcHash($this, $hashFunction);
 	}
 
+	protected static $hashProviders = array();
+
 	/**
 	 * Gets an instance of the hashing object
 	 * 
@@ -371,14 +373,23 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	 */
 	protected function getHashProvider(Meshing_Database_Connection $con)
 	{
-		static $hashProviders = array();
-
 		$key = (string) $con;
-		if (!array_key_exists($key, $hashProviders))
+		if (!array_key_exists($key, self::$hashProviders))
 		{
-			$hashProviders[$key] = Meshing_Utils::getPaths()->getHashProvider($con);
+			self::$hashProviders[$key] = Meshing_Utils::getPaths()->getHashProvider($con);
 		}
 
-		return $hashProviders[$key];
+		return self::$hashProviders[$key];
+	}
+
+	/**
+	 * Clears cached hash providers
+	 * 
+	 * This is only really useful for testing - we wouldn't normally want to mix hash
+	 * providers on the one connection
+	 */
+	public function clearHashProviders()
+	{
+		self::$hashProviders = array();
 	}
 }
