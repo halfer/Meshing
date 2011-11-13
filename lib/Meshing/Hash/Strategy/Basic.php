@@ -52,7 +52,7 @@ class Meshing_Hash_Strategy_Basic
 				throw new Exception('The version number must be 1 or greater');
 			}
 
-			$maxVersion = $object->countVersions($con);
+			$maxVersion = $object->countVersions($this->con);
 			if ($version > $maxVersion)
 			{
 				throw new Exception('There are not that many versions for this row');

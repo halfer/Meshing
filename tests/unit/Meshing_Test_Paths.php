@@ -7,6 +7,8 @@
  */
 class Meshing_Test_Paths extends Meshing_Paths
 {
+	protected $hashProvider;
+
 	/**
 	 * Returns the test model config folder
 	 * 
@@ -29,5 +31,28 @@ class Meshing_Test_Paths extends Meshing_Paths
 	protected function getGeneratedPath($path)
 	{
 		return '/tests' . $path;
+	}
+
+	/**
+	 * Gets the hash provider for test purposes
+	 * 
+	 * @param PropelPDO $con
+	 * @return Meshing_Hash_Strategy_Basic
+	 */
+	public function getHashProvider(PropelPDO $con = null)
+	{
+		return $this->hashProvider ? $this->hashProvider : parent::getHashProvider($con);
+	}
+
+	/**
+	 * Useful to set an alternative hash provider for testing
+	 * 
+	 * @todo Maybe use an interface rather than hardwiring to Meshing_Hash_Strategy_Basic?
+	 * 
+	 * @param Meshing_Hash_Strategy_Basic $hashProvider 
+	 */
+	public function setHashProvider(Meshing_Hash_Strategy_Basic $hashProvider)
+	{
+		$this->hashProvider = $hashProvider;
 	}
 }
