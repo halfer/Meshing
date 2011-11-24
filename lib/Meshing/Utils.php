@@ -55,7 +55,7 @@ class Meshing_Utils
 	/**
 	 * Initialise the database (we don't always want this, so it's offered separately)
 	 */
-	public static function initialiseDb()
+	public static function initialiseDb($testMode = false)
 	{
 		$projectRoot = self::getProjectRoot();
 		
@@ -69,7 +69,7 @@ class Meshing_Utils
 		Propel::init($projectRoot . self::getPaths()->getPathConnsSystem() . '/database-conf.php');
 
 		// Not normally needed, but the tests use this connection approach even for node schemas
-		self::autoloadMeshingClasses();
+		self::autoloadMeshingClasses($testMode);
 	}
 
 	/**
@@ -77,7 +77,7 @@ class Meshing_Utils
 	 * 
 	 * @param mixed $schemas An array of schema names, or a string schema name
 	 */
-	public static function initialiseNodeDbs($schemaNames)
+	public static function initialiseNodeDbs($schemaNames, $testMode = false)
 	{
 		$loader = PropelAutoloader::getInstance();
 		
@@ -95,10 +95,10 @@ class Meshing_Utils
 			$loader->addClassPaths($map);
 		}
 
-		self::autoloadMeshingClasses();
+		self::autoloadMeshingClasses($testMode);
 	}
 
-	protected static function autoloadMeshingClasses()
+	protected static function autoloadMeshingClasses($testMode = false)
 	{
 		// Propel needs to autoload our custom base classes too
 		$projectRoot = self::getProjectRoot();
@@ -107,8 +107,16 @@ class Meshing_Utils
 		$loader->addClassPath('MeshingBaseObject', $path . '/MeshingBaseObject.php');
 		$loader->addClassPath('MeshingBasePeer', $path . '/MeshingBasePeer.php');
 
-		// For testing locking, but no harm in adding it here
-		$loader->addClassPath('TestMeshingBaseObject', $path . '/TestMeshingBaseObject.php');
+		// Optionally add in test classes
+		if ($testMode)
+		{
+			$loader->addClassPaths(
+				array(
+					'TestMeshingBaseObject'		=> $path . '/TestMeshingBaseObject.php',
+					'TestMeshingBaseObject2'	=> $path . '/TestMeshingBaseObject2.php',
+				)
+			);
+		}
 	}
 
 	/**

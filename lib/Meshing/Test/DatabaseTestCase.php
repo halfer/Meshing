@@ -119,7 +119,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		}
 	}
 
-	protected function doFixup()
+	protected function doFixup($package = null, $tablePrefix = null)
 	{
 		// Convert schema to node format (no class prefix)
 		$fixup = new Meshing_Schema_Fixup(
@@ -128,7 +128,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		);
 		$fixup->setBaseClass($this->getBaseClass());
 		$fixup->setBasePeer($this->getBasePeer());
-		$fixup->fixup($this->getPackage());
+		$fixup->fixup($package ? $package : $this->getPackage(), $tablePrefix);
 	}
 
 	protected function getBaseClass()
@@ -268,9 +268,8 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	 * @param PropelPDO $con PDO connection object
 	 * @return TestModelKnownNode 
 	 */
-	protected function createKnownNode(PropelPDO $con = null)
+	protected function createKnownNode(BaseObject $node, PropelPDO $con = null)
 	{
-		$node = new TestModelKnownNode();
 		$node->setName('Us!');
 		$node->setFqdn('http://example.com/path');
 		$node->save($con);

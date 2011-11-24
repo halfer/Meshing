@@ -17,7 +17,7 @@ $token = array_key_exists(1, $argv) ? $argv[1] : null;
 if ($token == CHILD_TOKEN)
 {
 	// Initialise database (normally done by DatabaseTestCase)
-	Meshing_Utils::initialiseDb();
+	Meshing_Utils::initialiseDb($testMode = true);
 	
 	// Run child test
 	new LockingTestCaseChild($argv[2]);
@@ -35,6 +35,7 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 	{
 		// Same package name as test 2
 		parent::__construct('test_model', $label);
+		$this->node = $this->createKnownNode(new TestModelKnownNode(), $this->con);
 
 		// Create/empty the log
 		$logDir = Meshing_Utils::getProjectRoot() . Meshing_Utils::getPaths()->getTestLogPath();

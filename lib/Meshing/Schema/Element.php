@@ -31,6 +31,20 @@ class Meshing_Schema_Element extends SimpleXMLElement
 		}
 	}
 
+	/**
+	 * Takes a copy of the table name, adds the supplied prefix, then camel-cases the result
+	 * 
+	 * @param string $tablePrefix A prefix in lower-case underscored format
+	 */
+	public function setClassPrefix($tablePrefix)
+	{
+		$filter = new Zend_Filter_Word_UnderscoreToCamelCase();
+		foreach ($this->xpath('/database/table') as $table)
+		{
+			$table['phpName'] = $filter->filter($tablePrefix . '_' . $table['name']);
+		}
+	}
+
 	public function setPackageName($tablePrefix)
 	{
 		$this['package'] = $tablePrefix;

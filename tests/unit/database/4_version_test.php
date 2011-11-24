@@ -10,44 +10,110 @@ Meshing_Utils::reinitialise(new Meshing_Test_Paths());
 // Init simpletest
 require_once 'simpletest/autorun.php';
 
+/**
+ * Note: we make use of a custom base object in order to open protected methods
+ * up to unit testing. We cannot re-use classes of the old prefix (TestModel) since
+ * they have already been loaded into memory and cannot be unloaded or redefined.
+ * 
+ * We also cannot just add the new models to the map in the normal way (by loading
+ * the peer) as they refer to the same tables as the old ones. We therefore have to
+ * clear out the old map and rebuild it manually.
+ */
 class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 {
 	public function __construct($label = false)
 	{
-		// Same package name as test 2
-		parent::__construct('test_model', $label);
+		// Different package name to test 2
+		parent::__construct('test_version', $label);
+
+		// Clear out old table map, create us a new one
+		$this->resetDatabaseMap(
+			BaseTestVersionTestOrganiserPeer::DATABASE_NAME,
+			array(
+				'TestVersionTestOrganiserTableMap',
+				'TestVersionTestEventTableMap',
+				'TestVersionKnownNodeTableMap',
+			)
+		);
+
+		$this->node = $this->createKnownNode(new TestVersionKnownNode(), $this->con);
 
 		// Create a cache for rows we write
 		$this->objects = array();
 	}
 
+	public function testVersionableRowCreation()
+	{
+		// Create two records with a number of versions each
+		$ok = $this->createNRows(5, 'record 1');
+		$ok = $this->createNRows(8, 'record 2');
+		
+		// Make sure there are the expected number of current records
+		$rows = TestVersionTestOrganiserQuery::create()->orderById()->find($this->con);
+		$this->assertEqual(count($rows), 2);
+
+		// Check the versions on each
+		$record1 = $rows[0];
+		$vsnRow = $record1->callCreateVersionableRow($this->con);
+
+		// @todo Actual tests go here!
+	}
+
+	/**
+	 * Specify a non-standard parent class for the model generation
+	 * 
+	 * @return string
+	 */
+	protected function getBaseClass()
+	{
+		return 'TestMeshingBaseObject2';
+	}
+
+	protected function createNRows($n, $suffix)
+	{
+		$versions = array();
+		for ($i = 1; $i <= $n; $i++)
+		{
+			$versions[$i] = array(
+				'TestVersionTestOrganiser' => array(
+					'name' => 'Name #' . rand(1, 1000) . ' (' . $suffix . ')',
+					'email' => 'email@example' . rand(1,9999) . '.co.uk',
+				)
+			);
+		}
+		$ok = $this->writeVersionableData($versions, $this->node, $this->con);		
+		$this->clearExistingObjectsCache();
+
+		return $ok;
+	}
+
 	public function testSaveVersions()
-	{		
+	{
 		$versions = array(
 			// Initialisation
 			1 => array(
-				'TestModelTestOrganiser' => array(
+				'TestVersionTestOrganiser' => array(
 					'name' => 'Mr. Badger',
 				),
-				'TestModelTestEvent' => array(
+				'TestVersionTestEvent' => array(
 					'name' => 'Expert Tunnelling In The Built Environment',
 					'description' => 'A fascinating presentation on how the modern badger can use human methods of construction for a long-lasting sett',
 					'location' => 'Birmingham Town Hall', 'nearest_city' => 'Birmingham, UK',
 					'start_time' => '2011-11-02 19:30:00', 'duration_mins' => 60,
-					'TestModelTestOrganiser' => 'FOREIGN_KEY',
+					'TestVersionTestOrganiser' => 'FOREIGN_KEY',
 				),
 			),
 			
 			// Change the email address for the organiser
 			2 => array(
-				'TestModelTestOrganiser' => array(
+				'TestVersionTestOrganiser' => array(
 					'email' => 'mr_badger@dontpokebadgerswithspoons.com',
 				),
 			),
 			
 			// Sadly Mr. Badger has had to drop out, but we have a new speaker
 			3 => array(
-				'TestModelTestOrganiser' => array(
+				'TestVersionTestOrganiser' => array(
 					'name' => 'Mr. Brian Furry',
 					'email' => 'brian.furry@wwf.org',
 				),
@@ -59,11 +125,11 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$this->assertTrue($ok, 'Write versionable data to the database');
 
 		/*
-		 * @var $organiser TestModelTestOrganiser
-		 * @var $event TestModelTestEvent
+		 * @var $organiser TestVersionTestOrganiser
+		 * @var $event TestVersionTestEvent
 		 */
-		$organiser = $this->objects['TestModelTestOrganiser'];
-		$event = $this->objects['TestModelTestEvent'];
+		$organiser = $this->objects['TestVersionTestOrganiser'];
+		$event = $this->objects['TestVersionTestEvent'];
 
 		// Check the expected number of versions
 		$this->assertEqual($event->countVersions($this->con), 1);
@@ -73,22 +139,22 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$count = MeshingBasePeer::countNewVersions(
 			$event->getPrimaryKey(),
 			$this->con,
-			'TestModelTestEvent'
+			'TestVersionTestEvent'
 		);
 		$this->assertEqual($count, 1, 'Checking counts of version rows are OK');
 	
 		$count = MeshingBasePeer::countOldVersions(
 			$organiser->getPrimaryKey(),
 			$this->con,
-			'TestModelTestOrganiser'
+			'TestVersionTestOrganiser'
 		);
 		$this->assertEqual($count, 2, 'Checking counts of version rows are OK');
 
 		// Check all versions have a timestamp
-		$count1 = TestModelTestEventVersionableQuery::create()->
+		$count1 = TestVersionTestEventVersionableQuery::create()->
 			filterByTimeApplied(null, Criteria::ISNULL)->
 			count($this->con);
-		$count2 = TestModelTestOrganiserVersionableQuery::create()->
+		$count2 = TestVersionTestOrganiserVersionableQuery::create()->
 			filterByTimeApplied(null, Criteria::ISNULL)->
 			count($this->con);			
 		$this->assertTrue(
@@ -107,8 +173,8 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 	public function testBadVersionNumbers()
 	{
 		// Retrieve the previously set up organiser row
-		/* @var $organiser TestModelTestOrganiser */
-		$organiser = TestModelTestOrganiserQuery::create()->findOne($this->con);
+		/* @var $organiser TestVersionTestOrganiser */
+		$organiser = TestVersionTestOrganiserQuery::create()->findOne($this->con);
 
 		$error = false;
 		try
@@ -152,9 +218,9 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 	 * 
 	 * @param array $versions 
 	 */
-	protected function writeVersionableData($versions, TestModelKnownNode $node, PDO $con = null)
+	protected function writeVersionableData($versions, TestVersionKnownNode $node, PDO $con = null)
 	{
-		/* @var $object TestModelTestEvent */
+		/* @var $object TestVersionTestEvent */
 		$ok = true;
 		foreach ($versions as $versionNo => $versionData)
 		{
@@ -200,5 +266,10 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		}
 
 		return $ok;
+	}
+
+	protected function clearExistingObjectsCache()
+	{
+		$this->objects = array();
 	}
 }

@@ -27,9 +27,10 @@ class Meshing_Schema_Fixup
 	/**
 	 * Applies the standard 'fixup' process to node schemas
 	 *
-	 * @param type $schemaName
+	 * @param string $schemaName The folder name that the resulting model will be accessed under
+	 * @param string $tablePrefix Usually the same
 	 */
-	public function fixup($schemaName)
+	public function fixup($schemaName, $tablePrefix = null)
 	{
 		// Change existing FKs into composite keys (add creator node col)
 		$this->xml->repairForeignKeys();
@@ -68,10 +69,19 @@ class Meshing_Schema_Fixup
 		// Now add the known nodes table
 		$this->xml->insertTable($this->snippetDir . '/known_nodes.xml');
 
-		// Use the schema name as a table prefix and as a package name
-		$prefix = strtolower($schemaName);
-		$this->xml->prefixTablesManually($prefix . '_');
-		$this->xml->setPackageName($prefix);
+		// Do class prefixing before table prefixing, since it uses unprefixed table names
+		if ($tablePrefix)
+		{
+			$this->xml->setClassPrefix($schemaName);
+			$this->xml->prefixTablesManually($tablePrefix . '_');
+		}
+		else
+		{
+			$this->xml->prefixTablesManually($schemaName . '_');			
+		}
+
+		// Use the schema name as a package name
+		$this->xml->setPackageName($schemaName);
 		
 		// Save the file under the same name
 		$this->xml->asXML($this->filename);

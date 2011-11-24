@@ -75,7 +75,7 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 		$con = Propel::getConnection('test');
 
 		// Create an entry to satisfy later constraints
-		$node = $this->createKnownNode($con);
+		$node = $this->createKnownNode(new TestModelKnownNode(), $con);
 
 		try
 		{

@@ -16,6 +16,18 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 	{
 		// Same package name as test 2
 		parent::__construct('test_model', $label);
+
+		// Since a previous test needed to clear the db map, we need to rebuild it
+		$this->resetDatabaseMap(
+			BaseTestVersionTestOrganiserPeer::DATABASE_NAME,
+			array(
+				'TestModelTestOrganiserTableMap',
+				'TestModelTestEventTableMap',
+				'TestModelKnownNodeTableMap',
+			)
+		);
+
+		$this->node = $this->createKnownNode(new TestModelKnownNode(), $this->con);
 	}
 
 	/**

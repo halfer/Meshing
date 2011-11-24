@@ -12,17 +12,30 @@ abstract class Meshing_Test_ModelTestCase extends Meshing_Test_DatabaseTestCase
 		parent::__construct($package, $label);
 
 		// Clear db away from previous tests
-		$this->doFixup();
+		$this->doFixup($package, 'test_model');
 		$this->_testClassBuilder('TestModel', $runTests = false);
 		$this->_testSqlBuilder($runTests);
 		$this->_testConfBuilder($runTests);
 		$this->_testSqlRunner($runTests);
 
 		// Init the database connections
-		Meshing_Utils::initialiseDb();
+		Meshing_Utils::initialiseDb($testMode = true);
 		$this->con = Propel::getConnection('test');
+	}
 
-		// Create an entry to satisfy later constraints
-		$this->node = $this->createKnownNode($this->con);
+	/**
+	 * Clears and repopulates the DatabaseMap with new TableMap classes
+	 * 
+	 * @param type $name
+	 * @param type $tableMapClassNames 
+	 */
+	protected function resetDatabaseMap($name, array $tableMapClassNames)
+	{
+		$dbMap = new DatabaseMap($name);
+		foreach ($tableMapClassNames as $tableMapClassName)
+		{
+			$dbMap->addTableFromMapClass($tableMapClassName);
+		}
+		Propel::setDatabaseMap($name, $dbMap);
 	}
 }
