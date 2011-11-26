@@ -45,8 +45,8 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 	public function testVersionableRowCreation()
 	{
 		// Create two records with a number of versions each
-		$ok = $this->createNRows(5, 'record 1');
-		$ok = $this->createNRows(8, 'record 2');
+		$ok = $this->createNRows($v1 = 5, 'record 1');
+		$ok = $this->createNRows($v2 = 8, 'record 2');
 		
 		// Make sure there are the expected number of current records
 		$rows = TestVersionTestOrganiserQuery::create()->orderById()->find($this->con);
@@ -55,8 +55,11 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		// Check the versions on each
 		$record1 = $rows[0];
 		$vsnRow = $record1->callCreateVersionableRow($this->con);
+		$this->assertEqual($vsnRow->getVersion(), $v1 + 1);
 
-		// @todo Actual tests go here!
+		$record2 = $rows[1];
+		$vsnRow = $record2->callCreateVersionableRow($this->con);
+		$this->assertEqual($vsnRow->getVersion(), $v2 + 1);
 	}
 
 	/**

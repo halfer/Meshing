@@ -132,7 +132,7 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	 * 
 	 * @todo Swap out hardwired column for peer constants
 	 * 
-	 * @param type $time
+	 * @param PropelPDO $con
 	 * @return vsnName 
 	 */
 	protected function createVersionableRow(PropelPDO $con = null)
@@ -142,8 +142,28 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		$vsnName = $this->getVersionableRowName();
 		$vsn = new $vsnName();
 
-		// Get max version
+		// Set up a query object
+		/* @var $query TestModelTestOrganiserVersionableQuery */
 		$query = call_user_func(array($this->getVersionableQueryName(), 'create'));
+
+		// Let's get the primary key names
+		/* @var $tableMap TestModelTestOrganiserVersionableTableMap */
+		$tableMap = $this->getVersionableMap();
+		/* @var $columnMap ColumnMap */
+		foreach ($tableMap->getPrimaryKeys() as $columnMap)
+		{
+			// Include any PK column except for version
+			$phpName = $columnMap->getPhpName();
+			if ($phpName != 'Version')
+			{
+				$query->filterBy(
+					$phpName,
+					$current = $this->getByName($phpName, BasePeer::TYPE_PHPNAME)
+				);
+			}
+		}
+
+		// Get max version
 		$maxVersion = $query->
 			withColumn('MAX(version)', 'max')->
 			select('max')->
@@ -246,6 +266,15 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		return $count;
 	}
 
+	/**
+	 * Count number of versions just in the versionable table
+	 * 
+	 * @todo Suggested optimisation - if old_versions > 1, then new_versions must be 1
+	 *			(that will save a select :-)
+	 * 
+	 * @param PropelPDO $con
+	 * @return integer Number of previous versions for this record 
+	 */
 	public function countOldVersions(PropelPDO $con = null)
 	{
 		return $this->countVersions($con) - $this->countNewVersions($con);
@@ -268,6 +297,27 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		
 	}
 
+	public function getNumberedVersion($version)
+	{
+		// Filter out dodgy version numbers
+		if ($version < 1)
+		{
+			throw new Exception('Version numbers must be 1 or greater');
+		}
+
+		// Create a versionable instance
+		$vsnName = $this->getVersionableRowName();
+		$vsn = new $vsnName();
+
+		// Get the pk criteria for the versionable
+		$keys = $this->getPrimaryKey();
+		$keys = is_array($keys) ? $keys : array($keys);
+		$vsn->setPrimaryKey(array_merge($keys, array($version)));
+		$crit = $vsn->buildPkeyCriteria();
+
+		// Do a select
+	}
+
 	/**
 	 * Provides the class with metadata to save with the object
 	 * 
@@ -286,9 +336,9 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 
 	protected function reselectThisRow(PropelPDO $con = null)
 	{
-		$key = array_merge($this->getPrimaryKey(), array($con));
+		$params = array_merge($this->getPrimaryKey(), array($con));
 
-		return call_user_func_array(array($this->getPeerName(), 'retrieveByPK'), $key);
+		return call_user_func_array(array($this->getPeerName(), 'retrieveByPK'), $params);
 	}
 
 	public function getRowName()
