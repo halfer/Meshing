@@ -175,7 +175,14 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		// Check that some previous versions have the correct old values
 		$this->assertEqual($organiser->getNumberedVersion(1)->getName(), 'Mr. Badger');
 		$this->assertEqual($organiser->getNumberedVersion(2)->getName(), 'Mr. Badger');
-		$this->assertEqual($organiser->getNumberedVersion(3)->getEmail(), 'brian.furry@wwf.org');
+		$this->assertEqual(
+			$organiser->getNumberedVersion(3)->getEmail(),
+			'brian.furry@wwf.org'
+		);
+		$this->assertEqual(
+			$organiser->getNumberedVersion(2)->getEmail(),
+			'mr_badger@dontpokebadgerswithspoons.com'
+		);
 
 		// @todo Check that deleting a row results in a soft delete
 	}
