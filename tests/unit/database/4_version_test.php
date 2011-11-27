@@ -40,6 +40,10 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 
 		// Create a cache for rows we write
 		$this->objects = array();
+
+		// I've witnessed incorrect caching on 27 Nov 2011, might be due to my messing about
+		// with Propel internals too much. Disabling pooling for tests :-0
+		Propel::disableInstancePooling();
 	}
 
 	public function testVersionableRowCreation()
@@ -168,7 +172,10 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		// Check that the event has a non-null hash
 		$this->assertNotNull($event->getHash($this->con), 'Check row hash is not null');
 
-		// @todo Check that some previous versions have the correct old values
+		// Check that some previous versions have the correct old values
+		$this->assertEqual($organiser->getNumberedVersion(1)->getName(), 'Mr. Badger');
+		$this->assertEqual($organiser->getNumberedVersion(2)->getName(), 'Mr. Badger');
+		$this->assertEqual($organiser->getNumberedVersion(3)->getEmail(), 'brian.furry@wwf.org');
 
 		// @todo Check that deleting a row results in a soft delete
 	}

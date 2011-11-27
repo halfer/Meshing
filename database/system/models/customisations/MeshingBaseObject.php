@@ -14,6 +14,12 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	/**
 	 * Create a version (containing no column data, just metadata) after a new row is inserted
 	 * 
+	 * @see http://blog.jondh.me.uk/2011/11/relational-database-versioning-strategies/
+	 * 
+	 * This presently implements the "Version Previous" strategy, see #38 on offering
+	 * the choice between this and "Version Current", which should give slightly better
+	 * performance.
+	 * 
 	 * @param PropelPDO $con 
 	 */
 	public function postInsert(PropelPDO $con = null)
@@ -67,6 +73,12 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	 * 
 	 * Note: if this table is referenced by another table, that 'parent' will be
 	 * preUpdated as well - we just intercept that by checking the modified flag
+	 * 
+	 * @see http://blog.jondh.me.uk/2011/11/relational-database-versioning-strategies/
+	 * 
+	 * This presently implements the "Version Previous" strategy, see #38 on offering
+	 * the choice between this and "Version Current", which should give slightly better
+	 * performance.
 	 * 
 	 * @param PropelPDO $con 
 	 */
@@ -297,7 +309,18 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		
 	}
 
-	public function getNumberedVersion($version)
+	/**
+	 * Retrieves a Versionable Propel object (or null if not found)
+	 * 
+	 * Remember that in versionable rows, the METADATA is for the specified version, and
+	 * the VALUES are for the previous version. So in version 1, the metadata corresponds to
+	 * when version 1 was created, and the values are for version zero (i.e. all null)
+	 * 
+	 * @param integer $version
+	 * @param PropelPDO $con
+	 * @return BaseObject
+	 */
+	public function getNumberedVersion($version, PropelPDO $con = null)
 	{
 		// Filter out dodgy version numbers
 		if ($version < 1)
@@ -305,17 +328,50 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 			throw new Exception('Version numbers must be 1 or greater');
 		}
 
-		// Create a versionable instance
-		$vsnName = $this->getVersionableRowName();
-		$vsn = new $vsnName();
+		// Get the version column name
+		$vsnPeerName = $this->getVersionablePeerName();
+		$vsnColName = constant($vsnPeerName . '::VERSION');
 
-		// Get the pk criteria for the versionable
-		$keys = $this->getPrimaryKey();
-		$keys = is_array($keys) ? $keys : array($keys);
-		$vsn->setPrimaryKey(array_merge($keys, array($version)));
-		$crit = $vsn->buildPkeyCriteria();
+		// Currently using the `Version Previous` strategy, so we need to select two records
+		$c = $this->getSelectAllVersionsCriteria();
+		$crit = $c->getNewCriterion($vsnColName, $version);
+		$crit->addOr($c->getNewCriterion($vsnColName, $version + 1));
+		$c->addAnd($crit);
 
-		// Do a select
+		// Try to get both records here
+		$versions = call_user_func(
+			array($vsnPeerName, 'doSelect'),
+			$c,
+			$con
+		);
+
+		// If we only got one record, we'll need to grab data from the current row (i.e.
+		// we've chosen the last available versionable record)
+		if (count($versions) == 1)
+		{
+			$versions[] = $this;
+		}
+
+		// Return the metadata from [0] and the data from [1], by copying one to the other
+		/* @var $column ColumnMap */
+		foreach ($this->getRowMap()->getColumns() as $column)
+		{
+			// The record in [0] already has PK data
+			if (!$column->isPrimaryKey())
+			{
+				$colName = $column->getPhpName();
+				$versions[0]->setByName(
+					$colName,
+					$versions[1]->getByName($colName, BasePeer::TYPE_PHPNAME),
+					BasePeer::TYPE_PHPNAME
+				);
+			}
+		}
+
+		// Reset the result as if it came from the db directly
+		$versions[0]->resetModified();
+
+		return $versions[0];
 	}
 
 	/**
