@@ -10,6 +10,7 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	protected $metadataTimeEdited;
 	protected $metadataTimeReceived;
 	protected $metadataTimeApplied;
+	protected $metadataTimeDeleted;
 
 	/**
 	 * Create a version (containing no column data, just metadata) after a new row is inserted
@@ -109,7 +110,7 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 			$vsn = $this->createVersionableRow($con);
 
 			// Save the row state as a version before we commit new values
-			$row = $this->reselectThisRow($con);		
+			$row = $this->reselectThisRow($con);
 			$row->copyInto($vsn, $deepCopy = false, $makeNew = false);
 
 			// Let this throw an exception, to be caught higher up
@@ -204,20 +205,31 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		{
 			$vsn->setTimeApplied($this->metadataTimeApplied);
 		}
+		if ($this->metadataTimeDeleted)
+		{
+			$vsn->setTimeDeleted($this->metadataTimeDeleted);
+		}
 
 		return $vsn;
 	}
 
 	/**
-	 *
-	 * @todo Set a deleted timestamp and return false
+	 * Create a new version with a deleted timestamp, then permit the deletion
 	 * 
 	 * @param PropelPDO $con
-	 * @return type 
+	 * @return boolean 
 	 */
 	public function preDelete(PropelPDO $con = null)
 	{
-		return parent::preDelete($con);
+		/* @var $vsn TestModelTestOrganiserVersionable */
+		$vsn = $this->createVersionableRow($con);
+
+		// Save the row state as a version before we permit the delete
+		$row = $this->reselectThisRow($con);
+		$row->copyInto($vsn, $deepCopy = false, $makeNew = false);
+		$vsn->save($con);
+		
+		return true;
 	}
 
 	public function countVersions(PropelPDO $con = null)
@@ -382,12 +394,13 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	 * @param integer $timeApplied 
 	 */
 	public function setVersionMetadata($timeEdited = null, $timeReceived = null,
-		$timeApplied = null
+		$timeApplied = null, $timeDeleted = null
 	)
 	{
 		$this->metadataTimeEdited = $timeEdited;
 		$this->metadataTimeReceived = $timeReceived;
 		$this->metadataTimeApplied = $timeApplied;
+		$this->metadataTimeDeleted = $timeDeleted;
 	}
 
 	protected function reselectThisRow(PropelPDO $con = null)

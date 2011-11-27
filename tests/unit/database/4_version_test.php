@@ -183,8 +183,6 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 			$organiser->getNumberedVersion(2)->getEmail(),
 			'mr_badger@dontpokebadgerswithspoons.com'
 		);
-
-		// @todo Check that deleting a row results in a soft delete
 	}
 
 	public function testBadVersionNumbers()
@@ -228,6 +226,26 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 			$error = true;
 		}
 		$this->assertTrue($error, 'Checking that max(version) + 1 is a bad version number');
+	}
+
+	/**
+	 * Check that hard-deleting a current row results in a soft version delete
+	 * 
+	 * Note: we should test this last, since there may not be many objects to delete :-)
+	 */
+	public function testDeleteRow()
+	{
+		// Get version count
+		$count = TestVersionTestOrganiserVersionableQuery::create()->count($this->con);
+
+		// Get an organiser record
+		$organiser = TestVersionTestOrganiserQuery::create()->findOne();
+		$organiser->setVersionMetadata(null, null, null, $timeDeleted = time());
+		$organiser->delete($this->con);
+
+		// A deletion must increase the version count by one
+		$newCount = TestVersionTestOrganiserVersionableQuery::create()->count($this->con);
+		$this->assertEqual($newCount, $count + 1, 'Checking a delete creates a new version');
 	}
 
 	/**
