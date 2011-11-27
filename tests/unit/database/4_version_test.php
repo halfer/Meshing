@@ -230,22 +230,38 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 
 	/**
 	 * Check that hard-deleting a current row results in a soft version delete
-	 * 
-	 * Note: we should test this last, since there may not be many objects to delete :-)
 	 */
 	public function testDeleteRow()
 	{
+		// Create an organiser record
+		$organiser = new TestVersionTestOrganiser();
+		$organiser->setCreatorNodeId($this->node->getId());
+		$organiser->setName('Mr. Froggy');
+		$organiser->setEmail('buy-our-beefy@lovely-beefy.co.uk');
+		$organiser->save($this->con);
+
+		// Create an extra version, just for fun
+		$organiser->setName('Mr. Beefy');
+		$organiser->save($this->con);
+
 		// Get version count
 		$count = TestVersionTestOrganiserVersionableQuery::create()->count($this->con);
 
-		// Get an organiser record
-		$organiser = TestVersionTestOrganiserQuery::create()->findOne();
+		// OK, now delete it
 		$organiser->setVersionMetadata(null, null, null, $timeDeleted = time());
 		$organiser->delete($this->con);
 
 		// A deletion must increase the version count by one
 		$newCount = TestVersionTestOrganiserVersionableQuery::create()->count($this->con);
 		$this->assertEqual($newCount, $count + 1, 'Checking a delete creates a new version');
+
+		// Check that the old records are still readable
+		$this->assertEqual($organiser->getNumberedVersion(1)->getName(), 'Mr. Froggy');
+		$this->assertEqual(
+			$organiser->getNumberedVersion(2)->getEmail(),
+			'buy-our-beefy@lovely-beefy.co.uk'
+		);
+		// @todo Check that version 3 is deleted (how should this be returned?)
 	}
 
 	/**
