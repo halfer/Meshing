@@ -269,6 +269,13 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 			'Check that a deleted version has a deleted timestamp'
 		);
 
+		// Check that the deleted version's data is correct
+		$this->assertTrue(
+			($organiser->getName() == 'Mr. Beefy') &&
+				($organiser->getEmail() == 'buy-our-beefy@lovely-beefy.co.uk'),
+			"Check a deleted version's data is correct"
+		);
+
 		// Check that this throws an exception
 		$ok = false;
 		try
