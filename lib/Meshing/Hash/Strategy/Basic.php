@@ -25,6 +25,8 @@ class Meshing_Hash_Strategy_Basic
 	/**
 	 * Gets hash of current object, or previous specified version
 	 * 
+	 * Note: version number is sanity-checked in MeshingBaseObject->getHash()
+	 * 
 	 * @param BaseObject $object
 	 * @param integer $version The integer of the version required
 	 */
@@ -46,18 +48,6 @@ class Meshing_Hash_Strategy_Basic
 		}
 		else
 		{
-			// Do some checks on the supplied version number
-			if ($version < 1)
-			{
-				throw new Exception('The version number must be 1 or greater');
-			}
-
-			$maxVersion = $object->countVersions($this->con);
-			if ($version > $maxVersion)
-			{
-				throw new Exception('There are not that many versions for this row');
-			}
-
 			$crit->add($vsnColName, $version);
 		}
 

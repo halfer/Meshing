@@ -363,6 +363,11 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		{
 			$versions[] = $this;
 		}
+		elseif (count($versions) == 0)
+		{
+			// If there is nothing here, our version number is too large
+			throw new Exception('There are not that many versions for this row');
+		}
 
 		// Return the metadata from [0] and the data from [1], by copying one to the other
 		/* @var $column ColumnMap */
@@ -464,6 +469,22 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	 */
 	public function getHash(PropelPDO $con, $version = null)
 	{
+		// Do sanity check if version is not null (null -> get latest)
+		if (!is_null($version))
+		{
+			// Do some checks on the supplied version number
+			if ($version < 1)
+			{
+				throw new Exception('The version number must be 1 or greater');
+			}
+
+			$maxVersion = $this->countVersions($con);
+			if ($version > $maxVersion)
+			{
+				throw new Exception('There are not that many versions for this row');
+			}
+		}
+
 		return $this->getHashProvider($con)->getHash($this, $version);
 	}
 
