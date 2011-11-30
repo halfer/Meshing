@@ -255,13 +255,43 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$newCount = TestVersionTestOrganiserVersionableQuery::create()->count($this->con);
 		$this->assertEqual($newCount, $count + 1, 'Checking a delete creates a new version');
 
-		// Check that the old records are still readable
+		// Check that old records are still readable
 		$this->assertEqual($organiser->getNumberedVersion(1)->getName(), 'Mr. Froggy');
 		$this->assertEqual(
 			$organiser->getNumberedVersion(2)->getEmail(),
 			'buy-our-beefy@lovely-beefy.co.uk'
 		);
-		// @todo Check that version 3 is deleted (how should this be returned?)
+
+		// Check that version 3 is deleted
+		$vsn = $organiser->getNumberedVersion(3);
+		$this->assertNotNull(
+			$vsn->getTimeDeleted(),
+			'Check that a deleted version has a deleted timestamp'
+		);
+
+		// Check that this throws an exception
+		$ok = false;
+		try
+		{
+			$organiser->getNumberedVersion(0);
+		}
+		catch (Exception $e)
+		{
+			$ok = true;
+		}
+		$this->assertTrue($ok, 'Check that a low version number fails');
+
+		// Test that this throws an exception
+		$ok = false;
+		try
+		{
+			$organiser->getNumberedVersion(4);
+		}
+		catch (Exception $e)
+		{
+			$ok = true;
+		}
+		$this->assertTrue($ok, 'Check that a high version number fails');
 	}
 
 	/**

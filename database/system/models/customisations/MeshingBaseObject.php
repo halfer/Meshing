@@ -357,36 +357,41 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 			$con
 		);
 
-		// If we only got one record, we'll need to grab data from the current row (i.e.
-		// we've chosen the last available versionable record)
-		if (count($versions) == 1)
+		// If there is nothing here, our version number is too large
+		if (count($versions) == 0)
 		{
-			$versions[] = $this;
-		}
-		elseif (count($versions) == 0)
-		{
-			// If there is nothing here, our version number is too large
 			throw new Exception('There are not that many versions for this row');
 		}
 
-		// Return the metadata from [0] and the data from [1], by copying one to the other
-		/* @var $column ColumnMap */
-		foreach ($this->getRowMap()->getColumns() as $column)
+		// If the first record is deleted, that's all we need
+		if (!$versions[0]->getTimeDeleted())
 		{
-			// The record in [0] already has PK data
-			if (!$column->isPrimaryKey())
+			// If we only got one record, we'll need to grab data from the current row (i.e.
+			// we've chosen the last available versionable record)
+			if (count($versions) == 1)
 			{
-				$colName = $column->getPhpName();
-				$versions[0]->setByName(
-					$colName,
-					$versions[1]->getByName($colName, BasePeer::TYPE_PHPNAME),
-					BasePeer::TYPE_PHPNAME
-				);
+				$versions[] = $this;
 			}
-		}
 
-		// Reset the result as if it came from the db directly
-		$versions[0]->resetModified();
+			// Return the metadata from [0] and the data from [1], by copying one to the other
+			/* @var $column ColumnMap */
+			foreach ($this->getRowMap()->getColumns() as $column)
+			{
+				// The record in [0] already has PK data
+				if (!$column->isPrimaryKey())
+				{
+					$colName = $column->getPhpName();
+					$versions[0]->setByName(
+						$colName,
+						$versions[1]->getByName($colName, BasePeer::TYPE_PHPNAME),
+						BasePeer::TYPE_PHPNAME
+					);
+				}
+			}
+
+			// Reset the result as if it came from the db directly
+			$versions[0]->resetModified();
+		}
 
 		return $versions[0];
 	}
