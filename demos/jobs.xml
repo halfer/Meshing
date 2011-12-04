@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="propel" defaultIdMethod="native" baseClass="MeshingBaseObject">
-	
-	<!-- Note any primary keys in non-versionable tables will be turned
-		 into ordinary columns, since Meshing adds its own PKs -->
-
+<database name="p2p" defaultIdMethod="native">	
 	<table name="role">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
 		<!-- rows for this record -->
 		<column name="title" type="varchar" size="50" required="true" />
 		<column name="description" type="varchar" size="300" required="true" />
@@ -21,21 +19,19 @@
 		<column name="currency"	type="varchar" size="2" />
 		
 		<!-- foreign keys for this record -->
-		<column name="location_creator_node_id" type="integer" />
-		<column name="location_row_ord" type="integer" />
+		<column name="location_id" type="integer" />
 		<foreign-key foreignTable="location">
-			<reference local="location_creator_node_id" foreign="creator_node_id" />
-			<reference local="location_row_ord" foreign="row_ord" />
+			<reference local="location_id" foreign="id" />
 		</foreign-key>
-		<column name="group_creator_node_id" type="integer" />
-		<column name="group_row_ord" type="integer" />
+		<column name="group_id" type="integer" />
 		<foreign-key foreignTable="group">
-			<reference local="group_creator_node_id" foreign="creator_node_id" />
-			<reference local="group_row_ord" foreign="row_ord" />
+			<reference local="group_id" foreign="id" />
 		</foreign-key>
 	</table>
 
 	<table name="location">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
 		<!-- rows for this record -->
 		<column name="country" type="varchar" size="30" required="true" />
 		<column name="address" type="varchar" size="100" required="true" />
@@ -45,6 +41,8 @@
 	</table>
 	
 	<table name="group">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+
 		<!-- rows for this record -->
 		<column name="name" type="varchar" size="50" required="true" />
 		<column name="email" type="varchar" size="100" />
