@@ -13,6 +13,14 @@ class Meshing_Encryption_Factory
 
 	public static function getEncrypter($type = self::TYPE_DEFAULT)
 	{
-		// @todo
+		static $classInstances = array();
+
+		if (!array_key_exists($type, $classInstances))
+		{
+			$class = 'Meshing_Encryption_' . $type;
+			$classInstances[$type] = new $class;
+		}
+
+		return $classInstances[$type];
 	}
 }
