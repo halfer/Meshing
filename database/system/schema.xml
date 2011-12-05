@@ -53,11 +53,10 @@
 	<table name="p2p_schema_table" phpName="P2PSchemaTable" class="P2PSchemaTable">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 		<column name="schema_id" type="integer" required="true" />
-		<column name="name" type="varchar" size="50" required="true" />
-		<column name="row_ord_current" type="integer" />
 		<foreign-key foreignTable="p2p_schema">
 			<reference local="schema_id" foreign="id" />
 		</foreign-key>
+		<column name="name" type="varchar" size="50" required="true" />
 	</table>
 
 	<!-- This table is for local->local trusts -->
