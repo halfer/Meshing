@@ -3,7 +3,7 @@
 
 
 /**
- * Skeleton subclass for representing a row from the 'p2p_schema_table' table.
+ * Skeleton subclass for representing a row from the 'meshing_schema' table.
  *
  * 
  *
@@ -13,6 +13,6 @@
  *
  * @package    propel.generator.system
  */
-class P2PSchemaTable extends BaseP2PSchemaTable {
+class MeshingSchema extends BaseMeshingSchema {
 
-} // P2PSchemaTable
+} // MeshingSchema

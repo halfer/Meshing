@@ -2,25 +2,25 @@
 
 
 /**
- * Base class that represents a row from the 'p2p_schema_table' table.
+ * Base class that represents a row from the 'meshing_schema_table' table.
  *
  * 
  *
  * @package    propel.generator.system.om
  */
-abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
+abstract class BaseMeshingSchemaTable extends BaseObject  implements Persistent
 {
 
 	/**
 	 * Peer class name
 	 */
-	const PEER = 'P2PSchemaTablePeer';
+	const PEER = 'MeshingSchemaTablePeer';
 
 	/**
 	 * The Peer class.
 	 * Instance provides a convenient way of calling static methods on a class
 	 * that calling code may not be able to identify.
-	 * @var        P2PSchemaTablePeer
+	 * @var        MeshingSchemaTablePeer
 	 */
 	protected static $peer;
 
@@ -43,15 +43,9 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	protected $name;
 
 	/**
-	 * The value for the row_ord_current field.
-	 * @var        int
+	 * @var        MeshingSchema
 	 */
-	protected $row_ord_current;
-
-	/**
-	 * @var        P2PSchema
-	 */
-	protected $aP2PSchema;
+	protected $aMeshingSchema;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -98,20 +92,10 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Get the [row_ord_current] column value.
-	 * 
-	 * @return     int
-	 */
-	public function getRowOrdCurrent()
-	{
-		return $this->row_ord_current;
-	}
-
-	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
-	 * @return     P2PSchemaTable The current object (for fluent API support)
+	 * @return     MeshingSchemaTable The current object (for fluent API support)
 	 */
 	public function setId($v)
 	{
@@ -121,7 +105,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = P2PSchemaTablePeer::ID;
+			$this->modifiedColumns[] = MeshingSchemaTablePeer::ID;
 		}
 
 		return $this;
@@ -131,7 +115,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 * Set the value of [schema_id] column.
 	 * 
 	 * @param      int $v new value
-	 * @return     P2PSchemaTable The current object (for fluent API support)
+	 * @return     MeshingSchemaTable The current object (for fluent API support)
 	 */
 	public function setSchemaId($v)
 	{
@@ -141,11 +125,11 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 
 		if ($this->schema_id !== $v) {
 			$this->schema_id = $v;
-			$this->modifiedColumns[] = P2PSchemaTablePeer::SCHEMA_ID;
+			$this->modifiedColumns[] = MeshingSchemaTablePeer::SCHEMA_ID;
 		}
 
-		if ($this->aP2PSchema !== null && $this->aP2PSchema->getId() !== $v) {
-			$this->aP2PSchema = null;
+		if ($this->aMeshingSchema !== null && $this->aMeshingSchema->getId() !== $v) {
+			$this->aMeshingSchema = null;
 		}
 
 		return $this;
@@ -155,7 +139,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 * Set the value of [name] column.
 	 * 
 	 * @param      string $v new value
-	 * @return     P2PSchemaTable The current object (for fluent API support)
+	 * @return     MeshingSchemaTable The current object (for fluent API support)
 	 */
 	public function setName($v)
 	{
@@ -165,31 +149,11 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 
 		if ($this->name !== $v) {
 			$this->name = $v;
-			$this->modifiedColumns[] = P2PSchemaTablePeer::NAME;
+			$this->modifiedColumns[] = MeshingSchemaTablePeer::NAME;
 		}
 
 		return $this;
 	} // setName()
-
-	/**
-	 * Set the value of [row_ord_current] column.
-	 * 
-	 * @param      int $v new value
-	 * @return     P2PSchemaTable The current object (for fluent API support)
-	 */
-	public function setRowOrdCurrent($v)
-	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->row_ord_current !== $v) {
-			$this->row_ord_current = $v;
-			$this->modifiedColumns[] = P2PSchemaTablePeer::ROW_ORD_CURRENT;
-		}
-
-		return $this;
-	} // setRowOrdCurrent()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -226,7 +190,6 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->schema_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-			$this->row_ord_current = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -235,10 +198,10 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 				$this->ensureConsistency();
 			}
 
-			return $startcol + 4; // 4 = P2PSchemaTablePeer::NUM_HYDRATE_COLUMNS.
+			return $startcol + 3; // 3 = MeshingSchemaTablePeer::NUM_HYDRATE_COLUMNS.
 
 		} catch (Exception $e) {
-			throw new PropelException("Error populating P2PSchemaTable object", $e);
+			throw new PropelException("Error populating MeshingSchemaTable object", $e);
 		}
 	}
 
@@ -258,8 +221,8 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	public function ensureConsistency()
 	{
 
-		if ($this->aP2PSchema !== null && $this->schema_id !== $this->aP2PSchema->getId()) {
-			$this->aP2PSchema = null;
+		if ($this->aMeshingSchema !== null && $this->schema_id !== $this->aMeshingSchema->getId()) {
+			$this->aMeshingSchema = null;
 		}
 	} // ensureConsistency
 
@@ -284,13 +247,13 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(MeshingSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		// We don't need to alter the object instance pool; we're just modifying this instance
 		// already in the pool.
 
-		$stmt = P2PSchemaTablePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+		$stmt = MeshingSchemaTablePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
 		$row = $stmt->fetch(PDO::FETCH_NUM);
 		$stmt->closeCursor();
 		if (!$row) {
@@ -300,7 +263,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aP2PSchema = null;
+			$this->aMeshingSchema = null;
 		} // if (deep)
 	}
 
@@ -320,14 +283,14 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(MeshingSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
 			if ($ret) {
-				P2PSchemaTableQuery::create()
+				MeshingSchemaTableQuery::create()
 					->filterByPrimaryKey($this->getPrimaryKey())
 					->delete($con);
 				$this->postDelete($con);
@@ -362,7 +325,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(MeshingSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$con->beginTransaction();
@@ -382,7 +345,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
-				P2PSchemaTablePeer::addInstanceToPool($this);
+				MeshingSchemaTablePeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
 			}
@@ -416,23 +379,23 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aP2PSchema !== null) {
-				if ($this->aP2PSchema->isModified() || $this->aP2PSchema->isNew()) {
-					$affectedRows += $this->aP2PSchema->save($con);
+			if ($this->aMeshingSchema !== null) {
+				if ($this->aMeshingSchema->isModified() || $this->aMeshingSchema->isNew()) {
+					$affectedRows += $this->aMeshingSchema->save($con);
 				}
-				$this->setP2PSchema($this->aP2PSchema);
+				$this->setMeshingSchema($this->aMeshingSchema);
 			}
 
 			if ($this->isNew() ) {
-				$this->modifiedColumns[] = P2PSchemaTablePeer::ID;
+				$this->modifiedColumns[] = MeshingSchemaTablePeer::ID;
 			}
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
 					$criteria = $this->buildCriteria();
-					if ($criteria->keyContainsValue(P2PSchemaTablePeer::ID) ) {
-						throw new PropelException('Cannot insert a value for auto-increment primary key ('.P2PSchemaTablePeer::ID.')');
+					if ($criteria->keyContainsValue(MeshingSchemaTablePeer::ID) ) {
+						throw new PropelException('Cannot insert a value for auto-increment primary key ('.MeshingSchemaTablePeer::ID.')');
 					}
 
 					$pk = BasePeer::doInsert($criteria, $con);
@@ -440,7 +403,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 					$this->setId($pk);  //[IMV] update autoincrement primary key
 					$this->setNew(false);
 				} else {
-					$affectedRows += P2PSchemaTablePeer::doUpdate($this, $con);
+					$affectedRows += MeshingSchemaTablePeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
@@ -517,14 +480,14 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aP2PSchema !== null) {
-				if (!$this->aP2PSchema->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aP2PSchema->getValidationFailures());
+			if ($this->aMeshingSchema !== null) {
+				if (!$this->aMeshingSchema->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aMeshingSchema->getValidationFailures());
 				}
 			}
 
 
-			if (($retval = P2PSchemaTablePeer::doValidate($this, $columns)) !== true) {
+			if (($retval = MeshingSchemaTablePeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
@@ -547,7 +510,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 */
 	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = P2PSchemaTablePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = MeshingSchemaTablePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		$field = $this->getByPosition($pos);
 		return $field;
 	}
@@ -570,9 +533,6 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 				break;
 			case 2:
 				return $this->getName();
-				break;
-			case 3:
-				return $this->getRowOrdCurrent();
 				break;
 			default:
 				return null;
@@ -597,20 +557,19 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 */
 	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
 	{
-		if (isset($alreadyDumpedObjects['P2PSchemaTable'][$this->getPrimaryKey()])) {
+		if (isset($alreadyDumpedObjects['MeshingSchemaTable'][$this->getPrimaryKey()])) {
 			return '*RECURSION*';
 		}
-		$alreadyDumpedObjects['P2PSchemaTable'][$this->getPrimaryKey()] = true;
-		$keys = P2PSchemaTablePeer::getFieldNames($keyType);
+		$alreadyDumpedObjects['MeshingSchemaTable'][$this->getPrimaryKey()] = true;
+		$keys = MeshingSchemaTablePeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getSchemaId(),
 			$keys[2] => $this->getName(),
-			$keys[3] => $this->getRowOrdCurrent(),
 		);
 		if ($includeForeignObjects) {
-			if (null !== $this->aP2PSchema) {
-				$result['P2PSchema'] = $this->aP2PSchema->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+			if (null !== $this->aMeshingSchema) {
+				$result['MeshingSchema'] = $this->aMeshingSchema->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 		}
 		return $result;
@@ -628,7 +587,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 */
 	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = P2PSchemaTablePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = MeshingSchemaTablePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->setByPosition($pos, $value);
 	}
 
@@ -652,9 +611,6 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 			case 2:
 				$this->setName($value);
 				break;
-			case 3:
-				$this->setRowOrdCurrent($value);
-				break;
 		} // switch()
 	}
 
@@ -677,12 +633,11 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 */
 	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = P2PSchemaTablePeer::getFieldNames($keyType);
+		$keys = MeshingSchemaTablePeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setSchemaId($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setRowOrdCurrent($arr[$keys[3]]);
 	}
 
 	/**
@@ -692,12 +647,11 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 */
 	public function buildCriteria()
 	{
-		$criteria = new Criteria(P2PSchemaTablePeer::DATABASE_NAME);
+		$criteria = new Criteria(MeshingSchemaTablePeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(P2PSchemaTablePeer::ID)) $criteria->add(P2PSchemaTablePeer::ID, $this->id);
-		if ($this->isColumnModified(P2PSchemaTablePeer::SCHEMA_ID)) $criteria->add(P2PSchemaTablePeer::SCHEMA_ID, $this->schema_id);
-		if ($this->isColumnModified(P2PSchemaTablePeer::NAME)) $criteria->add(P2PSchemaTablePeer::NAME, $this->name);
-		if ($this->isColumnModified(P2PSchemaTablePeer::ROW_ORD_CURRENT)) $criteria->add(P2PSchemaTablePeer::ROW_ORD_CURRENT, $this->row_ord_current);
+		if ($this->isColumnModified(MeshingSchemaTablePeer::ID)) $criteria->add(MeshingSchemaTablePeer::ID, $this->id);
+		if ($this->isColumnModified(MeshingSchemaTablePeer::SCHEMA_ID)) $criteria->add(MeshingSchemaTablePeer::SCHEMA_ID, $this->schema_id);
+		if ($this->isColumnModified(MeshingSchemaTablePeer::NAME)) $criteria->add(MeshingSchemaTablePeer::NAME, $this->name);
 
 		return $criteria;
 	}
@@ -712,8 +666,8 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 */
 	public function buildPkeyCriteria()
 	{
-		$criteria = new Criteria(P2PSchemaTablePeer::DATABASE_NAME);
-		$criteria->add(P2PSchemaTablePeer::ID, $this->id);
+		$criteria = new Criteria(MeshingSchemaTablePeer::DATABASE_NAME);
+		$criteria->add(MeshingSchemaTablePeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -753,7 +707,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 * If desired, this method can also make copies of all associated (fkey referrers)
 	 * objects.
 	 *
-	 * @param      object $copyObj An object of P2PSchemaTable (or compatible) type.
+	 * @param      object $copyObj An object of MeshingSchemaTable (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
 	 * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
 	 * @throws     PropelException
@@ -762,7 +716,6 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	{
 		$copyObj->setSchemaId($this->getSchemaId());
 		$copyObj->setName($this->getName());
-		$copyObj->setRowOrdCurrent($this->getRowOrdCurrent());
 		if ($makeNew) {
 			$copyObj->setNew(true);
 			$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -778,7 +731,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 * objects.
 	 *
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-	 * @return     P2PSchemaTable Clone of current object.
+	 * @return     MeshingSchemaTable Clone of current object.
 	 * @throws     PropelException
 	 */
 	public function copy($deepCopy = false)
@@ -797,24 +750,24 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 * same instance for all member of this class. The method could therefore
 	 * be static, but this would prevent one from overriding the behavior.
 	 *
-	 * @return     P2PSchemaTablePeer
+	 * @return     MeshingSchemaTablePeer
 	 */
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new P2PSchemaTablePeer();
+			self::$peer = new MeshingSchemaTablePeer();
 		}
 		return self::$peer;
 	}
 
 	/**
-	 * Declares an association between this object and a P2PSchema object.
+	 * Declares an association between this object and a MeshingSchema object.
 	 *
-	 * @param      P2PSchema $v
-	 * @return     P2PSchemaTable The current object (for fluent API support)
+	 * @param      MeshingSchema $v
+	 * @return     MeshingSchemaTable The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setP2PSchema(P2PSchema $v = null)
+	public function setMeshingSchema(MeshingSchema $v = null)
 	{
 		if ($v === null) {
 			$this->setSchemaId(NULL);
@@ -822,12 +775,12 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 			$this->setSchemaId($v->getId());
 		}
 
-		$this->aP2PSchema = $v;
+		$this->aMeshingSchema = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the P2PSchema object, it will not be re-added.
+		// If this object has already been added to the MeshingSchema object, it will not be re-added.
 		if ($v !== null) {
-			$v->addP2PSchemaTable($this);
+			$v->addMeshingSchemaTable($this);
 		}
 
 		return $this;
@@ -835,25 +788,25 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 
 
 	/**
-	 * Get the associated P2PSchema object
+	 * Get the associated MeshingSchema object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     P2PSchema The associated P2PSchema object.
+	 * @return     MeshingSchema The associated MeshingSchema object.
 	 * @throws     PropelException
 	 */
-	public function getP2PSchema(PropelPDO $con = null)
+	public function getMeshingSchema(PropelPDO $con = null)
 	{
-		if ($this->aP2PSchema === null && ($this->schema_id !== null)) {
-			$this->aP2PSchema = P2PSchemaQuery::create()->findPk($this->schema_id, $con);
+		if ($this->aMeshingSchema === null && ($this->schema_id !== null)) {
+			$this->aMeshingSchema = MeshingSchemaQuery::create()->findPk($this->schema_id, $con);
 			/* The following can be used additionally to
 				guarantee the related object contains a reference
 				to this object.  This level of coupling may, however, be
 				undesirable since it could result in an only partially populated collection
 				in the referenced object.
-				$this->aP2PSchema->addP2PSchemaTables($this);
+				$this->aMeshingSchema->addMeshingSchemaTables($this);
 			 */
 		}
-		return $this->aP2PSchema;
+		return $this->aMeshingSchema;
 	}
 
 	/**
@@ -864,7 +817,6 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 		$this->id = null;
 		$this->schema_id = null;
 		$this->name = null;
-		$this->row_ord_current = null;
 		$this->alreadyInSave = false;
 		$this->alreadyInValidation = false;
 		$this->clearAllReferences();
@@ -887,7 +839,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 		if ($deep) {
 		} // if ($deep)
 
-		$this->aP2PSchema = null;
+		$this->aMeshingSchema = null;
 	}
 
 	/**
@@ -897,7 +849,7 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 	 */
 	public function __toString()
 	{
-		return (string) $this->exportTo(P2PSchemaTablePeer::DEFAULT_STRING_FORMAT);
+		return (string) $this->exportTo(MeshingSchemaTablePeer::DEFAULT_STRING_FORMAT);
 	}
 
 	/**
@@ -919,4 +871,4 @@ abstract class BaseP2PSchemaTable extends BaseObject  implements Persistent
 		return parent::__call($name, $params);
 	}
 
-} // BaseP2PSchemaTable
+} // BaseMeshingSchemaTable

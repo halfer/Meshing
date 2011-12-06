@@ -53,7 +53,7 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 
 		// Check that the schema name is not already taken
 		Meshing_Utils::initialiseDb();
-		$schema = P2PSchemaQuery::create()->findOneByName($this->opts->name);
+		$schema = MeshingSchemaQuery::create()->findOneByName($this->opts->name);
 		if ($schema)
 		{
 			throw new Zend_Console_Getopt_Exception('That schema name is already in use');
@@ -158,7 +158,7 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 
 	protected function writeRecord()
 	{
-		$schema = new P2PSchema();
+		$schema = new MeshingSchema();
 		$schema->setName($this->opts->name);
 		$schema->setInstalledAt(time());
 		$schema->save();

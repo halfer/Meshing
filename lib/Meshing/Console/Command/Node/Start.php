@@ -35,7 +35,7 @@ class Meshing_Console_Command_Node_Start extends Meshing_Console_Stub implements
 		
 		// Connect with this node's connection, and ensure there are rows in known_nodes
 		$conn = Propel::getConnection($node->getP2PConnection()->getName());
-		$schemaName = $node->getP2PSchema()->getName();
+		$schemaName = $node->getMeshingSchema()->getName();
 		Meshing_Utils::initialiseNodeDbs($schemaName);
 		
 		// Obtain the number of trusted nodes

@@ -2,58 +2,79 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'p2p_schema_table' table.
+ * Base static class for performing query and update operations on the 'meshing_schema' table.
  *
  * 
  *
  * @package    propel.generator.system.om
  */
-abstract class BaseP2PSchemaTablePeer {
+abstract class BaseMeshingSchemaPeer {
 
 	/** the default database name for this class */
 	const DATABASE_NAME = 'p2p';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'p2p_schema_table';
+	const TABLE_NAME = 'meshing_schema';
 
 	/** the related Propel class for this table */
-	const OM_CLASS = 'P2PSchemaTable';
+	const OM_CLASS = 'MeshingSchema';
 
 	/** A class that can be returned by this peer. */
-	const CLASS_DEFAULT = 'system.P2PSchemaTable';
+	const CLASS_DEFAULT = 'system.MeshingSchema';
 
 	/** the related TableMap class for this table */
-	const TM_CLASS = 'P2PSchemaTableTableMap';
+	const TM_CLASS = 'MeshingSchemaTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 11;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-	const NUM_HYDRATE_COLUMNS = 4;
+	const NUM_HYDRATE_COLUMNS = 11;
 
 	/** the column name for the ID field */
-	const ID = 'p2p_schema_table.ID';
-
-	/** the column name for the SCHEMA_ID field */
-	const SCHEMA_ID = 'p2p_schema_table.SCHEMA_ID';
+	const ID = 'meshing_schema.ID';
 
 	/** the column name for the NAME field */
-	const NAME = 'p2p_schema_table.NAME';
+	const NAME = 'meshing_schema.NAME';
 
-	/** the column name for the ROW_ORD_CURRENT field */
-	const ROW_ORD_CURRENT = 'p2p_schema_table.ROW_ORD_CURRENT';
+	/** the column name for the DESCRIPTION field */
+	const DESCRIPTION = 'meshing_schema.DESCRIPTION';
+
+	/** the column name for the AUTHOR field */
+	const AUTHOR = 'meshing_schema.AUTHOR';
+
+	/** the column name for the CONTACT field */
+	const CONTACT = 'meshing_schema.CONTACT';
+
+	/** the column name for the URL field */
+	const URL = 'meshing_schema.URL';
+
+	/** the column name for the DATE_RELEASE field */
+	const DATE_RELEASE = 'meshing_schema.DATE_RELEASE';
+
+	/** the column name for the SCHEMA_VERSION field */
+	const SCHEMA_VERSION = 'meshing_schema.SCHEMA_VERSION';
+
+	/** the column name for the SOFTWARE_VERSION field */
+	const SOFTWARE_VERSION = 'meshing_schema.SOFTWARE_VERSION';
+
+	/** the column name for the HISTORY field */
+	const HISTORY = 'meshing_schema.HISTORY';
+
+	/** the column name for the INSTALLED_AT field */
+	const INSTALLED_AT = 'meshing_schema.INSTALLED_AT';
 
 	/** The default string format for model objects of the related table **/
 	const DEFAULT_STRING_FORMAT = 'YAML';
 	
 	/**
-	 * An identiy map to hold any loaded instances of P2PSchemaTable objects.
+	 * An identiy map to hold any loaded instances of MeshingSchema objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
 	 * queries.
-	 * @var        array P2PSchemaTable[]
+	 * @var        array MeshingSchema[]
 	 */
 	public static $instances = array();
 
@@ -65,12 +86,12 @@ abstract class BaseP2PSchemaTablePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	protected static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'SchemaId', 'Name', 'RowOrdCurrent', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'schemaId', 'name', 'rowOrdCurrent', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::SCHEMA_ID, self::NAME, self::ROW_ORD_CURRENT, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SCHEMA_ID', 'NAME', 'ROW_ORD_CURRENT', ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'schema_id', 'name', 'row_ord_current', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Description', 'Author', 'Contact', 'Url', 'DateRelease', 'SchemaVersion', 'SoftwareVersion', 'History', 'InstalledAt', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'description', 'author', 'contact', 'url', 'dateRelease', 'schemaVersion', 'softwareVersion', 'history', 'installedAt', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::DESCRIPTION, self::AUTHOR, self::CONTACT, self::URL, self::DATE_RELEASE, self::SCHEMA_VERSION, self::SOFTWARE_VERSION, self::HISTORY, self::INSTALLED_AT, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'DESCRIPTION', 'AUTHOR', 'CONTACT', 'URL', 'DATE_RELEASE', 'SCHEMA_VERSION', 'SOFTWARE_VERSION', 'HISTORY', 'INSTALLED_AT', ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'description', 'author', 'contact', 'url', 'date_release', 'schema_version', 'software_version', 'history', 'installed_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
 	);
 
 	/**
@@ -80,12 +101,12 @@ abstract class BaseP2PSchemaTablePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	protected static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'SchemaId' => 1, 'Name' => 2, 'RowOrdCurrent' => 3, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'schemaId' => 1, 'name' => 2, 'rowOrdCurrent' => 3, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SCHEMA_ID => 1, self::NAME => 2, self::ROW_ORD_CURRENT => 3, ),
-		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SCHEMA_ID' => 1, 'NAME' => 2, 'ROW_ORD_CURRENT' => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'schema_id' => 1, 'name' => 2, 'row_ord_current' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Description' => 2, 'Author' => 3, 'Contact' => 4, 'Url' => 5, 'DateRelease' => 6, 'SchemaVersion' => 7, 'SoftwareVersion' => 8, 'History' => 9, 'InstalledAt' => 10, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'description' => 2, 'author' => 3, 'contact' => 4, 'url' => 5, 'dateRelease' => 6, 'schemaVersion' => 7, 'softwareVersion' => 8, 'history' => 9, 'installedAt' => 10, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::DESCRIPTION => 2, self::AUTHOR => 3, self::CONTACT => 4, self::URL => 5, self::DATE_RELEASE => 6, self::SCHEMA_VERSION => 7, self::SOFTWARE_VERSION => 8, self::HISTORY => 9, self::INSTALLED_AT => 10, ),
+		BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'DESCRIPTION' => 2, 'AUTHOR' => 3, 'CONTACT' => 4, 'URL' => 5, 'DATE_RELEASE' => 6, 'SCHEMA_VERSION' => 7, 'SOFTWARE_VERSION' => 8, 'HISTORY' => 9, 'INSTALLED_AT' => 10, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'description' => 2, 'author' => 3, 'contact' => 4, 'url' => 5, 'date_release' => 6, 'schema_version' => 7, 'software_version' => 8, 'history' => 9, 'installed_at' => 10, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
 	);
 
 	/**
@@ -134,12 +155,12 @@ abstract class BaseP2PSchemaTablePeer {
 	 *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
 	 * </code>
 	 * @param      string $alias The alias for the current table.
-	 * @param      string $column The column name for current table. (i.e. P2PSchemaTablePeer::COLUMN_NAME).
+	 * @param      string $column The column name for current table. (i.e. MeshingSchemaPeer::COLUMN_NAME).
 	 * @return     string
 	 */
 	public static function alias($alias, $column)
 	{
-		return str_replace(P2PSchemaTablePeer::TABLE_NAME.'.', $alias.'.', $column);
+		return str_replace(MeshingSchemaPeer::TABLE_NAME.'.', $alias.'.', $column);
 	}
 
 	/**
@@ -157,15 +178,29 @@ abstract class BaseP2PSchemaTablePeer {
 	public static function addSelectColumns(Criteria $criteria, $alias = null)
 	{
 		if (null === $alias) {
-			$criteria->addSelectColumn(P2PSchemaTablePeer::ID);
-			$criteria->addSelectColumn(P2PSchemaTablePeer::SCHEMA_ID);
-			$criteria->addSelectColumn(P2PSchemaTablePeer::NAME);
-			$criteria->addSelectColumn(P2PSchemaTablePeer::ROW_ORD_CURRENT);
+			$criteria->addSelectColumn(MeshingSchemaPeer::ID);
+			$criteria->addSelectColumn(MeshingSchemaPeer::NAME);
+			$criteria->addSelectColumn(MeshingSchemaPeer::DESCRIPTION);
+			$criteria->addSelectColumn(MeshingSchemaPeer::AUTHOR);
+			$criteria->addSelectColumn(MeshingSchemaPeer::CONTACT);
+			$criteria->addSelectColumn(MeshingSchemaPeer::URL);
+			$criteria->addSelectColumn(MeshingSchemaPeer::DATE_RELEASE);
+			$criteria->addSelectColumn(MeshingSchemaPeer::SCHEMA_VERSION);
+			$criteria->addSelectColumn(MeshingSchemaPeer::SOFTWARE_VERSION);
+			$criteria->addSelectColumn(MeshingSchemaPeer::HISTORY);
+			$criteria->addSelectColumn(MeshingSchemaPeer::INSTALLED_AT);
 		} else {
 			$criteria->addSelectColumn($alias . '.ID');
-			$criteria->addSelectColumn($alias . '.SCHEMA_ID');
 			$criteria->addSelectColumn($alias . '.NAME');
-			$criteria->addSelectColumn($alias . '.ROW_ORD_CURRENT');
+			$criteria->addSelectColumn($alias . '.DESCRIPTION');
+			$criteria->addSelectColumn($alias . '.AUTHOR');
+			$criteria->addSelectColumn($alias . '.CONTACT');
+			$criteria->addSelectColumn($alias . '.URL');
+			$criteria->addSelectColumn($alias . '.DATE_RELEASE');
+			$criteria->addSelectColumn($alias . '.SCHEMA_VERSION');
+			$criteria->addSelectColumn($alias . '.SOFTWARE_VERSION');
+			$criteria->addSelectColumn($alias . '.HISTORY');
+			$criteria->addSelectColumn($alias . '.INSTALLED_AT');
 		}
 	}
 
@@ -185,21 +220,21 @@ abstract class BaseP2PSchemaTablePeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(P2PSchemaTablePeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(MeshingSchemaPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			P2PSchemaTablePeer::addSelectColumns($criteria);
+			MeshingSchemaPeer::addSelectColumns($criteria);
 		}
 
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 		$criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(MeshingSchemaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -217,7 +252,7 @@ abstract class BaseP2PSchemaTablePeer {
 	 *
 	 * @param      Criteria $criteria object used to create the SELECT statement.
 	 * @param      PropelPDO $con
-	 * @return     P2PSchemaTable
+	 * @return     MeshingSchema
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -225,7 +260,7 @@ abstract class BaseP2PSchemaTablePeer {
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = P2PSchemaTablePeer::doSelect($critcopy, $con);
+		$objects = MeshingSchemaPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -242,7 +277,7 @@ abstract class BaseP2PSchemaTablePeer {
 	 */
 	public static function doSelect(Criteria $criteria, PropelPDO $con = null)
 	{
-		return P2PSchemaTablePeer::populateObjects(P2PSchemaTablePeer::doSelectStmt($criteria, $con));
+		return MeshingSchemaPeer::populateObjects(MeshingSchemaPeer::doSelectStmt($criteria, $con));
 	}
 	/**
 	 * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -260,12 +295,12 @@ abstract class BaseP2PSchemaTablePeer {
 	public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(MeshingSchemaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		if (!$criteria->hasSelectClause()) {
 			$criteria = clone $criteria;
-			P2PSchemaTablePeer::addSelectColumns($criteria);
+			MeshingSchemaPeer::addSelectColumns($criteria);
 		}
 
 		// Set the correct dbName
@@ -283,7 +318,7 @@ abstract class BaseP2PSchemaTablePeer {
 	 * to the cache in order to ensure that the same objects are always returned by doSelect*()
 	 * and retrieveByPK*() calls.
 	 *
-	 * @param      P2PSchemaTable $value A P2PSchemaTable object.
+	 * @param      MeshingSchema $value A MeshingSchema object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
 	public static function addInstanceToPool($obj, $key = null)
@@ -304,18 +339,18 @@ abstract class BaseP2PSchemaTablePeer {
 	 * methods in your stub classes -- you may need to explicitly remove objects
 	 * from the cache in order to prevent returning objects that no longer exist.
 	 *
-	 * @param      mixed $value A P2PSchemaTable object or a primary key value.
+	 * @param      mixed $value A MeshingSchema object or a primary key value.
 	 */
 	public static function removeInstanceFromPool($value)
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
-			if (is_object($value) && $value instanceof P2PSchemaTable) {
+			if (is_object($value) && $value instanceof MeshingSchema) {
 				$key = (string) $value->getId();
 			} elseif (is_scalar($value)) {
 				// assume we've been passed a primary key
 				$key = (string) $value;
 			} else {
-				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or P2PSchemaTable object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or MeshingSchema object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
 				throw $e;
 			}
 
@@ -330,7 +365,7 @@ abstract class BaseP2PSchemaTablePeer {
 	 * a multi-column primary key, a serialize()d version of the primary key will be returned.
 	 *
 	 * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-	 * @return     P2PSchemaTable Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+	 * @return     MeshingSchema Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
 	 * @see        getPrimaryKeyHash()
 	 */
 	public static function getInstanceFromPool($key)
@@ -354,7 +389,7 @@ abstract class BaseP2PSchemaTablePeer {
 	}
 	
 	/**
-	 * Method to invalidate the instance pool of all tables related to p2p_schema_table
+	 * Method to invalidate the instance pool of all tables related to meshing_schema
 	 * by a foreign key with ON DELETE CASCADE
 	 */
 	public static function clearRelatedInstancePool()
@@ -406,11 +441,11 @@ abstract class BaseP2PSchemaTablePeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = P2PSchemaTablePeer::getOMClass(false);
+		$cls = MeshingSchemaPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key = P2PSchemaTablePeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj = P2PSchemaTablePeer::getInstanceFromPool($key))) {
+			$key = MeshingSchemaPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj = MeshingSchemaPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://www.propelorm.org/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
@@ -419,7 +454,7 @@ abstract class BaseP2PSchemaTablePeer {
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
-				P2PSchemaTablePeer::addInstanceToPool($obj, $key);
+				MeshingSchemaPeer::addInstanceToPool($obj, $key);
 			} // if key exists
 		}
 		$stmt->closeCursor();
@@ -432,257 +467,23 @@ abstract class BaseP2PSchemaTablePeer {
 	 * @param      int $startcol The 0-based offset for reading from the resultset row.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
-	 * @return     array (P2PSchemaTable object, last column rank)
+	 * @return     array (MeshingSchema object, last column rank)
 	 */
 	public static function populateObject($row, $startcol = 0)
 	{
-		$key = P2PSchemaTablePeer::getPrimaryKeyHashFromRow($row, $startcol);
-		if (null !== ($obj = P2PSchemaTablePeer::getInstanceFromPool($key))) {
+		$key = MeshingSchemaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+		if (null !== ($obj = MeshingSchemaPeer::getInstanceFromPool($key))) {
 			// We no longer rehydrate the object, since this can cause data loss.
 			// See http://www.propelorm.org/ticket/509
 			// $obj->hydrate($row, $startcol, true); // rehydrate
-			$col = $startcol + P2PSchemaTablePeer::NUM_HYDRATE_COLUMNS;
+			$col = $startcol + MeshingSchemaPeer::NUM_HYDRATE_COLUMNS;
 		} else {
-			$cls = P2PSchemaTablePeer::OM_CLASS;
+			$cls = MeshingSchemaPeer::OM_CLASS;
 			$obj = new $cls();
 			$col = $obj->hydrate($row, $startcol);
-			P2PSchemaTablePeer::addInstanceToPool($obj, $key);
+			MeshingSchemaPeer::addInstanceToPool($obj, $key);
 		}
 		return array($obj, $col);
-	}
-
-
-	/**
-	 * Returns the number of rows matching criteria, joining the related P2PSchema table
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinP2PSchema(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// We need to set the primary table name, since in the case that there are no WHERE columns
-		// it will be impossible for the BasePeer::createSelectSql() method to determine which
-		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(P2PSchemaTablePeer::TABLE_NAME);
-
-		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->setDistinct();
-		}
-
-		if (!$criteria->hasSelectClause()) {
-			P2PSchemaTablePeer::addSelectColumns($criteria);
-		}
-		
-		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-		
-		// Set the correct dbName
-		$criteria->setDbName(self::DATABASE_NAME);
-
-		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-
-		$criteria->addJoin(P2PSchemaTablePeer::SCHEMA_ID, P2PSchemaPeer::ID, $join_behavior);
-
-		$stmt = BasePeer::doCount($criteria, $con);
-
-		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$count = (int) $row[0];
-		} else {
-			$count = 0; // no rows returned; we infer that means 0 matches.
-		}
-		$stmt->closeCursor();
-		return $count;
-	}
-
-
-	/**
-	 * Selects a collection of P2PSchemaTable objects pre-filled with their P2PSchema objects.
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of P2PSchemaTable objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinP2PSchema(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		P2PSchemaTablePeer::addSelectColumns($criteria);
-		$startcol = P2PSchemaTablePeer::NUM_HYDRATE_COLUMNS;
-		P2PSchemaPeer::addSelectColumns($criteria);
-
-		$criteria->addJoin(P2PSchemaTablePeer::SCHEMA_ID, P2PSchemaPeer::ID, $join_behavior);
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = P2PSchemaTablePeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = P2PSchemaTablePeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://www.propelorm.org/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-
-				$cls = P2PSchemaTablePeer::getOMClass(false);
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				P2PSchemaTablePeer::addInstanceToPool($obj1, $key1);
-			} // if $obj1 already loaded
-
-			$key2 = P2PSchemaPeer::getPrimaryKeyHashFromRow($row, $startcol);
-			if ($key2 !== null) {
-				$obj2 = P2PSchemaPeer::getInstanceFromPool($key2);
-				if (!$obj2) {
-
-					$cls = P2PSchemaPeer::getOMClass(false);
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol);
-					P2PSchemaPeer::addInstanceToPool($obj2, $key2);
-				} // if obj2 already loaded
-
-				// Add the $obj1 (P2PSchemaTable) to $obj2 (P2PSchema)
-				$obj2->addP2PSchemaTable($obj1);
-
-			} // if joined row was not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
-	 * Returns the number of rows matching criteria, joining all related tables
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// We need to set the primary table name, since in the case that there are no WHERE columns
-		// it will be impossible for the BasePeer::createSelectSql() method to determine which
-		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(P2PSchemaTablePeer::TABLE_NAME);
-
-		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->setDistinct();
-		}
-
-		if (!$criteria->hasSelectClause()) {
-			P2PSchemaTablePeer::addSelectColumns($criteria);
-		}
-		
-		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-		
-		// Set the correct dbName
-		$criteria->setDbName(self::DATABASE_NAME);
-
-		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-
-		$criteria->addJoin(P2PSchemaTablePeer::SCHEMA_ID, P2PSchemaPeer::ID, $join_behavior);
-
-		$stmt = BasePeer::doCount($criteria, $con);
-
-		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$count = (int) $row[0];
-		} else {
-			$count = 0; // no rows returned; we infer that means 0 matches.
-		}
-		$stmt->closeCursor();
-		return $count;
-	}
-
-	/**
-	 * Selects a collection of P2PSchemaTable objects pre-filled with all related objects.
-	 *
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of P2PSchemaTable objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		P2PSchemaTablePeer::addSelectColumns($criteria);
-		$startcol2 = P2PSchemaTablePeer::NUM_HYDRATE_COLUMNS;
-
-		P2PSchemaPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + P2PSchemaPeer::NUM_HYDRATE_COLUMNS;
-
-		$criteria->addJoin(P2PSchemaTablePeer::SCHEMA_ID, P2PSchemaPeer::ID, $join_behavior);
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = P2PSchemaTablePeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = P2PSchemaTablePeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://www.propelorm.org/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-				$cls = P2PSchemaTablePeer::getOMClass(false);
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				P2PSchemaTablePeer::addInstanceToPool($obj1, $key1);
-			} // if obj1 already loaded
-
-			// Add objects for joined P2PSchema rows
-
-			$key2 = P2PSchemaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-			if ($key2 !== null) {
-				$obj2 = P2PSchemaPeer::getInstanceFromPool($key2);
-				if (!$obj2) {
-
-					$cls = P2PSchemaPeer::getOMClass(false);
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol2);
-					P2PSchemaPeer::addInstanceToPool($obj2, $key2);
-				} // if obj2 loaded
-
-				// Add the $obj1 (P2PSchemaTable) to the collection in $obj2 (P2PSchema)
-				$obj2->addP2PSchemaTable($obj1);
-			} // if joined row not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
 	}
 
 	/**
@@ -702,10 +503,10 @@ abstract class BaseP2PSchemaTablePeer {
 	 */
 	public static function buildTableMap()
 	{
-	  $dbMap = Propel::getDatabaseMap(BaseP2PSchemaTablePeer::DATABASE_NAME);
-	  if (!$dbMap->hasTable(BaseP2PSchemaTablePeer::TABLE_NAME))
+	  $dbMap = Propel::getDatabaseMap(BaseMeshingSchemaPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseMeshingSchemaPeer::TABLE_NAME))
 	  {
-	    $dbMap->addTableObject(new P2PSchemaTableTableMap());
+	    $dbMap->addTableObject(new MeshingSchemaTableMap());
 	  }
 	}
 
@@ -722,13 +523,13 @@ abstract class BaseP2PSchemaTablePeer {
 	 */
 	public static function getOMClass($withPrefix = true)
 	{
-		return $withPrefix ? P2PSchemaTablePeer::CLASS_DEFAULT : P2PSchemaTablePeer::OM_CLASS;
+		return $withPrefix ? MeshingSchemaPeer::CLASS_DEFAULT : MeshingSchemaPeer::OM_CLASS;
 	}
 
 	/**
-	 * Performs an INSERT on the database, given a P2PSchemaTable or Criteria object.
+	 * Performs an INSERT on the database, given a MeshingSchema or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or P2PSchemaTable object containing data that is used to create the INSERT statement.
+	 * @param      mixed $values Criteria or MeshingSchema object containing data that is used to create the INSERT statement.
 	 * @param      PropelPDO $con the PropelPDO connection to use
 	 * @return     mixed The new primary key.
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -737,17 +538,17 @@ abstract class BaseP2PSchemaTablePeer {
 	public static function doInsert($values, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(MeshingSchemaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 		} else {
-			$criteria = $values->buildCriteria(); // build Criteria from P2PSchemaTable object
+			$criteria = $values->buildCriteria(); // build Criteria from MeshingSchema object
 		}
 
-		if ($criteria->containsKey(P2PSchemaTablePeer::ID) && $criteria->keyContainsValue(P2PSchemaTablePeer::ID) ) {
-			throw new PropelException('Cannot insert a value for auto-increment primary key ('.P2PSchemaTablePeer::ID.')');
+		if ($criteria->containsKey(MeshingSchemaPeer::ID) && $criteria->keyContainsValue(MeshingSchemaPeer::ID) ) {
+			throw new PropelException('Cannot insert a value for auto-increment primary key ('.MeshingSchemaPeer::ID.')');
 		}
 
 
@@ -769,9 +570,9 @@ abstract class BaseP2PSchemaTablePeer {
 	}
 
 	/**
-	 * Performs an UPDATE on the database, given a P2PSchemaTable or Criteria object.
+	 * Performs an UPDATE on the database, given a MeshingSchema or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or P2PSchemaTable object containing data that is used to create the UPDATE statement.
+	 * @param      mixed $values Criteria or MeshingSchema object containing data that is used to create the UPDATE statement.
 	 * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -780,7 +581,7 @@ abstract class BaseP2PSchemaTablePeer {
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(MeshingSchemaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$selectCriteria = new Criteria(self::DATABASE_NAME);
@@ -788,15 +589,15 @@ abstract class BaseP2PSchemaTablePeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 
-			$comparison = $criteria->getComparison(P2PSchemaTablePeer::ID);
-			$value = $criteria->remove(P2PSchemaTablePeer::ID);
+			$comparison = $criteria->getComparison(MeshingSchemaPeer::ID);
+			$value = $criteria->remove(MeshingSchemaPeer::ID);
 			if ($value) {
-				$selectCriteria->add(P2PSchemaTablePeer::ID, $value, $comparison);
+				$selectCriteria->add(MeshingSchemaPeer::ID, $value, $comparison);
 			} else {
-				$selectCriteria->setPrimaryTableName(P2PSchemaTablePeer::TABLE_NAME);
+				$selectCriteria->setPrimaryTableName(MeshingSchemaPeer::TABLE_NAME);
 			}
 
-		} else { // $values is P2PSchemaTable object
+		} else { // $values is MeshingSchema object
 			$criteria = $values->buildCriteria(); // gets full criteria
 			$selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
 		}
@@ -808,7 +609,7 @@ abstract class BaseP2PSchemaTablePeer {
 	}
 
 	/**
-	 * Deletes all rows from the p2p_schema_table table.
+	 * Deletes all rows from the meshing_schema table.
 	 *
 	 * @param      PropelPDO $con the connection to use
 	 * @return     int The number of affected rows (if supported by underlying database driver).
@@ -816,19 +617,19 @@ abstract class BaseP2PSchemaTablePeer {
 	public static function doDeleteAll(PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(MeshingSchemaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 		$affectedRows = 0; // initialize var to track total num of affected rows
 		try {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(P2PSchemaTablePeer::TABLE_NAME, $con, P2PSchemaTablePeer::DATABASE_NAME);
+			$affectedRows += BasePeer::doDeleteAll(MeshingSchemaPeer::TABLE_NAME, $con, MeshingSchemaPeer::DATABASE_NAME);
 			// Because this db requires some delete cascade/set null emulation, we have to
 			// clear the cached instance *after* the emulation has happened (since
 			// instances get re-added by the select statement contained therein).
-			P2PSchemaTablePeer::clearInstancePool();
-			P2PSchemaTablePeer::clearRelatedInstancePool();
+			MeshingSchemaPeer::clearInstancePool();
+			MeshingSchemaPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -838,9 +639,9 @@ abstract class BaseP2PSchemaTablePeer {
 	}
 
 	/**
-	 * Performs a DELETE on the database, given a P2PSchemaTable or Criteria object OR a primary key value.
+	 * Performs a DELETE on the database, given a MeshingSchema or Criteria object OR a primary key value.
 	 *
-	 * @param      mixed $values Criteria or P2PSchemaTable object or primary key or array of primary keys
+	 * @param      mixed $values Criteria or MeshingSchema object or primary key or array of primary keys
 	 *              which is used to create the DELETE statement
 	 * @param      PropelPDO $con the connection to use
 	 * @return     int 	The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -851,27 +652,27 @@ abstract class BaseP2PSchemaTablePeer {
 	 public static function doDelete($values, PropelPDO $con = null)
 	 {
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(MeshingSchemaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			// invalidate the cache for all objects of this type, since we have no
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
-			P2PSchemaTablePeer::clearInstancePool();
+			MeshingSchemaPeer::clearInstancePool();
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof P2PSchemaTable) { // it's a model object
+		} elseif ($values instanceof MeshingSchema) { // it's a model object
 			// invalidate the cache for this single object
-			P2PSchemaTablePeer::removeInstanceFromPool($values);
+			MeshingSchemaPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(P2PSchemaTablePeer::ID, (array) $values, Criteria::IN);
+			$criteria->add(MeshingSchemaPeer::ID, (array) $values, Criteria::IN);
 			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				P2PSchemaTablePeer::removeInstanceFromPool($singleval);
+				MeshingSchemaPeer::removeInstanceFromPool($singleval);
 			}
 		}
 
@@ -886,7 +687,7 @@ abstract class BaseP2PSchemaTablePeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-			P2PSchemaTablePeer::clearRelatedInstancePool();
+			MeshingSchemaPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -896,13 +697,13 @@ abstract class BaseP2PSchemaTablePeer {
 	}
 
 	/**
-	 * Validates all modified columns of given P2PSchemaTable object.
+	 * Validates all modified columns of given MeshingSchema object.
 	 * If parameter $columns is either a single column name or an array of column names
 	 * than only those columns are validated.
 	 *
 	 * NOTICE: This does not apply to primary or foreign keys for now.
 	 *
-	 * @param      P2PSchemaTable $obj The object to validate.
+	 * @param      MeshingSchema $obj The object to validate.
 	 * @param      mixed $cols Column name or array of column names.
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -912,8 +713,8 @@ abstract class BaseP2PSchemaTablePeer {
 		$columns = array();
 
 		if ($cols) {
-			$dbMap = Propel::getDatabaseMap(P2PSchemaTablePeer::DATABASE_NAME);
-			$tableMap = $dbMap->getTable(P2PSchemaTablePeer::TABLE_NAME);
+			$dbMap = Propel::getDatabaseMap(MeshingSchemaPeer::DATABASE_NAME);
+			$tableMap = $dbMap->getTable(MeshingSchemaPeer::TABLE_NAME);
 
 			if (! is_array($cols)) {
 				$cols = array($cols);
@@ -929,7 +730,7 @@ abstract class BaseP2PSchemaTablePeer {
 
 		}
 
-		return BasePeer::doValidate(P2PSchemaTablePeer::DATABASE_NAME, P2PSchemaTablePeer::TABLE_NAME, $columns);
+		return BasePeer::doValidate(MeshingSchemaPeer::DATABASE_NAME, MeshingSchemaPeer::TABLE_NAME, $columns);
 	}
 
 	/**
@@ -937,23 +738,23 @@ abstract class BaseP2PSchemaTablePeer {
 	 *
 	 * @param      int $pk the primary key.
 	 * @param      PropelPDO $con the connection to use
-	 * @return     P2PSchemaTable
+	 * @return     MeshingSchema
 	 */
 	public static function retrieveByPK($pk, PropelPDO $con = null)
 	{
 
-		if (null !== ($obj = P2PSchemaTablePeer::getInstanceFromPool((string) $pk))) {
+		if (null !== ($obj = MeshingSchemaPeer::getInstanceFromPool((string) $pk))) {
 			return $obj;
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(MeshingSchemaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria = new Criteria(P2PSchemaTablePeer::DATABASE_NAME);
-		$criteria->add(P2PSchemaTablePeer::ID, $pk);
+		$criteria = new Criteria(MeshingSchemaPeer::DATABASE_NAME);
+		$criteria->add(MeshingSchemaPeer::ID, $pk);
 
-		$v = P2PSchemaTablePeer::doSelect($criteria, $con);
+		$v = MeshingSchemaPeer::doSelect($criteria, $con);
 
 		return !empty($v) > 0 ? $v[0] : null;
 	}
@@ -969,23 +770,23 @@ abstract class BaseP2PSchemaTablePeer {
 	public static function retrieveByPKs($pks, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(P2PSchemaTablePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(MeshingSchemaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		$objs = null;
 		if (empty($pks)) {
 			$objs = array();
 		} else {
-			$criteria = new Criteria(P2PSchemaTablePeer::DATABASE_NAME);
-			$criteria->add(P2PSchemaTablePeer::ID, $pks, Criteria::IN);
-			$objs = P2PSchemaTablePeer::doSelect($criteria, $con);
+			$criteria = new Criteria(MeshingSchemaPeer::DATABASE_NAME);
+			$criteria->add(MeshingSchemaPeer::ID, $pks, Criteria::IN);
+			$objs = MeshingSchemaPeer::doSelect($criteria, $con);
 		}
 		return $objs;
 	}
 
-} // BaseP2PSchemaTablePeer
+} // BaseMeshingSchemaPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseP2PSchemaTablePeer::buildTableMap();
+BaseMeshingSchemaPeer::buildTableMap();
 

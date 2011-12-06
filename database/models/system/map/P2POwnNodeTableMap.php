@@ -40,7 +40,7 @@ class P2POwnNodeTableMap extends TableMap
 		$this->setPrimaryKeyMethodInfo('p2p_own_node_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addForeignKey('SCHEMA_ID', 'SchemaId', 'INTEGER', 'p2p_schema', 'ID', true, null, null);
+		$this->addForeignKey('SCHEMA_ID', 'SchemaId', 'INTEGER', 'meshing_schema', 'ID', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 30, null);
 		$this->addForeignKey('CONNECTION_ID', 'ConnectionId', 'INTEGER', 'p2p_connection', 'ID', true, null, null);
 		$this->addColumn('IS_ENABLED', 'IsEnabled', 'BOOLEAN', true, null, false);
@@ -52,7 +52,7 @@ class P2POwnNodeTableMap extends TableMap
 	 */
 	public function buildRelations()
 	{
-		$this->addRelation('P2PSchema', 'P2PSchema', RelationMap::MANY_TO_ONE, array('schema_id' => 'id', ), null, null);
+		$this->addRelation('MeshingSchema', 'MeshingSchema', RelationMap::MANY_TO_ONE, array('schema_id' => 'id', ), null, null);
 		$this->addRelation('P2PConnection', 'P2PConnection', RelationMap::MANY_TO_ONE, array('connection_id' => 'id', ), null, null);
 		$this->addRelation('MeshingTrustLocalRelatedByFromOwnNodeId', 'MeshingTrustLocal', RelationMap::ONE_TO_MANY, array('id' => 'from_own_node_id', ), null, null);
 		$this->addRelation('MeshingTrustLocalRelatedByToOwnNodeId', 'MeshingTrustLocal', RelationMap::ONE_TO_MANY, array('id' => 'to_own_node_id', ), null, null);

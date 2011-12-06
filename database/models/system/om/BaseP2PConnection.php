@@ -1096,10 +1096,10 @@ abstract class BaseP2PConnection extends BaseObject  implements Persistent
 	 * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
 	 * @return     PropelCollection|array P2POwnNode[] List of P2POwnNode objects
 	 */
-	public function getP2POwnNodesJoinP2PSchema($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getP2POwnNodesJoinMeshingSchema($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$query = P2POwnNodeQuery::create(null, $criteria);
-		$query->joinWith('P2PSchema', $join_behavior);
+		$query->joinWith('MeshingSchema', $join_behavior);
 
 		return $this->getP2POwnNodes($query, $con);
 	}

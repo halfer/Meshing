@@ -56,9 +56,9 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 	protected $is_enabled;
 
 	/**
-	 * @var        P2PSchema
+	 * @var        MeshingSchema
 	 */
-	protected $aP2PSchema;
+	protected $aMeshingSchema;
 
 	/**
 	 * @var        P2PConnection
@@ -207,8 +207,8 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 			$this->modifiedColumns[] = P2POwnNodePeer::SCHEMA_ID;
 		}
 
-		if ($this->aP2PSchema !== null && $this->aP2PSchema->getId() !== $v) {
-			$this->aP2PSchema = null;
+		if ($this->aMeshingSchema !== null && $this->aMeshingSchema->getId() !== $v) {
+			$this->aMeshingSchema = null;
 		}
 
 		return $this;
@@ -358,8 +358,8 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 	public function ensureConsistency()
 	{
 
-		if ($this->aP2PSchema !== null && $this->schema_id !== $this->aP2PSchema->getId()) {
-			$this->aP2PSchema = null;
+		if ($this->aMeshingSchema !== null && $this->schema_id !== $this->aMeshingSchema->getId()) {
+			$this->aMeshingSchema = null;
 		}
 		if ($this->aP2PConnection !== null && $this->connection_id !== $this->aP2PConnection->getId()) {
 			$this->aP2PConnection = null;
@@ -403,7 +403,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aP2PSchema = null;
+			$this->aMeshingSchema = null;
 			$this->aP2PConnection = null;
 			$this->collMeshingTrustLocalsRelatedByFromOwnNodeId = null;
 
@@ -528,11 +528,11 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aP2PSchema !== null) {
-				if ($this->aP2PSchema->isModified() || $this->aP2PSchema->isNew()) {
-					$affectedRows += $this->aP2PSchema->save($con);
+			if ($this->aMeshingSchema !== null) {
+				if ($this->aMeshingSchema->isModified() || $this->aMeshingSchema->isNew()) {
+					$affectedRows += $this->aMeshingSchema->save($con);
 				}
-				$this->setP2PSchema($this->aP2PSchema);
+				$this->setMeshingSchema($this->aMeshingSchema);
 			}
 
 			if ($this->aP2PConnection !== null) {
@@ -668,9 +668,9 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aP2PSchema !== null) {
-				if (!$this->aP2PSchema->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aP2PSchema->getValidationFailures());
+			if ($this->aMeshingSchema !== null) {
+				if (!$this->aMeshingSchema->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aMeshingSchema->getValidationFailures());
 				}
 			}
 
@@ -802,8 +802,8 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 			$keys[4] => $this->getIsEnabled(),
 		);
 		if ($includeForeignObjects) {
-			if (null !== $this->aP2PSchema) {
-				$result['P2PSchema'] = $this->aP2PSchema->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+			if (null !== $this->aMeshingSchema) {
+				$result['MeshingSchema'] = $this->aMeshingSchema->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
 			}
 			if (null !== $this->aP2PConnection) {
 				$result['P2PConnection'] = $this->aP2PConnection->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1054,13 +1054,13 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 	}
 
 	/**
-	 * Declares an association between this object and a P2PSchema object.
+	 * Declares an association between this object and a MeshingSchema object.
 	 *
-	 * @param      P2PSchema $v
+	 * @param      MeshingSchema $v
 	 * @return     P2POwnNode The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setP2PSchema(P2PSchema $v = null)
+	public function setMeshingSchema(MeshingSchema $v = null)
 	{
 		if ($v === null) {
 			$this->setSchemaId(NULL);
@@ -1068,10 +1068,10 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 			$this->setSchemaId($v->getId());
 		}
 
-		$this->aP2PSchema = $v;
+		$this->aMeshingSchema = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the P2PSchema object, it will not be re-added.
+		// If this object has already been added to the MeshingSchema object, it will not be re-added.
 		if ($v !== null) {
 			$v->addP2POwnNode($this);
 		}
@@ -1081,25 +1081,25 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 
 
 	/**
-	 * Get the associated P2PSchema object
+	 * Get the associated MeshingSchema object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     P2PSchema The associated P2PSchema object.
+	 * @return     MeshingSchema The associated MeshingSchema object.
 	 * @throws     PropelException
 	 */
-	public function getP2PSchema(PropelPDO $con = null)
+	public function getMeshingSchema(PropelPDO $con = null)
 	{
-		if ($this->aP2PSchema === null && ($this->schema_id !== null)) {
-			$this->aP2PSchema = P2PSchemaQuery::create()->findPk($this->schema_id, $con);
+		if ($this->aMeshingSchema === null && ($this->schema_id !== null)) {
+			$this->aMeshingSchema = MeshingSchemaQuery::create()->findPk($this->schema_id, $con);
 			/* The following can be used additionally to
 				guarantee the related object contains a reference
 				to this object.  This level of coupling may, however, be
 				undesirable since it could result in an only partially populated collection
 				in the referenced object.
-				$this->aP2PSchema->addP2POwnNodes($this);
+				$this->aMeshingSchema->addP2POwnNodes($this);
 			 */
 		}
-		return $this->aP2PSchema;
+		return $this->aMeshingSchema;
 	}
 
 	/**
@@ -1805,7 +1805,7 @@ abstract class BaseP2POwnNode extends BaseObject  implements Persistent
 			$this->collMeshingTrustRemotesRelatedByInOwnNodeId->clearIterator();
 		}
 		$this->collMeshingTrustRemotesRelatedByInOwnNodeId = null;
-		$this->aP2PSchema = null;
+		$this->aMeshingSchema = null;
 		$this->aP2PConnection = null;
 	}
 

@@ -28,7 +28,7 @@ class Meshing_Console_Command_Schema_Delete extends Meshing_Console_Base impleme
 
 		// Check that the schema exists
 		Meshing_Utils::initialiseDb();
-		$this->schema = P2PSchemaQuery::create()->findOneByName($this->opts->name);
+		$this->schema = MeshingSchemaQuery::create()->findOneByName($this->opts->name);
 		if (!$this->schema)
 		{
 			throw new Zend_Console_Getopt_Exception('That schema is not registered');

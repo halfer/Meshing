@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'p2p_schema_table' table.
+ * This class defines the structure of the 'meshing_schema_table' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.system.map
  */
-class P2PSchemaTableTableMap extends TableMap
+class MeshingSchemaTableTableMap extends TableMap
 {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'system.map.P2PSchemaTableTableMap';
+	const CLASS_NAME = 'system.map.MeshingSchemaTableTableMap';
 
 	/**
 	 * Initialize the table attributes, columns and validators
@@ -32,17 +32,16 @@ class P2PSchemaTableTableMap extends TableMap
 	public function initialize()
 	{
 		// attributes
-		$this->setName('p2p_schema_table');
-		$this->setPhpName('P2PSchemaTable');
-		$this->setClassname('P2PSchemaTable');
+		$this->setName('meshing_schema_table');
+		$this->setPhpName('MeshingSchemaTable');
+		$this->setClassname('MeshingSchemaTable');
 		$this->setPackage('system');
 		$this->setUseIdGenerator(true);
-		$this->setPrimaryKeyMethodInfo('p2p_schema_table_id_seq');
+		$this->setPrimaryKeyMethodInfo('meshing_schema_table_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addForeignKey('SCHEMA_ID', 'SchemaId', 'INTEGER', 'p2p_schema', 'ID', true, null, null);
+		$this->addForeignKey('SCHEMA_ID', 'SchemaId', 'INTEGER', 'meshing_schema', 'ID', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 50, null);
-		$this->addColumn('ROW_ORD_CURRENT', 'RowOrdCurrent', 'INTEGER', false, null, null);
 		// validators
 	} // initialize()
 
@@ -51,7 +50,7 @@ class P2PSchemaTableTableMap extends TableMap
 	 */
 	public function buildRelations()
 	{
-		$this->addRelation('P2PSchema', 'P2PSchema', RelationMap::MANY_TO_ONE, array('schema_id' => 'id', ), null, null);
+		$this->addRelation('MeshingSchema', 'MeshingSchema', RelationMap::MANY_TO_ONE, array('schema_id' => 'id', ), null, null);
 	} // buildRelations()
 
-} // P2PSchemaTableTableMap
+} // MeshingSchemaTableTableMap

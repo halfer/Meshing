@@ -22,9 +22,9 @@
  * @method     P2POwnNodeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     P2POwnNodeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     P2POwnNodeQuery leftJoinP2PSchema($relationAlias = null) Adds a LEFT JOIN clause to the query using the P2PSchema relation
- * @method     P2POwnNodeQuery rightJoinP2PSchema($relationAlias = null) Adds a RIGHT JOIN clause to the query using the P2PSchema relation
- * @method     P2POwnNodeQuery innerJoinP2PSchema($relationAlias = null) Adds a INNER JOIN clause to the query using the P2PSchema relation
+ * @method     P2POwnNodeQuery leftJoinMeshingSchema($relationAlias = null) Adds a LEFT JOIN clause to the query using the MeshingSchema relation
+ * @method     P2POwnNodeQuery rightJoinMeshingSchema($relationAlias = null) Adds a RIGHT JOIN clause to the query using the MeshingSchema relation
+ * @method     P2POwnNodeQuery innerJoinMeshingSchema($relationAlias = null) Adds a INNER JOIN clause to the query using the MeshingSchema relation
  *
  * @method     P2POwnNodeQuery leftJoinP2PConnection($relationAlias = null) Adds a LEFT JOIN clause to the query using the P2PConnection relation
  * @method     P2POwnNodeQuery rightJoinP2PConnection($relationAlias = null) Adds a RIGHT JOIN clause to the query using the P2PConnection relation
@@ -205,7 +205,7 @@ abstract class BaseP2POwnNodeQuery extends ModelCriteria
 	 * $query->filterBySchemaId(array('min' => 12)); // WHERE schema_id > 12
 	 * </code>
 	 *
-	 * @see       filterByP2PSchema()
+	 * @see       filterByMeshingSchema()
 	 *
 	 * @param     mixed $schemaId The value to use as filter.
 	 *              Use scalar values for equality.
@@ -334,41 +334,41 @@ abstract class BaseP2POwnNodeQuery extends ModelCriteria
 	}
 
 	/**
-	 * Filter the query by a related P2PSchema object
+	 * Filter the query by a related MeshingSchema object
 	 *
-	 * @param     P2PSchema|PropelCollection $p2PSchema The related object(s) to use as filter
+	 * @param     MeshingSchema|PropelCollection $meshingSchema The related object(s) to use as filter
 	 * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
 	 *
 	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
-	public function filterByP2PSchema($p2PSchema, $comparison = null)
+	public function filterByMeshingSchema($meshingSchema, $comparison = null)
 	{
-		if ($p2PSchema instanceof P2PSchema) {
+		if ($meshingSchema instanceof MeshingSchema) {
 			return $this
-				->addUsingAlias(P2POwnNodePeer::SCHEMA_ID, $p2PSchema->getId(), $comparison);
-		} elseif ($p2PSchema instanceof PropelCollection) {
+				->addUsingAlias(P2POwnNodePeer::SCHEMA_ID, $meshingSchema->getId(), $comparison);
+		} elseif ($meshingSchema instanceof PropelCollection) {
 			if (null === $comparison) {
 				$comparison = Criteria::IN;
 			}
 			return $this
-				->addUsingAlias(P2POwnNodePeer::SCHEMA_ID, $p2PSchema->toKeyValue('PrimaryKey', 'Id'), $comparison);
+				->addUsingAlias(P2POwnNodePeer::SCHEMA_ID, $meshingSchema->toKeyValue('PrimaryKey', 'Id'), $comparison);
 		} else {
-			throw new PropelException('filterByP2PSchema() only accepts arguments of type P2PSchema or PropelCollection');
+			throw new PropelException('filterByMeshingSchema() only accepts arguments of type MeshingSchema or PropelCollection');
 		}
 	}
 
 	/**
-	 * Adds a JOIN clause to the query using the P2PSchema relation
+	 * Adds a JOIN clause to the query using the MeshingSchema relation
 	 * 
 	 * @param     string $relationAlias optional alias for the relation
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
 	 * @return    P2POwnNodeQuery The current query, for fluid interface
 	 */
-	public function joinP2PSchema($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function joinMeshingSchema($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		$tableMap = $this->getTableMap();
-		$relationMap = $tableMap->getRelation('P2PSchema');
+		$relationMap = $tableMap->getRelation('MeshingSchema');
 		
 		// create a ModelJoin object for this join
 		$join = new ModelJoin();
@@ -383,14 +383,14 @@ abstract class BaseP2POwnNodeQuery extends ModelCriteria
 			$this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
 			$this->addJoinObject($join, $relationAlias);
 		} else {
-			$this->addJoinObject($join, 'P2PSchema');
+			$this->addJoinObject($join, 'MeshingSchema');
 		}
 		
 		return $this;
 	}
 
 	/**
-	 * Use the P2PSchema relation P2PSchema object
+	 * Use the MeshingSchema relation MeshingSchema object
 	 *
 	 * @see       useQuery()
 	 * 
@@ -398,13 +398,13 @@ abstract class BaseP2POwnNodeQuery extends ModelCriteria
 	 *                                   to be used as main alias in the secondary query
 	 * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
 	 *
-	 * @return    P2PSchemaQuery A secondary query class using the current class as primary query
+	 * @return    MeshingSchemaQuery A secondary query class using the current class as primary query
 	 */
-	public function useP2PSchemaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+	public function useMeshingSchemaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
 	{
 		return $this
-			->joinP2PSchema($relationAlias, $joinType)
-			->useQuery($relationAlias ? $relationAlias : 'P2PSchema', 'P2PSchemaQuery');
+			->joinMeshingSchema($relationAlias, $joinType)
+			->useQuery($relationAlias ? $relationAlias : 'MeshingSchema', 'MeshingSchemaQuery');
 	}
 
 	/**

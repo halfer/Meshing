@@ -31,8 +31,8 @@ class Meshing_Console_Command_Schema_List extends Meshing_Console_Base implement
 		echo sprintf($outFormat, 'Name', 'Schema', 'Connection') . "\n";
 		$this->ruleOff($lineLength);
 
-		/* @var $schema P2PSchema */
-		foreach (P2PSchemaPeer::doSelect(new Criteria()) as $schema)
+		/* @var $schema MeshingSchema */
+		foreach (MeshingSchemaPeer::doSelect(new Criteria()) as $schema)
 		{
 			echo sprintf(
 				$outFormat,

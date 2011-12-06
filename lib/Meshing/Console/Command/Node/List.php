@@ -37,7 +37,7 @@ class Meshing_Console_Command_Node_List extends Meshing_Console_Base implements 
 			echo sprintf(
 				$outFormat,
 				$ownNode->getName(),
-				$ownNode->getP2PSchema()->getName(),
+				$ownNode->getMeshingSchema()->getName(),
 				$ownNode->getP2PConnection()->getName()
 			) . "\n";
 		}

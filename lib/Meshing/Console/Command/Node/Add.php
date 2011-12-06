@@ -55,7 +55,7 @@ class Meshing_Console_Command_Node_Add extends Meshing_Console_Base implements M
 		}
 
 		// Check that the schema exists
-		$this->schema = P2PSchemaQuery::create()->findOneByName($this->opts->schema);
+		$this->schema = MeshingSchemaQuery::create()->findOneByName($this->opts->schema);
 		if (!$this->schema)
 		{
 			throw new Zend_Console_Getopt_Exception('The specified schema is not registered');
@@ -143,7 +143,7 @@ class Meshing_Console_Command_Node_Add extends Meshing_Console_Base implements M
 		$ownNode = new P2POwnNode();
 		$ownNode->setName($this->opts->name);
 		$ownNode->setP2PConnection($this->connection);
-		$ownNode->setP2PSchema($this->schema);
+		$ownNode->setMeshingSchema($this->schema);
 		$ownNode->save();
 
 		return $ownNode;

@@ -458,7 +458,7 @@ abstract class BaseP2POwnNodePeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related P2PSchema table
+	 * Returns the number of rows matching criteria, joining the related MeshingSchema table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -466,7 +466,7 @@ abstract class BaseP2POwnNodePeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinP2PSchema(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinMeshingSchema(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -493,7 +493,7 @@ abstract class BaseP2POwnNodePeer {
 			$con = Propel::getConnection(P2POwnNodePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, P2PSchemaPeer::ID, $join_behavior);
+		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, MeshingSchemaPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -558,7 +558,7 @@ abstract class BaseP2POwnNodePeer {
 
 
 	/**
-	 * Selects a collection of P2POwnNode objects pre-filled with their P2PSchema objects.
+	 * Selects a collection of P2POwnNode objects pre-filled with their MeshingSchema objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -566,7 +566,7 @@ abstract class BaseP2POwnNodePeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinP2PSchema(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinMeshingSchema(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -577,9 +577,9 @@ abstract class BaseP2POwnNodePeer {
 
 		P2POwnNodePeer::addSelectColumns($criteria);
 		$startcol = P2POwnNodePeer::NUM_HYDRATE_COLUMNS;
-		P2PSchemaPeer::addSelectColumns($criteria);
+		MeshingSchemaPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, P2PSchemaPeer::ID, $join_behavior);
+		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, MeshingSchemaPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -599,19 +599,19 @@ abstract class BaseP2POwnNodePeer {
 				P2POwnNodePeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = P2PSchemaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = MeshingSchemaPeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = P2PSchemaPeer::getInstanceFromPool($key2);
+				$obj2 = MeshingSchemaPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = P2PSchemaPeer::getOMClass(false);
+					$cls = MeshingSchemaPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					P2PSchemaPeer::addInstanceToPool($obj2, $key2);
+					MeshingSchemaPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 
-				// Add the $obj1 (P2POwnNode) to $obj2 (P2PSchema)
+				// Add the $obj1 (P2POwnNode) to $obj2 (MeshingSchema)
 				$obj2->addP2POwnNode($obj1);
 
 			} // if joined row was not null
@@ -725,7 +725,7 @@ abstract class BaseP2POwnNodePeer {
 			$con = Propel::getConnection(P2POwnNodePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, P2PSchemaPeer::ID, $join_behavior);
+		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, MeshingSchemaPeer::ID, $join_behavior);
 
 		$criteria->addJoin(P2POwnNodePeer::CONNECTION_ID, P2PConnectionPeer::ID, $join_behavior);
 
@@ -762,13 +762,13 @@ abstract class BaseP2POwnNodePeer {
 		P2POwnNodePeer::addSelectColumns($criteria);
 		$startcol2 = P2POwnNodePeer::NUM_HYDRATE_COLUMNS;
 
-		P2PSchemaPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + P2PSchemaPeer::NUM_HYDRATE_COLUMNS;
+		MeshingSchemaPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + MeshingSchemaPeer::NUM_HYDRATE_COLUMNS;
 
 		P2PConnectionPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + P2PConnectionPeer::NUM_HYDRATE_COLUMNS;
 
-		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, P2PSchemaPeer::ID, $join_behavior);
+		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, MeshingSchemaPeer::ID, $join_behavior);
 
 		$criteria->addJoin(P2POwnNodePeer::CONNECTION_ID, P2PConnectionPeer::ID, $join_behavior);
 
@@ -789,21 +789,21 @@ abstract class BaseP2POwnNodePeer {
 				P2POwnNodePeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-			// Add objects for joined P2PSchema rows
+			// Add objects for joined MeshingSchema rows
 
-			$key2 = P2PSchemaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+			$key2 = MeshingSchemaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 			if ($key2 !== null) {
-				$obj2 = P2PSchemaPeer::getInstanceFromPool($key2);
+				$obj2 = MeshingSchemaPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = P2PSchemaPeer::getOMClass(false);
+					$cls = MeshingSchemaPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					P2PSchemaPeer::addInstanceToPool($obj2, $key2);
+					MeshingSchemaPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 loaded
 
-				// Add the $obj1 (P2POwnNode) to the collection in $obj2 (P2PSchema)
+				// Add the $obj1 (P2POwnNode) to the collection in $obj2 (MeshingSchema)
 				$obj2->addP2POwnNode($obj1);
 			} // if joined row not null
 
@@ -833,7 +833,7 @@ abstract class BaseP2POwnNodePeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related P2PSchema table
+	 * Returns the number of rows matching criteria, joining the related MeshingSchema table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -841,7 +841,7 @@ abstract class BaseP2POwnNodePeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptP2PSchema(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptMeshingSchema(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -918,7 +918,7 @@ abstract class BaseP2POwnNodePeer {
 			$con = Propel::getConnection(P2POwnNodePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, P2PSchemaPeer::ID, $join_behavior);
+		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, MeshingSchemaPeer::ID, $join_behavior);
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -933,7 +933,7 @@ abstract class BaseP2POwnNodePeer {
 
 
 	/**
-	 * Selects a collection of P2POwnNode objects pre-filled with all related objects except P2PSchema.
+	 * Selects a collection of P2POwnNode objects pre-filled with all related objects except MeshingSchema.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -942,7 +942,7 @@ abstract class BaseP2POwnNodePeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptP2PSchema(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptMeshingSchema(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -1029,10 +1029,10 @@ abstract class BaseP2POwnNodePeer {
 		P2POwnNodePeer::addSelectColumns($criteria);
 		$startcol2 = P2POwnNodePeer::NUM_HYDRATE_COLUMNS;
 
-		P2PSchemaPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + P2PSchemaPeer::NUM_HYDRATE_COLUMNS;
+		MeshingSchemaPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + MeshingSchemaPeer::NUM_HYDRATE_COLUMNS;
 
-		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, P2PSchemaPeer::ID, $join_behavior);
+		$criteria->addJoin(P2POwnNodePeer::SCHEMA_ID, MeshingSchemaPeer::ID, $join_behavior);
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1052,21 +1052,21 @@ abstract class BaseP2POwnNodePeer {
 				P2POwnNodePeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined P2PSchema rows
+				// Add objects for joined MeshingSchema rows
 
-				$key2 = P2PSchemaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = MeshingSchemaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = P2PSchemaPeer::getInstanceFromPool($key2);
+					$obj2 = MeshingSchemaPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$cls = P2PSchemaPeer::getOMClass(false);
+						$cls = MeshingSchemaPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					P2PSchemaPeer::addInstanceToPool($obj2, $key2);
+					MeshingSchemaPeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (P2POwnNode) to the collection in $obj2 (P2PSchema)
+				// Add the $obj1 (P2POwnNode) to the collection in $obj2 (MeshingSchema)
 				$obj2->addP2POwnNode($obj1);
 
 			} // if joined row is not null
