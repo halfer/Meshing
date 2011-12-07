@@ -78,20 +78,20 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 	 */
 	public function run()
 	{
-		$this->installXml();
-		$this->writeRecord();
-		$this->createConf();
-	}
-
-	protected function installXml()
-	{
 		$schemaProc = 'schema.xml';
-		$this->doFixups(
+		$tableNames = $this->doFixups(
 			$this->opts->file,
 			$this->schemaDir . DIRECTORY_SEPARATOR . $schemaProc,
 			$this->opts->name
 		);
 
+		$this->installXml($schemaProc);
+		$this->writeRecords($tableNames);
+		$this->createConf();
+	}
+
+	protected function installXml($schemaProc)
+	{
 		$extraPropsFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() .
 			'/build.properties';
 		$modelDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathModelsNodes();
@@ -104,9 +104,9 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 		$task->setOutputDir($modelDir);
 
 		$task->run();
-		
+
 		echo "Schemas: " . $this->schemaDir . "\n";
-		echo "Output: " . $modelDir . "\n";		
+		echo "Output: " . $modelDir . "\n";
 	}
 
 	/**
@@ -153,15 +153,28 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 	protected function doFixups($schemaFileIn, $schemaFileOut, $schemaName)
 	{
 		$fixup = new Meshing_Schema_Fixup($schemaFileIn, $schemaFileOut);
+
+		// Get the table names before we do the fixup (which adds more tables)
+		$tableNames = $fixup->getTableNames();
 		$fixup->fixup($schemaName);
+
+		return $tableNames;
 	}
 
-	protected function writeRecord()
+	protected function writeRecords($tableNames)
 	{
 		$schema = new MeshingSchema();
 		$schema->setName($this->opts->name);
 		$schema->setInstalledAt(time());
 		$schema->save();
+
+		foreach ($tableNames as $tableName)
+		{
+			$schemaTable = new MeshingSchemaTable();
+			$schemaTable->setMeshingSchema($schema);
+			$schemaTable->setName($tableName);
+			$schemaTable->save();
+		}
 	}
 
 	protected function createConf()

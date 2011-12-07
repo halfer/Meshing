@@ -96,4 +96,15 @@ class Meshing_Schema_Fixup
 	{
 		$this->basePeer = $basePeer;
 	}
+
+	public function getTableNames()
+	{
+		$names = array();
+		foreach($this->xml->getTables() as $tableElement)
+		{
+			$names[] = (string) $tableElement['name'];
+		}
+
+		return $names;
+	}
 }
