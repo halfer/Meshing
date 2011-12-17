@@ -43,13 +43,7 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		}
 
 		// Prevent race condition between MAX() and INSERT - lock table here
-		$tableName = constant($this->getVersionablePeerName() . '::TABLE_NAME');
-		$locker = Meshing_Database_Locker::getInstance($con);
-		$ok = $locker->obtainTableLock($tableName);
-		if (!$ok)
-		{
-			throw new Exception('Failed to obtain database lock on ' . $tableName);
-		}
+		$locker = $this->setupLocks($con);
 
 		// Create a new versionable row
 		try
@@ -61,12 +55,12 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		catch (Exception $e)
 		{
 			// Release lock and re-throw error
-			$locker->releaseTableLock($tableName);
+			$locker->releaseTableLocks();
 			throw $e;
 		}
 
 		// Everything went ok - release table lock here
-		$locker->releaseTableLock($tableName);
+		$locker->releaseTableLocks();
 	}
 
 	/**
@@ -96,13 +90,7 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		/* @var $vsn TestModelTestOrganiserVersionable */
 		
 		// Prevent race condition between MAX() and UPDATE - lock table here
-		$tableName = constant($this->getVersionablePeerName() . '::TABLE_NAME');
-		$locker = Meshing_Database_Locker::getInstance($con);
-		$ok = $locker->obtainTableLock($tableName);
-		if (!$ok)
-		{
-			throw new Exception('Failed to obtain database lock on ' . $tableName);
-		}
+		$locker = $this->setupLocks($con);
 
 		try
 		{
@@ -120,12 +108,12 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 		catch (Exception $e)
 		{
 			// Release lock and re-throw error
-			$locker->releaseTableLock($tableName);
+			$locker->releaseTableLocks();
 			throw $e;			
 		}
 
 		// Everything went ok - release table lock here
-		$locker->releaseTableLock($tableName);
+		$locker->releaseTableLocks();
 
 		return true;
 	}
@@ -138,6 +126,35 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	 */
 	protected function _preVersionSave(BaseObject $vsn, $update)
 	{
+	}
+
+	/**
+	 * Calls the locker process
+	 */
+	protected function setupLocks(PropelPDO $con)
+	{
+		$locker = Meshing_Database_Locker::getInstance($con);
+
+		// Lock tables as required
+		$tableName = constant($this->getVersionablePeerName() . '::TABLE_NAME');
+		$ok = $locker->obtainTableLock($tableName);
+		if (!$ok)
+		{
+			throw new Exception('Failed to obtain database lock on ' . $tableName);
+		}
+
+		// Some dbs (MySQL) require ordinary tables to be locked as well
+		$tableName = array(
+			constant($this->getPeerName() . '::TABLE_NAME'),
+			$this->getFellowTableName('known_node'),
+		);
+		$ok = $locker->obtainTableAccess($tableName);
+		if (!$ok)
+		{
+			throw new Exception('Failed to obtain database lock on ' . $tableName);
+		}
+
+		return $locker;
 	}
 
 	/**
@@ -463,6 +480,35 @@ class MeshingBaseObject extends BaseObject implements Meshing_Hash_RowInterface
 	public function getVersionableMap()
 	{
 		return call_user_func(array($this->getVersionablePeerName(), 'getTableMap'));
+	}
+
+	/**
+	 * Gets the package name (which is also the schema name)
+	 */
+	protected function getPackageName()
+	{
+		$peerClass = $this->getPeerName();
+		$className = constant($peerClass . '::CLASS_DEFAULT');
+
+		return substr($className, 0, strpos($className, '.'));
+	}
+
+	/**
+	 * Looks up the table name of a fellow table (e.g. known_node) 
+	 * 
+	 * (Useful as the package and the table prefix are not always the same)
+	 * 
+	 * @return type 
+	 */
+	protected function getFellowTableName($suffix)
+	{
+		// Get known node table name (may not be same as package name)
+		$knownNodeName = $this->getPackageName() . '_' . $suffix;
+
+		$cameliser = new Zend_Filter_Word_UnderscoreToCamelCase();
+		$peerName = $cameliser->filter($knownNodeName) . 'Peer';
+
+		return constant($peerName . '::TABLE_NAME');
 	}
 
 	/**

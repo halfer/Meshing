@@ -22,7 +22,18 @@ class Meshing_Database_Locker_Pgsql
 		return true;
 	}
 
-	public function releaseTableLock($table, $lockType = Meshing_Database_Locker::READ)
+	/**
+	 * Dummy routine for this driver - accessing other tables doesn't require a lock
+	 */
+	public function obtainTableAccess(array $tables, $lockType = Meshing_Database_Locker::READ)
+	{
+		return true;
+	}
+
+	/**
+	 * Release all locks
+	 */
+	public function releaseTableLocks()
 	{
 		$this->con->commit();
 
