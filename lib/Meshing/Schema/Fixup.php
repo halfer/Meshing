@@ -63,6 +63,10 @@ class Meshing_Schema_Fixup
 			$versionableTables
 		);
 
+		// Create change tables for each real table (need to do this after curent tables have
+		// had their additional keys inserted)
+		$this->xml->createChangeTables($this->snippetDir . '/change_table.xml', $realTables);
+
 		// Add the identity table, so it gets prefixed in the same way as other tables
 		$this->xml->insertTable($this->snippetDir . '/node_identity.xml');
 

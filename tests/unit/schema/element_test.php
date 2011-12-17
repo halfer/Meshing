@@ -11,6 +11,9 @@ require_once 'simpletest/autorun.php';
 
 class SchemaElementTestCase extends UnitTestCase
 {
+	/**
+	 * Remember, this gets called prior to every test*() method below
+	 */
 	public function setUp()
 	{
 		// Create test XML object
@@ -183,5 +186,26 @@ class SchemaElementTestCase extends UnitTestCase
 		$this->xml->setCustomBaseClass($customClass);
 		
 		$this->assertEqual($this->xml['baseClass'], $customClass);
+	}
+
+	public function testCreateChangeTables()
+	{
+		$paths = Meshing_Utils::getPaths();
+		$snippetsPath = Meshing_Utils::getProjectRoot() . $paths->getPathSystemSnippets();
+
+		$tables = $this->xml->getTables();
+		$changeTables = $this->xml->createChangeTables(
+			$snippetsPath . '/change_table.xml',
+			$tables
+		);
+
+		$this->assertEqual(
+			count($tables),
+			count($changeTables),
+			'Ensure there is a change table for each real table'
+		);
+
+		// @todo Check that the prefix is the same for each change table
+		// @todo Check that the FKs in each change table are mapped to current table PK equivs
 	}
 }

@@ -1,0 +1,12 @@
+	<table name="change-temp-name">
+		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+		<column name="known_node_id" type="integer" required="true" />
+		<foreign-key foreignTable="known_node">
+			<reference local="known_node_id" foreign="id" />
+		</foreign-key>
+		<column name="sent_at" type="timestamp" />
+		<column name="status_code" type="integer" />
+
+		<!-- The foreign keys to current table are added during the fixup process -->
+	</table>
+	

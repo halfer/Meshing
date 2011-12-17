@@ -271,7 +271,7 @@ class Meshing_Schema_Element extends SimpleXMLElement
 	 * @param SimpleXMLElement $table
 	 * @param string $namePrefix
 	 * @param string $nameSuffix
-	 * @return string 
+	 * @return SimpleXMLElement 
 	 */
 	protected function duplicateTable(SimpleXMLElement $table, $namePrefix, $nameSuffix)
 	{
@@ -291,6 +291,53 @@ class Meshing_Schema_Element extends SimpleXMLElement
 	public function getTables()
 	{
 		return $this->xpath('/database/table');
+	}
+
+	/**
+	 * Creates a change table for every table in the schema
+	 * 
+	 * Should be called after the primary keys in $tables are fixed up
+	 */
+	public function createChangeTables($xmlFile, $tables)
+	{
+		$xmlString = file_get_contents($xmlFile);
+		$xmlTable = simplexml_load_string($xmlString);
+
+		$changeTables = array();
+		foreach($tables as $table)
+		{
+			/* @var $changeTable SimpleXMLElement */
+			$currentTable = (string) $table['name'];
+			$xmlTable['name'] = $currentTable;
+			$changeTable = $this->duplicateTable($xmlTable, '', '_sent_change');
+
+			// Create foreign key node
+			$foreignKey = $changeTable->addChild('foreign-key');
+			$foreignKey['foreignTable'] = $currentTable;
+
+			// Get primary keys from $table and copy them into $changeTable
+			$keys = $table->xpath('column[@primaryKey="true"]');
+			foreach ($keys as $key)
+			{
+				$foreignName = (string) $key['name'];
+				$localName = 'key_' . $foreignName;
+				$foreignKeyCol = $this->copyXml($key, $changeTable);
+				$foreignKeyCol[ 'name' ] = $localName;
+
+				// We don't want the new foreign key to have any PK features
+				unset($foreignKeyCol['primaryKey']);
+				unset($foreignKeyCol['autoIncrement']);
+
+				// Populate foreign key constraint
+				$ref = $foreignKey->addChild('reference');
+				$ref['local'] = $localName;
+				$ref['foreign'] = $foreignName;
+			}
+
+			$changeTables[] = $changeTable;
+		}
+
+		return $changeTables;
 	}
 
 	/**
