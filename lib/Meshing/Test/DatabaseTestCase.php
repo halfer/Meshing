@@ -216,7 +216,15 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$task->setMapFile($mapFile);
 		$task->addPropertiesFile($this->extraPropsFile);
 
-		$task->run();
+		try
+		{
+			$task->run();
+		}
+		catch (BuildException $e)
+		{
+			echo "Error running SQL file, check build properties (map: " . $this->paths->getFileDbMap() . ")\n";
+			exit();
+		}
 
 		// No tests here at the moment - we'll connect to test db later
 		if ($runTests)
