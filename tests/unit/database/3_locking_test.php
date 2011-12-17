@@ -68,13 +68,14 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 			return;
 		}
 
-		// @todo This could be simplified a bit by >> piping straight to the log file, then
-		// echoing in the child rather than writing to the log
+		// Append errors to this log file
+		$logDir = Meshing_Utils::getProjectRoot() . Meshing_Utils::getPaths()->getTestLogPath();
+
 		$childCount = 10;
 		for ($id = 0; $id < $childCount; $id++)
 		{
 			$command = 'php "' . __FILE__ . '" ' . CHILD_TOKEN . ' ' . $id;
-			$background = '> /dev/null 2>&1 &';
+			$background = '>> ' . $logDir . '/' . LOCKING_TEST_LOG . ' 2>&1 &';
 			$return = null;
 			$output = system($command . ' ' . $background, $return);
 			
@@ -159,12 +160,7 @@ class LockingTestCaseChild
 			$log = "error\n" . $e->getMessage() . "\n";
 		}
 
-		$logDir = Meshing_Utils::getProjectRoot() . Meshing_Utils::getPaths()->getTestLogPath();
-		file_put_contents(
-			$logDir . '/' . LOCKING_TEST_LOG,
-			"Child #$id {\n{$log}}\n",
-			FILE_APPEND
-		);
+		echo "Child #$id {\n{$log}}\n";
 	}
 }
 
