@@ -52,7 +52,6 @@ class Meshing_Propel_SqlRunner extends Meshing_Propel_Task
 		$task->setPassword($this->password);
 
 		$task->setAutoCommit(true);
-		$task->setOnerror('continue');
 		
 		return $task;
 	}
