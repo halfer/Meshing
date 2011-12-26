@@ -42,4 +42,11 @@ class Meshing_Node_Utils
 	{
 		return self::getIdentityClassName($schemaName) . 'Peer';
 	}
+
+	public static function getConnectionForNode(P2POwnNode $node)
+	{
+		$conName = $node->getP2PConnection()->getName();
+
+		return Propel::getConnection($conName);
+	}
 }
