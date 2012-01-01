@@ -92,14 +92,12 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 
 	protected function installXml($schemaProc)
 	{
-		$extraPropsFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() .
-			'/build.properties';
 		$modelDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathModelsNodes();
 
 		// Create task, configure, then run
 		$task = new Meshing_Propel_ClassBuilder();
 
-		$task->addPropertiesFile($extraPropsFile);
+		$task->setPropelConnection();
 		$task->addSchemas($this->schemaDir, $schemaProc);
 		$task->setOutputDir($modelDir);
 
@@ -182,14 +180,13 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 		$configName = 'database-conf.php';
 		$this->convertConf(
 			$this->projectRoot . Meshing_Utils::getPaths()->getFileRuntimeXml(),
-			$this->projectRoot . Meshing_Utils::getPaths()->getPathConnsNodes() . '/' . $this->opts->name,
+			$this->projectRoot . Meshing_Utils::getPaths()->getPathConnsNodes($this->opts->name),
 			$configName
 		);
 
 		// We only want the autoloading file, not the connections file... deleting to be tidy!
 		$configPath = $this->projectRoot .
-			Meshing_Utils::getPaths()->getPathConnsNodes() .
-			$this->opts->name . '/' . $configName;
+			Meshing_Utils::getPaths()->getPathConnsNodes($this->opts->name) . '/' . $configName;
 		@unlink($configPath);
 	}
 
@@ -202,16 +199,15 @@ class Meshing_Console_Command_Schema_Add extends Meshing_Console_Base implements
 	protected function convertConf($runTime, $outputDir, $outputFile)
 	{
 		$schemas = "schema.xml";
-		$extraPropsFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() .
-			'/build.properties';
 
 		$task = new Meshing_Propel_ConfBuilder();
 		
+		$task->setPropelConnection();
 		$task->addSchemas($this->schemaDir, $schemas);
 		$task->setXmlFile($runTime);
 		$task->setOutputDir($outputDir);
 		$task->setOutputFile($outputFile);
-		$task->addPropertiesFile($extraPropsFile);
+		$task->setPropelConnection();
 
 		$task->run();		
 	}

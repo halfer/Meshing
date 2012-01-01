@@ -62,8 +62,8 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 
 	public function testModels()
 	{
-		Meshing_Utils::initialiseDb();
-		
+		$this->initConnections();
+
 		try
 		{
 			$organiser = new TestOrganiser();
@@ -72,7 +72,7 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 			$event = new TestEvent();
 			$event->setName($eventName = 'Expert Burrowing In The Built Environment');
 			$event->setTestOrganiser($organiser);
-			$event->save();
+			$event->save($this->conNode);
 			$ok = true;
 		}
 		catch (Exception $e)
@@ -84,9 +84,9 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 
 		// Check they have been written okay
 		$organiser = TestOrganiserQuery::create()->
-			findOneByName($orgName);
+			findOneByName($orgName, $this->conNode);
 		$event = TestEventQuery::create()->
-			findOneByName($eventName);
+			findOneByName($eventName, $this->conNode);
 		$this->assertTrue(
 			($organiser instanceof TestOrganiser) &&
 			($event instanceof TestEvent),

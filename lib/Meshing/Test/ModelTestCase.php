@@ -19,8 +19,7 @@ abstract class Meshing_Test_ModelTestCase extends Meshing_Test_DatabaseTestCase
 		$this->_testSqlRunner($runTests);
 
 		// Init the database connections
-		Meshing_Utils::initialiseDb($testMode = true);
-		$this->con = Propel::getConnection('test');
+		$this->initConnections();
 	}
 
 	/**

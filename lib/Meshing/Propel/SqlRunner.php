@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-class Meshing_Propel_SqlRunner extends Meshing_Propel_Task
+class Meshing_Propel_SqlRunner extends Meshing_Propel_ConnectionTask
 {
 	protected $mapFile;
 	protected $url, $userid, $password;

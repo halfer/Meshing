@@ -71,11 +71,10 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 	 */
 	public function testModels()
 	{
-		Meshing_Utils::initialiseDb();
-		$con = Propel::getConnection('test');
+		$this->initConnections();
 
 		// Create an entry to satisfy later constraints
-		$node = $this->createKnownNode(new TestModelKnownNode(), $con);
+		$node = $this->createKnownNode(new TestModelKnownNode(), $this->conNode);
 
 		try
 		{
@@ -87,7 +86,7 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 			$event->setCreatorNodeId($node->getPrimaryKey());
 			$event->setName($eventName = 'Expert Burrowing In The Built Environment');
 			$event->setTestModelTestOrganiser($organiser);
-			$event->save($con);
+			$event->save($this->conNode);
 			$ok = true;
 		}
 		catch (Exception $e)
@@ -101,9 +100,9 @@ class PropelModelTestCase extends Meshing_Test_DatabaseTestCase
 
 		// Check they have been written okay
 		$organiser = TestModelTestOrganiserQuery::create()->
-			findOneByName($orgName, $con);
+			findOneByName($orgName, $this->conNode);
 		$event = TestModelTestEventQuery::create()->
-			findOneByName($eventName, $con);
+			findOneByName($eventName, $this->conNode);
 		$this->assertTrue(
 			($organiser instanceof TestModelTestOrganiser) &&
 			($event instanceof TestModelTestEvent),

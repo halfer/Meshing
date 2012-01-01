@@ -8,6 +8,8 @@
 class Meshing_Utils
 {
 	const SYSTEM_CONNECTION = 'p2p';
+	const CONN_SYSTEM_TEST = 'test_system';
+	const CONN_NODE_TEST = 'test_node';
 
 	protected static $paths;
 	protected static $oldIncludes;
@@ -68,6 +70,16 @@ class Meshing_Utils
 		require_once $projectRoot . self::getPaths()->getFilePropelRuntime();
 		Propel::init($projectRoot . self::getPaths()->getPathConnsSystem() . '/database-conf.php');
 
+		// If we're in test mode, autoload the non-test system models
+		if ($testMode)
+		{
+			$path = $projectRoot . self::getPaths()->getPathConnsSystem(false) .
+				'/classmap-database-conf.php';
+			$map = include($path);
+			$loader = PropelAutoloader::getInstance();
+			$loader->addClassPaths($map);
+		}
+
 		// Not normally needed, but the tests use this connection approach even for node schemas
 		self::autoloadMeshingClasses($testMode);
 	}
@@ -86,11 +98,17 @@ class Meshing_Utils
 			$schemaNames = array($schemaNames);
 		}
 
+		// Add include path for node models (all includes are relative to this)
 		$projectRoot = self::getProjectRoot();
+		set_include_path(
+			$projectRoot . self::getPaths()->getPathModelsNodes() . PATH_SEPARATOR .
+			get_include_path()
+		);
+
 		foreach ($schemaNames as $schemaName)
 		{
-			$path = $projectRoot . self::getPaths()->getPathConnsNodes() . '/' .
-				$schemaName . '/classmap-database-conf.php';
+			$path = $projectRoot . self::getPaths()->getPathConnsNodes($schemaName) . '/' .
+				'/classmap-database-conf.php';
 			$map = include($path);
 			$loader->addClassPaths($map);
 		}

@@ -42,9 +42,14 @@ class Meshing_Paths
 		return $this->getLibraryPath('/lib/Meshing/Console/Command');
 	}
 
+	/**
+	 * The system models do not need their path changed; there is only one set of them
+	 * 
+	 * @return string 
+	 */
 	public function getPathModelsSystem()
 	{
-		return $this->getGeneratedPath('/database/models');
+		return '/database/models';
 	}
 
 	public function getPathModelsNodes()
@@ -72,19 +77,36 @@ class Meshing_Paths
 		return $this->getGeneratedPath('/database/sql');
 	}
 
-	public function getPathConnsSystem()
+	/**
+	 * FIXME Review instances of this called with `false`, to see if this is still required
+	 */
+	public function getPathConnsSystem($override = true)
 	{
-		return $this->getGeneratedPath('/database/connections');
+		$path = '/database/connections';
+		if ($override)
+		{
+			$path = $this->getGeneratedPath($path);
+		}
+
+		return $path;
 	}
 
-	public function getPathConnsNodes()
+	public function getPathConnsNodes($schema)
 	{
-		return $this->getGeneratedPath('/database/connections');
+		return $this->getGeneratedPath('/database/connections') . '/' . $schema;
 	}
 
+	/**
+	 * Gets the location of the db config file
+	 * 
+	 * This is for the build.properties & sqldb.map files (note though that the former will
+	 * probably be deprecated anyway)
+	 * 
+	 * @return string
+	 */
 	public function getPathDbConfig()
 	{
-		return $this->getGeneratedPath('/database/system');
+		return '/database/system';
 	}
 
 	public function getFileDbMap()

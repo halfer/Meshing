@@ -61,7 +61,7 @@ class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base impl
 		if ($this->opts->{'non-system'})
 		{
 			// Create a Propel runtime XML containing all connections		
-			$xmlFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathConnsNodes() .
+			$xmlFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathConnsSystem() .
 				'/runtime-conf-regen.xml';
 			$this->createRuntimeXml(
 				$this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() . '/runtime-conf.xml',
@@ -92,8 +92,6 @@ class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base impl
 	{
 		$schemaDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig();
 		$schemas = "schema.xml";
-		$extraPropsFile = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() .
-			'/build.properties';
 
 		$task = new Meshing_Propel_ConfBuilder();
 		
@@ -101,7 +99,7 @@ class Meshing_Console_Command_Connection_Regen extends Meshing_Console_Base impl
 		$task->setXmlFile($runTime);
 		$task->setOutputDir($outputDir);
 		$task->setOutputFile($outputFile);
-		$task->addPropertiesFile($extraPropsFile);
+		$task->setPropelConnection();
 
 		$task->run();		
 	}

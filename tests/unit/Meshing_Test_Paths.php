@@ -55,4 +55,12 @@ class Meshing_Test_Paths extends Meshing_Paths
 	{
 		$this->hashProvider = $hashProvider;
 	}
+
+	/**
+	 * Share node connections across all schemas
+	 */
+	public function getPathConnsNodes($schema)
+	{
+		return $this->getGeneratedPath('/database/connections');
+	}
 }

@@ -27,7 +27,7 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 			)
 		);
 
-		$this->node = $this->createKnownNode(new TestModelKnownNode(), $this->con);
+		$this->node = $this->createKnownNode(new TestModelKnownNode(), $this->conNode);
 	}
 
 	/**
@@ -36,7 +36,7 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 	protected function useBasicStrategy()
 	{
 		$paths = Meshing_Utils::getPaths();
-		$strategy = new Meshing_Hash_Strategy_Basic($this->con);
+		$strategy = new Meshing_Hash_Strategy_Basic($this->conNode);
 		$paths->setHashProvider($strategy);
 		$this->clearProviderCache();
 
@@ -46,7 +46,7 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 	protected function useVersionStrategy()
 	{
 		$paths = Meshing_Utils::getPaths();
-		$strategy = new Meshing_Hash_Strategy_Version($this->con);
+		$strategy = new Meshing_Hash_Strategy_Version($this->conNode);
 		$paths->setHashProvider($strategy);
 		$this->clearProviderCache();
 
@@ -71,14 +71,14 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 		$organiser->setCreatorNodeId($this->node->getId());
 		$organiser->setName('Organiser');
 		$organiser->setEmail('email@example.com');
-		$organiser->save($this->con);
+		$organiser->save($this->conNode);
 
 		// Calc the hash and see if it is okay (interleaved 1s = "preceding value not null")
 		$values = array(
 			$organiser->getId(),
 			$organiser->getName(),
 			$organiser->getEmail(),
-			$organiser->getTestModelKnownNode($this->con)->getFqdn(),
+			$organiser->getTestModelKnownNode($this->conNode)->getFqdn(),
 		);
 		$out = '';
 		foreach ($values as $value)
@@ -88,7 +88,7 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 		$expectedHash = sha1($out);
 		$this->assertEqual(
 			$expectedHash,
-			$organiser->getHash($this->con),
+			$organiser->getHash($this->conNode),
 			'Checking simple SHA1 works'
 		);
 	}
@@ -98,7 +98,7 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 		// This should throw an exception
 		$event = new TestModelTestEvent();
 		$this->assertNull(
-			$event->getHash($this->con),
+			$event->getHash($this->conNode),
 			'Check that getting a hash on an unsaved row returns null'
 		);
 	}
@@ -109,21 +109,21 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 	public function testNullVersusEmptyStringHashing()
 	{
 		// Do initial save with an empty, non-null value
-		$organiser = TestModelTestOrganiserQuery::create()->findOne($this->con);
+		$organiser = TestModelTestOrganiserQuery::create()->findOne($this->conNode);
 		$organiser->setEmail('');
-		$organiser->save($this->con);
+		$organiser->save($this->conNode);
 
 		// Get the hash of the current record
-		$hash = $organiser->getHash($this->con);
+		$hash = $organiser->getHash($this->conNode);
 
 		// Now do a save with a null value
 		$organiser->setEmail(null);
-		$organiser->save($this->con);
+		$organiser->save($this->conNode);
 
 		// Compare the hash values - they should be different
 		$this->assertNotEqual(
 			$hash,
-			$organiser->getHash($this->con),
+			$organiser->getHash($this->conNode),
 			'Check that empty string and null hash to different values'
 		);
 	}
@@ -136,14 +136,14 @@ class RowHashingTestCase extends Meshing_Test_ModelTestCase
 		$strategy = $this->useVersionStrategy();
 
 		// Get an organiser record
-		$organiser = TestModelTestOrganiserQuery::create()->findOne($this->con);
+		$organiser = TestModelTestOrganiserQuery::create()->findOne($this->conNode);
 
 		// Create a record
 		$event = new TestModelTestEvent();
 		$event->setCreatorNodeId($this->node->getId());
 		$event->setName('Small-Scale Oil Drilling For Cats');
 		$event->setTestModelTestOrganiser($organiser);
-		$event->save($this->con);
+		$event->save($this->conNode);
 
 		// @todo ...
 	}

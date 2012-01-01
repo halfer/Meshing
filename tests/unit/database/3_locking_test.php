@@ -18,7 +18,8 @@ if ($token == CHILD_TOKEN)
 {
 	// Initialise database (normally done by DatabaseTestCase)
 	Meshing_Utils::initialiseDb($testMode = true);
-	
+	Meshing_Utils::initialiseNodeDbs('test_model', $testMode);
+
 	// Run child test
 	new LockingTestCaseChild($argv[2]);
 	exit();
@@ -35,7 +36,7 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 	{
 		// Same package name as test 2
 		parent::__construct('test_model', $label);
-		$this->node = $this->createKnownNode(new TestModelKnownNode(), $this->con);
+		$this->node = $this->createKnownNode(new TestModelKnownNode(), $this->conNode);
 
 		// Create/empty the log
 		$logDir = Meshing_Utils::getProjectRoot() . Meshing_Utils::getPaths()->getTestLogPath();
@@ -46,7 +47,7 @@ class LockingTestCase extends Meshing_Test_ModelTestCase
 		$organiser = new TestModelTestOrganiser();
 		$organiser->setCreatorNodeId($this->node->getPrimaryKey());
 		$organiser->setName('Mr. Toad');
-		$organiser->save($this->con);
+		$organiser->save($this->conNode);
 	}
 
 	/**
@@ -144,7 +145,7 @@ class LockingTestCaseChild
 	public function __construct($id)
 	{
 		// Get connection to operate from
-		$con = Propel::getConnection('test');
+		$con = Propel::getConnection(Meshing_Utils::CONN_NODE_TEST);
 
 		$log = '';
 		try

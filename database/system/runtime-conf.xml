@@ -2,6 +2,7 @@
 <config>
 	<propel>
 		<datasources>
+			<!-- System database -->
 			<datasource id="p2p">
 				<adapter>pgsql</adapter>
 				<connection>
@@ -12,7 +13,19 @@
 				</connection>
 			</datasource>
 
-			<datasource id="test">
+			<!-- System database for unit tests -->
+			<datasource id="test_system">
+				<adapter>pgsql</adapter>
+				<connection>
+					<dsn>pgsql:host=localhost; dbname=meshing_system_test; user=jon; password=</dsn>
+					<user>jon</user>
+					<password></password>
+					<classname>Meshing_Database_Connection</classname>
+				</connection>
+			</datasource>
+
+			<!-- A node database for unit tests -->
+			<datasource id="test_node">
 				<adapter>pgsql</adapter>
 				<connection>
 					<dsn>pgsql:host=localhost; dbname=meshing_test; user=jon; password=</dsn>

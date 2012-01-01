@@ -5,7 +5,7 @@
  *
  * @author jon
  */
-abstract class Meshing_Propel_SchemaTask extends Meshing_Propel_Task
+abstract class Meshing_Propel_SchemaTask extends Meshing_Propel_ConnectionTask
 {
 	protected $schemas = array();
 	

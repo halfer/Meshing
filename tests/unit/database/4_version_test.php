@@ -36,7 +36,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 			)
 		);
 
-		$this->node = $this->createKnownNode(new TestVersionKnownNode(), $this->con);
+		$this->node = $this->createKnownNode(new TestVersionKnownNode(), $this->conNode);
 
 		// Create a cache for rows we write
 		$this->objects = array();
@@ -53,16 +53,16 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$ok = $this->createNRows($v2 = 8, 'record 2');
 		
 		// Make sure there are the expected number of current records
-		$rows = TestVersionTestOrganiserQuery::create()->orderById()->find($this->con);
+		$rows = TestVersionTestOrganiserQuery::create()->orderById()->find($this->conNode);
 		$this->assertEqual(count($rows), 2);
 
 		// Check the versions on each
 		$record1 = $rows[0];
-		$vsnRow = $record1->callCreateVersionableRow($this->con);
+		$vsnRow = $record1->callCreateVersionableRow($this->conNode);
 		$this->assertEqual($vsnRow->getVersion(), $v1 + 1);
 
 		$record2 = $rows[1];
-		$vsnRow = $record2->callCreateVersionableRow($this->con);
+		$vsnRow = $record2->callCreateVersionableRow($this->conNode);
 		$this->assertEqual($vsnRow->getVersion(), $v2 + 1);
 	}
 
@@ -88,7 +88,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 				)
 			);
 		}
-		$ok = $this->writeVersionableData($versions, $this->node, $this->con);		
+		$ok = $this->writeVersionableData($versions, $this->node, $this->conNode);		
 		$this->clearExistingObjectsCache();
 
 		return $ok;
@@ -128,7 +128,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		);
 
 		// Write this block of data
-		$ok = $this->writeVersionableData($versions, $this->node, $this->con);
+		$ok = $this->writeVersionableData($versions, $this->node, $this->conNode);
 		$this->assertTrue($ok, 'Write versionable data to the database');
 
 		/*
@@ -139,20 +139,20 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$event = $this->objects['TestVersionTestEvent'];
 
 		// Check the expected number of versions
-		$this->assertEqual($event->countVersions($this->con), 1);
-		$this->assertEqual($organiser->countVersions($this->con), 3);
+		$this->assertEqual($event->countVersions($this->conNode), 1);
+		$this->assertEqual($organiser->countVersions($this->conNode), 3);
 
 		// Do some new/old counts from the peer
 		$count = MeshingBasePeer::countNewVersions(
 			$event->getPrimaryKey(),
-			$this->con,
+			$this->conNode,
 			'TestVersionTestEvent'
 		);
 		$this->assertEqual($count, 1, 'Checking counts of version rows are OK');
 	
 		$count = MeshingBasePeer::countOldVersions(
 			$organiser->getPrimaryKey(),
-			$this->con,
+			$this->conNode,
 			'TestVersionTestOrganiser'
 		);
 		$this->assertEqual($count, 2, 'Checking counts of version rows are OK');
@@ -160,17 +160,17 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		// Check all versions have a timestamp
 		$count1 = TestVersionTestEventVersionableQuery::create()->
 			filterByTimeApplied(null, Criteria::ISNULL)->
-			count($this->con);
+			count($this->conNode);
 		$count2 = TestVersionTestOrganiserVersionableQuery::create()->
 			filterByTimeApplied(null, Criteria::ISNULL)->
-			count($this->con);			
+			count($this->conNode);			
 		$this->assertTrue(
 			($count1 == 0) && ($count2 == 0),
 			'Checking all versions have a timestamp'
 		);
 
 		// Check that the event has a non-null hash
-		$this->assertNotNull($event->getHash($this->con), 'Check row hash is not null');
+		$this->assertNotNull($event->getHash($this->conNode), 'Check row hash is not null');
 
 		// Check that some previous versions have the correct old values
 		$this->assertEqual($organiser->getNumberedVersion(1)->getName(), 'Mr. Badger');
@@ -189,12 +189,12 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 	{
 		// Retrieve the previously set up organiser row
 		/* @var $organiser TestVersionTestOrganiser */
-		$organiser = TestVersionTestOrganiserQuery::create()->findOne($this->con);
+		$organiser = TestVersionTestOrganiserQuery::create()->findOne($this->conNode);
 
 		$error = false;
 		try
 		{
-			$organiser->getHash($this->con, 0);
+			$organiser->getHash($this->conNode, 0);
 		}
 		catch (Exception $e)
 		{
@@ -203,11 +203,11 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$this->assertTrue($error, 'Checking that zero is a bad version number');
 
 		// Count number of versions; ensure v is a good number...
-		$count = $organiser->countVersions($this->con);
+		$count = $organiser->countVersions($this->conNode);
 		$error = false;
 		try
 		{
-			$organiser->getHash($this->con, $count);
+			$organiser->getHash($this->conNode, $count);
 		}
 		catch (Exception $e)
 		{
@@ -219,7 +219,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$error = false;
 		try
 		{
-			$organiser->getHash($this->con, $count + 1);
+			$organiser->getHash($this->conNode, $count + 1);
 		}
 		catch (Exception $e)
 		{
@@ -238,21 +238,21 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$organiser->setCreatorNodeId($this->node->getId());
 		$organiser->setName('Mr. Froggy');
 		$organiser->setEmail('buy-our-beefy@lovely-beefy.co.uk');
-		$organiser->save($this->con);
+		$organiser->save($this->conNode);
 
 		// Create an extra version, just for fun
 		$organiser->setName('Mr. Beefy');
-		$organiser->save($this->con);
+		$organiser->save($this->conNode);
 
 		// Get version count
-		$count = TestVersionTestOrganiserVersionableQuery::create()->count($this->con);
+		$count = TestVersionTestOrganiserVersionableQuery::create()->count($this->conNode);
 
 		// OK, now delete it
 		$organiser->setVersionMetadata(null, null, null, $timeDeleted = time());
-		$organiser->delete($this->con);
+		$organiser->delete($this->conNode);
 
 		// A deletion must increase the version count by one
-		$newCount = TestVersionTestOrganiserVersionableQuery::create()->count($this->con);
+		$newCount = TestVersionTestOrganiserVersionableQuery::create()->count($this->conNode);
 		$this->assertEqual($newCount, $count + 1, 'Checking a delete creates a new version');
 
 		// Check that old records are still readable

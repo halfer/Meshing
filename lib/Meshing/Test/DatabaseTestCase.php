@@ -33,20 +33,19 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 			'/' . $package;
 		$this->schemas = 'test_schema1.xml';
 
-		$this->extraPropsFile = $this->projectRoot . $this->paths->getPathDbConfig() .
-			'/build.properties';
 		$this->modelDir = $this->projectRoot . $this->paths->getPathModelsNodes();
 		$this->sqlDir = $this->projectRoot . $this->paths->getPathSqlNodes() .
 			'/' . $package;
-		$this->connDir = $this->projectRoot . $this->paths->getPathConnsSystem();
+		$this->connSystemDir = $this->projectRoot . $this->paths->getPathConnsSystem();
+		$this->connNodeDir = $this->projectRoot . $this->paths->getPathConnsNodes($package);
 
 		// These all use the package name as a subfolder (the model one is done by Propel)
 		$this->deleteFolderContents($this->outputSchemaDir, 'schema');
 		$this->deleteFolderContents($this->modelDir . '/' . $package, 'model');
 		$this->deleteFolderContents($this->sqlDir, 'sql');
 		
-		// This is common to all db tests
-		$this->deleteFolderContents($this->connDir, 'connections');
+		// This is common to all db tests (note also: the system dir contains the node dir)
+		$this->deleteFolderContents($this->connSystemDir, 'connections');
 
 		$this->createSchemaDir($this->outputSchemaDir);
 	}
@@ -150,7 +149,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	protected function _testClassBuilder($prefix = null, $runTests = true)
 	{
 		$task = new Meshing_Propel_ClassBuilder();
-		$task->addPropertiesFile($this->extraPropsFile);
+		$task->setPropelConnection('test_node');
 		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
 		$task->setOutputDir($this->modelDir);
 		$task->run();
@@ -190,7 +189,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	protected function _testSqlBuilder($runTests = true)
 	{
 		$task = new Meshing_Propel_SqlBuilder();
-		$task->addPropertiesFile($this->extraPropsFile);
+		$task->setPropelConnection('test_node');
 		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
 		$task->setOutputDir($this->sqlDir);
 		$task->run();
@@ -214,7 +213,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$task = new Meshing_Propel_SqlRunner();
 		$task->setSqlDir($this->sqlDir);
 		$task->setMapFile($mapFile);
-		$task->addPropertiesFile($this->extraPropsFile);
+		$task->setPropelConnection('test_node');
 
 		try
 		{
@@ -246,20 +245,20 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$task = new Meshing_Propel_ConfBuilder();
 		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
 		$task->setXmlFile($xmlFile);
-		$task->setOutputDir($this->connDir);
+		$task->setOutputDir($this->connNodeDir);
 		$task->setOutputFile($outputFile);
-		$task->addPropertiesFile($this->extraPropsFile);
+		$task->setPropelConnection('test_node');
 		$task->run();
 
 		if ($runTests)
 		{
 			$this->assertTrue(
-				file_exists($this->connDir . '/' . $outputFile),
+				file_exists($this->connNodeDir . '/' . $outputFile),
 				'Check connections file has been generated'
 			);
 
 			$this->assertTrue(
-				file_exists($this->connDir . '/classmap-' . $outputFile),
+				file_exists($this->connNodeDir . '/classmap-' . $outputFile),
 				'Check classmap file has been generated'
 			);
 		}
@@ -271,6 +270,19 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	}
 
 	/**
+	 * Initialise the test system and test node databases
+	 * 
+	 * Can't init the test node db in the constructor, since the conf file may not be created
+	 */
+	protected function initConnections()
+	{
+		Meshing_Utils::initialiseDb($testMode = true);
+		Meshing_Utils::initialiseNodeDbs($this->package, $testMode);
+		$this->conSystem = Propel::getConnection(Meshing_Utils::CONN_SYSTEM_TEST);
+		$this->conNode = Propel::getConnection(Meshing_Utils::CONN_NODE_TEST);
+	}
+
+	/**
 	 * Creates a new KnownNode for node models
 	 * 
 	 * @param PropelPDO $con PDO connection object
@@ -278,6 +290,9 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	 */
 	protected function createKnownNode(BaseObject $node, PropelPDO $con = null)
 	{
+//		$this->initConnections();
+
+		/* @var $node TestModelKnownNode */
 		$node->setName('Us!');
 		$node->setFqdn('http://example.com/path');
 		$node->save($con);

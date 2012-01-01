@@ -97,13 +97,13 @@ class Meshing_Console_Command_Node_Add extends Meshing_Console_Base implements M
 		$schemaDir = $projectRoot . Meshing_Utils::getPaths()->getPathSchemasNodes() . '/' .
 			$this->opts->schema;
 		$schemas = "schema.xml";
-		$outputDir = $projectRoot . Meshing_Utils::getPaths()->getPathSqlNodes() . '/' . $this->opts->name;
-		$extraPropsFile = $projectRoot . Meshing_Utils::getPaths()->getPathDbConfig() . '/build.properties';
+		$outputDir = $projectRoot . Meshing_Utils::getPaths()->getPathSqlNodes() . '/' .
+			$this->opts->name;
 
 		// Create task, configure, then run
 		$task = new Meshing_Propel_SqlBuilder();
 
-		$task->addPropertiesFile($extraPropsFile);
+		$task->setPropelConnection();
 		$task->addSchemas($schemaDir, $schemas);
 		$task->setOutputDir($outputDir);
 
@@ -126,7 +126,7 @@ class Meshing_Console_Command_Node_Add extends Meshing_Console_Base implements M
 		$task->setSqlDir($sqlDir);
 		$task->setMapFile($mapFile);
 
-		// Set build properties
+		// Set build properties (@todo switch this to use setPropelConnection)
 		$task->addProperty('propel.database', $this->connection->getAdaptor());
 		$task->addProperty('propel.database.url', $this->connection->getCalculatedDsn());
 		$task->addProperty('propel.database.user', $this->connection->getUsername());
