@@ -290,11 +290,15 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	 */
 	protected function createKnownNode(BaseObject $node, PropelPDO $con = null)
 	{
-//		$this->initConnections();
+		$this->initConnections();
+
+		// FIXME Look up schema; pick a random one for now
+		$schema = MeshingSchemaQuery::create()->findOne();
 
 		/* @var $node TestModelKnownNode */
 		$node->setName('Us!');
 		$node->setFqdn('http://example.com/path');
+		$node->setSchemaId($schema->getId());
 		$node->save($con);
 
 		return $node;

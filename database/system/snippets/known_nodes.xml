@@ -2,6 +2,8 @@
 	<table name="known_node">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 		<column name="name" type="varchar" size="50" required="true" />
+		<!-- No FK to meshing_schema, since it's in the system db -->
+		<column name="schema_id" type="integer" required="true" />
 		<column name="fqdn" type="varchar" size="150" required="true" />
 		<column name="port" type="integer" />
 		<column name="ip" type="varchar" size="20" />
