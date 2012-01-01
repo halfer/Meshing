@@ -28,7 +28,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$this->projectRoot = realpath(dirname(__FILE__) . '/../../..');
 		$this->paths = Meshing_Utils::getPaths();
 
-		$this->schemaDir = $this->projectRoot . $this->paths->getPathDbConfig();
+		$this->schemaDir = $this->projectRoot . $this->paths->getPathTestSchema();
 		$this->outputSchemaDir = $this->projectRoot . $this->paths->getPathSchemasNodes() .
 			'/' . $package;
 		$this->schemas = 'test_schema1.xml';

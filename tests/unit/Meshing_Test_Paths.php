@@ -10,15 +10,13 @@ class Meshing_Test_Paths extends Meshing_Paths
 	protected $hashProvider;
 
 	/**
-	 * Returns the test model config folder
+	 * Returns the test model schema folder
 	 * 
-	 * Renamed from 'system' as that name implies it is only for schemas that do not
-	 * go through the fixup process. In our test systems, we use this to test both
-	 * fixed and unmodified schemas.
+	 * (There's no equivalent for this in the standard environment)
 	 * 
 	 * @return string
 	 */
-	public function getPathDbConfig()
+	public function getPathTestSchema()
 	{
 		return $this->getGeneratedPath('/database/config');		
 	}

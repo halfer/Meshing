@@ -68,7 +68,7 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 	{
 		// Set db type, schema and output folder here
 		$schemaDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig();
-		$schemas = 'schema.xml';
+		$schemas = Meshing_Utils::getPaths()->getLeafStandardSchema();
 		$outputDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathModelsSystem();
 
 		// Create task, configure, then run
@@ -116,7 +116,7 @@ class Meshing_Console_Command_System_Build extends Meshing_Console_Command_Conne
 	protected function buildSql($verbose)
 	{
 		$schemaDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathDbConfig();
-		$schemas = "schema.xml";
+		$schemas = Meshing_Utils::getPaths()->getLeafStandardSchema();
 		$outputDir = $this->projectRoot . Meshing_Utils::getPaths()->getPathSqlSystem();
 
 		// Create task, configure, then run

@@ -99,8 +99,7 @@ class Meshing_Paths
 	/**
 	 * Gets the location of the db config file
 	 * 
-	 * This is for the build.properties & sqldb.map files (note though that the former will
-	 * probably be deprecated anyway)
+	 * This is for the schema.xml, build.properties & sqldb.map files
 	 * 
 	 * @return string
 	 */

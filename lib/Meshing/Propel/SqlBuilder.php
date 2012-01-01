@@ -4,6 +4,11 @@
  * Task to generate SQL for a given schema
  *
  * @author jon
+ * 
+ * @todo The inheritence hierarchy is arguably wrong - this should be a SchemaTask, but
+ *		 not a ConnectionTask (and use setDatabaseType rather than setPropelConnection).
+ *		 However since the former is a child of the latter, some reorganisation is probably
+ *		 required...
  */
 class Meshing_Propel_SqlBuilder extends Meshing_Propel_SchemaTask
 {

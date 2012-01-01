@@ -44,6 +44,8 @@ class Meshing_Console_Command_System_Tests extends Meshing_Console_Base implemen
 	 */
 	public function run()
 	{
+		$this->buildTestSystemDatabase();
+
 		if (is_file($this->testDir))
 		{
 			require_once $this->testDir;
@@ -52,6 +54,50 @@ class Meshing_Console_Command_System_Tests extends Meshing_Console_Base implemen
 		{
 			$this->testAll($this->testDir);
 		}
+	}
+
+	/**
+	 * Builds a system db for the test environment
+	 * 
+	 * @todo This replicates some code in Command/System/Build - needs to be much more DRY
+	 */
+	protected function buildTestSystemDatabase()
+	{
+		// Load the Meshing_Test_Paths class
+		$projectRoot = Meshing_Utils::getProjectRoot();
+		require_once $projectRoot . '/tests/unit/Meshing_Test_Paths.php';
+		Meshing_Utils::reinitialise(new Meshing_Test_Paths());
+
+		$paths = Meshing_Utils::getPaths();
+
+		// Build a system connection file
+		$task = new Meshing_Propel_ConfBuilder();
+		$task->addSchemas(
+			$projectRoot . $paths->getPathDbConfig(),
+			$paths->getLeafStandardSchema()
+		);
+		$task->setXmlFile($projectRoot . $paths->getFileRuntimeXml());
+		$task->setPropelConnection(Meshing_Utils::CONN_SYSTEM_TEST);
+		$task->setOutputDir($projectRoot . $paths->getPathConnsSystem());
+		$task->setOutputFile($paths->getLeafRuntimePhp());
+		$task->run();
+
+		// Build the SQL for a test system database
+		$task = new Meshing_Propel_SqlBuilder();
+		$task->addSchemas(
+			$projectRoot . $paths->getPathDbConfig(),
+			$paths->getLeafStandardSchema()
+		);
+		$task->setOutputDir($projectRoot . $paths->getPathSqlSystem());
+		$task->setPropelConnection(Meshing_Utils::CONN_SYSTEM_TEST);
+		$task->run();
+
+		// Run the sql
+		$task = new Meshing_Propel_SqlRunner();
+		$task->setSqlDir($projectRoot . $paths->getPathSqlSystem());
+		$task->setMapFile($projectRoot . $paths->getFileDbMap());
+		$task->setPropelConnection(Meshing_Utils::CONN_SYSTEM_TEST);
+		$task->run();
 	}
 
 	public function testAll($testDir)
@@ -65,7 +111,6 @@ class Meshing_Console_Command_System_Tests extends Meshing_Console_Base implemen
 		);
 		$regex->next();
 
-		$i++;
 		while ($regex->valid())
 		{
 			$item = $regex->current();
