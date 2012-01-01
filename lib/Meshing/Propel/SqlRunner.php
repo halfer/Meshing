@@ -27,6 +27,19 @@ class Meshing_Propel_SqlRunner extends Meshing_Propel_Task
 		$this->password = $password;
 	}
 
+	/**
+	 * Sets up the SQL running task
+	 * 
+	 * Currently we continue on errors - useful since table creation scripts usually
+	 * delete tables prior to creating them, so if a table doesn't exist, we would want it
+	 * to continue. However some errors need actioning - e.g. sql for PostgreSQL incorrectly
+	 * run against MySQL etc.
+	 * 
+	 * @todo Perhaps we should output errors as warnings?
+	 * 
+	 * @param Project $project
+	 * @return PropelSQLExec 
+	 */
 	protected function createTask(Project $project)
 	{
 		require_once 'task/PropelSQLExec.php';
@@ -52,6 +65,7 @@ class Meshing_Propel_SqlRunner extends Meshing_Propel_Task
 		$task->setPassword($this->password);
 
 		$task->setAutoCommit(true);
+		$task->setOnerror('continue');
 		
 		return $task;
 	}
