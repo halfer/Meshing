@@ -292,8 +292,16 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	{
 		$this->initConnections();
 
-		// FIXME Look up schema; pick a random one for now
-		$schema = MeshingSchemaQuery::create()->findOne();
+		// Look up schema, and create an empty one if required
+		$schema = MeshingSchemaQuery::create()->
+			findOneByName($this->package, $this->conSystem);
+		if (!$schema)
+		{
+			$schema = new MeshingSchema();
+			$schema->setName($this->package);
+			$schema->setInstalledAt(time());
+			$schema->save($this->conSystem);
+		}
 
 		/* @var $node TestModelKnownNode */
 		$node->setName('Us!');
