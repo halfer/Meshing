@@ -20,13 +20,6 @@ class Meshing_Propel_SqlRunner extends Meshing_Propel_ConnectionTask
 		$this->mapFile = $mapFile;
 	}
 
-	public function setCredentials($url, $userid, $password)
-	{
-		$this->url = $url;
-		$this->userid = $userid;
-		$this->password = $password;
-	}
-
 	/**
 	 * Sets up the SQL running task
 	 * 
