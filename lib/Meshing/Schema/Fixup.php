@@ -86,6 +86,11 @@ class Meshing_Schema_Fixup
 
 		// Use the schema name as a package name
 		$this->xml->setPackageName($schemaName);
+
+		// Set the schema's default connection as the system db; this prevents problems if the
+		// schema db isn't set correctly. In reality a custom connection will always be passed
+		// for operations on a node db
+		$this->xml->setConnectionName(Meshing_Utils::SYSTEM_CONNECTION);
 		
 		// Save the file under the same name
 		$this->xml->asXML($this->filename);

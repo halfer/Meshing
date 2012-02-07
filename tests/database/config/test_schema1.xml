@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="test_node_1" defaultIdMethod="native">
+<!-- Note there's no connection param here 'name', as it will be reset anyway -->
+<database defaultIdMethod="native">
 	<table name="test_event">
 		<column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
 		<column name="name" type="varchar" size="50" required="true" />

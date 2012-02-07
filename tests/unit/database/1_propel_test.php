@@ -33,6 +33,13 @@ class PropelGeneralTestCase extends Meshing_Test_DatabaseTestCase
 			'Meshing_Schema_Element'
 		);
 		$xml->setPackageName($this->getPackage());
+
+		// Reset the default connection to anything known. We won't use this, but it's a
+		// good idea as Propel bombs out if the connection cannot be found, even if it is
+		// always accessed via a specified connection. This is also part of the Fixup
+		// process, but we're not using that here.
+		$xml->setConnectionName(Meshing_Utils::SYSTEM_CONNECTION);
+
 		$xml->asXml($this->outputSchemaDir . '/' . $this->paths->getLeafStandardSchema());
 		
 		// Do generation of classes and all checking

@@ -173,14 +173,14 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$this->assertNotNull($event->getHash($this->conNode), 'Check row hash is not null');
 
 		// Check that some previous versions have the correct old values
-		$this->assertEqual($organiser->getNumberedVersion(1)->getName(), 'Mr. Badger');
-		$this->assertEqual($organiser->getNumberedVersion(2)->getName(), 'Mr. Badger');
+		$this->assertEqual($organiser->getNumberedVersion(1, $this->conNode)->getName(), 'Mr. Badger');
+		$this->assertEqual($organiser->getNumberedVersion(2, $this->conNode)->getName(), 'Mr. Badger');
 		$this->assertEqual(
-			$organiser->getNumberedVersion(3)->getEmail(),
+			$organiser->getNumberedVersion(3, $this->conNode)->getEmail(),
 			'brian.furry@wwf.org'
 		);
 		$this->assertEqual(
-			$organiser->getNumberedVersion(2)->getEmail(),
+			$organiser->getNumberedVersion(2, $this->conNode)->getEmail(),
 			'mr_badger@dontpokebadgerswithspoons.com'
 		);
 	}
@@ -256,16 +256,18 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$this->assertEqual($newCount, $count + 1, 'Checking a delete creates a new version');
 
 		// Check that old records are still readable
-		$this->assertEqual($organiser->getNumberedVersion(1)->getName(), 'Mr. Froggy');
 		$this->assertEqual(
-			$organiser->getNumberedVersion(2)->getEmail(),
+			$organiser->getNumberedVersion(1, $this->conNode)->getName(),
+			'Mr. Froggy'
+		);
+		$this->assertEqual(
+			$organiser->getNumberedVersion(2, $this->conNode)->getEmail(),
 			'buy-our-beefy@lovely-beefy.co.uk'
 		);
 
 		// Check that version 3 is deleted
-		$vsn = $organiser->getNumberedVersion(3);
 		$this->assertNotNull(
-			$vsn->getTimeDeleted(),
+			$organiser->getNumberedVersion(3, $this->conNode)->getTimeDeleted(),
 			'Check that a deleted version has a deleted timestamp'
 		);
 
@@ -280,7 +282,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$ok = false;
 		try
 		{
-			$organiser->getNumberedVersion(0);
+			$organiser->getNumberedVersion(0, $this->conNode);
 		}
 		catch (Exception $e)
 		{
@@ -292,7 +294,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$ok = false;
 		try
 		{
-			$organiser->getNumberedVersion(4);
+			$organiser->getNumberedVersion(4, $this->conNode);
 		}
 		catch (Exception $e)
 		{
