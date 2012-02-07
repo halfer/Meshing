@@ -25,10 +25,21 @@
 			</datasource>
 
 			<!-- A node database for unit tests -->
-			<datasource id="test_node">
+			<datasource id="test_node_1">
 				<adapter>pgsql</adapter>
 				<connection>
-					<dsn>pgsql:host=localhost; dbname=meshing_test; user=jon; password=</dsn>
+					<dsn>pgsql:host=localhost; dbname=meshing_test_1; user=jon; password=</dsn>
+					<user>jon</user>
+					<password></password>
+					<classname>Meshing_Database_Connection</classname>
+				</connection>
+			</datasource>
+			
+			<!-- A second node database for communication tests -->
+			<datasource id="test_node_2">
+				<adapter>pgsql</adapter>
+				<connection>
+					<dsn>pgsql:host=localhost; dbname=meshing_test_2; user=jon; password=</dsn>
 					<user>jon</user>
 					<password></password>
 					<classname>Meshing_Database_Connection</classname>

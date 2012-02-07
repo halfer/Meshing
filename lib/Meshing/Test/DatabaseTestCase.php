@@ -149,7 +149,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	protected function _testClassBuilder($prefix = null, $runTests = true)
 	{
 		$task = new Meshing_Propel_ClassBuilder();
-		$task->setPropelConnection('test_node');
+		$task->setPropelConnection(Meshing_Utils::CONN_NODE_TEST_1);
 		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
 		$task->setOutputDir($this->modelDir);
 		$task->run();
@@ -189,7 +189,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	protected function _testSqlBuilder($runTests = true)
 	{
 		$task = new Meshing_Propel_SqlBuilder();
-		$task->setPropelConnection('test_node');
+		$task->setPropelConnection(Meshing_Utils::CONN_NODE_TEST_1);
 		$task->addSchemas($this->outputSchemaDir, $this->paths->getLeafStandardSchema());
 		$task->setOutputDir($this->sqlDir);
 		$task->run();
@@ -213,7 +213,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$task = new Meshing_Propel_SqlRunner();
 		$task->setSqlDir($this->sqlDir);
 		$task->setMapFile($mapFile);
-		$task->setPropelConnection('test_node');
+		$task->setPropelConnection(Meshing_Utils::CONN_NODE_TEST_1);
 
 		try
 		{
@@ -247,7 +247,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		$task->setXmlFile($xmlFile);
 		$task->setOutputDir($this->connNodeDir);
 		$task->setOutputFile($outputFile);
-		$task->setPropelConnection('test_node');
+		$task->setPropelConnection(Meshing_Utils::CONN_NODE_TEST_1);
 		$task->run();
 
 		if ($runTests)
@@ -279,7 +279,7 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 		Meshing_Utils::initialiseDb($testMode = true);
 		Meshing_Utils::initialiseNodeDbs($this->package, $testMode);
 		$this->conSystem = Propel::getConnection(Meshing_Utils::CONN_SYSTEM_TEST);
-		$this->conNode = Propel::getConnection(Meshing_Utils::CONN_NODE_TEST);
+		$this->conNode = Propel::getConnection(Meshing_Utils::CONN_NODE_TEST_1);
 	}
 
 	/**

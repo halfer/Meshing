@@ -145,7 +145,7 @@ class LockingTestCaseChild
 	public function __construct($id)
 	{
 		// Get connection to operate from
-		$con = Propel::getConnection(Meshing_Utils::CONN_NODE_TEST);
+		$con = Propel::getConnection(Meshing_Utils::CONN_NODE_TEST_1);
 
 		$log = '';
 		try

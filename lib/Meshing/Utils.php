@@ -9,7 +9,8 @@ class Meshing_Utils
 {
 	const SYSTEM_CONNECTION = 'p2p';
 	const CONN_SYSTEM_TEST = 'test_system';
-	const CONN_NODE_TEST = 'test_node';
+	const CONN_NODE_TEST_1 = 'test_node_1';
+	const CONN_NODE_TEST_2 = 'test_node_2';
 
 	protected static $paths;
 	protected static $oldIncludes;
