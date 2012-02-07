@@ -27,8 +27,14 @@ abstract class Meshing_Propel_ConnectionTask extends Meshing_Propel_Task
 		$conf = simplexml_load_file($xmlPath);
 		/* @var $conf SimpleXMLElement */
 		$entry = $conf->xpath('/config/propel/datasources/datasource[@id="' . $connName . '"]');
-		$entry = $entry[0];
 
+		// If an element doesn't exist here, we've probably got the connection name wrong
+		if (!array_key_exists(0, $entry))
+		{
+			throw new Exception("Connection name '$connName' not found");
+		}
+
+		$entry = $entry[0];
 		$this->setDatabaseCredentials(
 			(string) $entry->adapter,
 			(string) $entry->connection->dsn,
