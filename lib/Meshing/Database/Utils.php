@@ -37,7 +37,7 @@ class Meshing_Database_Utils
 
 		/* @var $object TestVersionTestEvent */
 		$ok = true;
-		foreach ($versions as $versionNo => $versionData)
+		foreach ($versions as $versionData)
 		{
 			foreach ( $versionData as $class => $data )
 			{

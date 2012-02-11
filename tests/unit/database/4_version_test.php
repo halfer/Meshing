@@ -102,7 +102,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 	{
 		$versions = array(
 			// Initialisation
-			1 => array(
+			array(
 				'TestVersionTestOrganiser' => array(
 					'name' => 'Mr. Badger',
 					Meshing_Database_Utils::COL_DECLARE_TOKEN => 'mr_badger',
@@ -119,7 +119,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 			),
 			
 			// Change the email address for the organiser
-			2 => array(
+			array(
 				'TestVersionTestOrganiser' => array(
 					'email' => 'mr_badger@dontpokebadgerswithspoons.com',
 					Meshing_Database_Utils::COL_VERSION_TOKEN => 'mr_badger',
@@ -127,7 +127,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 			),
 			
 			// Sadly Mr. Badger has had to drop out, but we have a new speaker
-			3 => array(
+			array(
 				'TestVersionTestOrganiser' => array(
 					'name' => 'Mr. Brian Furry',
 					'email' => 'brian.furry@wwf.org',
