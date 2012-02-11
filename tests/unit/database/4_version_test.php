@@ -101,13 +101,16 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 			1 => array(
 				'TestVersionTestOrganiser' => array(
 					'name' => 'Mr. Badger',
+					Meshing_Database_Utils::COL_DECLARE_TOKEN => 'mr_badger',
 				),
 				'TestVersionTestEvent' => array(
 					'name' => 'Expert Tunnelling In The Built Environment',
 					'description' => 'A fascinating presentation on how the modern badger can use human methods of construction for a long-lasting sett',
 					'location' => 'Birmingham Town Hall', 'nearest_city' => 'Birmingham, UK',
 					'start_time' => '2011-11-02 19:30:00', 'duration_mins' => 60,
-					'TestVersionTestOrganiser' => 'FOREIGN_KEY',
+					Meshing_Database_Utils::COL_FOREIGN_CLASS => 'TestVersionTestOrganiser',
+					Meshing_Database_Utils::COL_FOREIGN_TOKEN => 'mr_badger',
+					Meshing_Database_Utils::COL_DECLARE_TOKEN => 'daft_event',
 				),
 			),
 			
@@ -115,6 +118,7 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 			2 => array(
 				'TestVersionTestOrganiser' => array(
 					'email' => 'mr_badger@dontpokebadgerswithspoons.com',
+					Meshing_Database_Utils::COL_VERSION_TOKEN => 'mr_badger',
 				),
 			),
 			
@@ -123,20 +127,22 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 				'TestVersionTestOrganiser' => array(
 					'name' => 'Mr. Brian Furry',
 					'email' => 'brian.furry@wwf.org',
+					Meshing_Database_Utils::COL_VERSION_TOKEN => 'mr_badger',
 				),
 			),
 		);
 
 		// Write this block of data
-		$ok = $this->writeVersionableData($versions, $this->node, $this->conNode);
+		$dbUtils = new Meshing_Database_Utils();
+		$ok = $dbUtils->writeVersionableData($versions, $this->node, $this->conNode);
 		$this->assertTrue($ok, 'Write versionable data to the database');
 
 		/*
 		 * @var $organiser TestVersionTestOrganiser
 		 * @var $event TestVersionTestEvent
 		 */
-		$organiser = $this->objects['TestVersionTestOrganiser'];
-		$event = $this->objects['TestVersionTestEvent'];
+		$organiser = $dbUtils->getCachedObject('mr_badger');
+		$event = $dbUtils->getCachedObject('daft_event');
 
 		// Check the expected number of versions
 		$this->assertEqual($event->countVersions($this->conNode), 1);
