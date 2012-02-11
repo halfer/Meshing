@@ -38,9 +38,6 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 
 		$this->node = $this->createKnownNode(new TestVersionKnownNode(), $this->conNode);
 
-		// Create a cache for rows we write
-		$this->objects = array();
-
 		// I've witnessed incorrect caching on 27 Nov 2011, might be due to my messing about
 		// with Propel internals too much. Disabling pooling for tests :-0
 		Propel::disableInstancePooling();
@@ -81,15 +78,22 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 		$versions = array();
 		for ($i = 1; $i <= $n; $i++)
 		{
-			$versions[$i] = array(
-				'TestVersionTestOrganiser' => array(
-					'name' => 'Name #' . rand(1, 1000) . ' (' . $suffix . ')',
-					'email' => 'email@example' . rand(1,9999) . '.co.uk',
-				)
+			$cols = array(
+				'name' => 'Name #' . rand(1, 1000) . ' (' . $suffix . ')',
+				'email' => 'email@example' . rand(1,9999) . '.co.uk',
+				Meshing_Database_Utils::COL_DECLARE_TOKEN => 'organiser',
 			);
+			
+			// We can't reversion on the first pass, of course
+			if ($i > 1)
+			{
+				$cols[Meshing_Database_Utils::COL_VERSION_TOKEN] = 'organiser';
+			}
+			
+			$versions[$i] = array('TestVersionTestOrganiser' => $cols,);
 		}
-		$ok = $this->writeVersionableData($versions, $this->node, $this->conNode);		
-		$this->clearExistingObjectsCache();
+		$dbUtils = new Meshing_Database_Utils();
+		$ok = $dbUtils->writeVersionableData($versions, $this->node, $this->conNode);		
 
 		return $ok;
 	}
@@ -307,65 +311,5 @@ class PropelVersionTestCase extends Meshing_Test_ModelTestCase
 			$ok = true;
 		}
 		$this->assertTrue($ok, 'Check that a high version number fails');
-	}
-
-	/**
-	 * Saves data in a versioned way, using a specific array format
-	 * 
-	 * @param array $versions 
-	 */
-	protected function writeVersionableData($versions, TestVersionKnownNode $node, PDO $con = null)
-	{
-		/* @var $object TestVersionTestEvent */
-		$ok = true;
-		foreach ($versions as $versionNo => $versionData)
-		{
-			foreach ( $versionData as $class => $data )
-			{
-				// Use existing row, or create a new instance
-				if (array_key_exists($class, $this->objects))
-				{
-					$object = $this->objects[$class];
-				}
-				else
-				{
-					$object = new $class();
-					$object->setCreatorNodeId($node->getPrimaryKey());
-				}
-				
-				foreach ($data as $column => $value)
-				{
-					if ($value == 'FOREIGN_KEY')
-					{
-						// Pokes the appropriate class in as a foreign reference
-						$method = 'set' . $column;
-						$foreignObj = $this->objects[$column];
-						$object->$method($foreignObj);
-					}
-					else
-					{
-						// Set standard column
-						$object->setByName($column, $value, BasePeer::TYPE_FIELDNAME);
-					}
-				}
-
-				// Set metadata that should be handled outside the model layer
-				$time = time();
-				$object->setVersionMetadata(
-					$timeEdited = $time, $timeReceived = null, $timeApplied = $time
-				);
-
-				// Save and store a reference
-				$ok = $ok && $object->save($con);
-				$this->objects[$class] = $object;
-			}
-		}
-
-		return $ok;
-	}
-
-	protected function clearExistingObjectsCache()
-	{
-		$this->objects = array();
 	}
 }
