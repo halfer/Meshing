@@ -25,9 +25,14 @@ class Meshing_Database_Utils
 	 */
 	public function writeVersionableData(array $versions, $node, PDO $con = null)
 	{
-		// Check the node is a known node
-		$nodeClass = get_class($node);
-		$typeOk = false !== strpos($nodeClass, 'KnownNode', strlen($nodeClass) - strlen('KnownNode'));
+		// Check the node ends with 'KnownNode'
+		$nodeClass = 'null';
+		$typeOk = false;
+		if (!is_null($node))
+		{
+			$nodeClass = get_class($node);
+			$typeOk = preg_match('/KnownNode$/', $nodeClass) > 0;
+		}
 		if (!$typeOk)
 		{
 			throw new Exception(

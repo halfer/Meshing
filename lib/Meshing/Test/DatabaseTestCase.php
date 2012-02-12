@@ -206,14 +206,14 @@ abstract class Meshing_Test_DatabaseTestCase extends UnitTestCase
 	/**
 	 * Runs generated SQL against the configured db
 	 */
-	protected function _testSqlRunner($runTests = true)
+	protected function _testSqlRunner($runTests = true, $conName = Meshing_Utils::CONN_NODE_TEST_1)
 	{
 		$mapFile = $this->projectRoot . $this->paths->getFileDbMap();
 		
 		$task = new Meshing_Propel_SqlRunner();
 		$task->setSqlDir($this->sqlDir);
 		$task->setMapFile($mapFile);
-		$task->setPropelConnection(Meshing_Utils::CONN_NODE_TEST_1);
+		$task->setPropelConnection($conName);
 
 		try
 		{

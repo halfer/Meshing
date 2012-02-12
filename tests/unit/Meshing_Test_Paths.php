@@ -61,4 +61,12 @@ class Meshing_Test_Paths extends Meshing_Paths
 	{
 		return $this->getGeneratedPath('/database/connections');
 	}
+
+	/**
+	 * Gets the fixtures folder for tests 
+	 */
+	public function getFixturesPath()
+	{
+		return $this->getGeneratedPath('/database/fixtures');
+	}
 }
